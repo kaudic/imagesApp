@@ -5,9 +5,8 @@ const auth = require('./middlewares/auth');
 const controller = require('./controller');
 
 // Route for welcoming page - controling token first
-router.get('/', auth, controller.homePage);
+router.get('/', controller.homePage);
+router.get('/upload', controller.uploadPage);
 
-// Route for Logging in
-router.post('/', controller.loggIn);
 
 module.exports = router;

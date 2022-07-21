@@ -1,0 +1,19 @@
+<%- include('./partials/header') %>
+    <%- include('./partials/nav') %>
+
+        <body>
+
+
+            <div class="uploadFormContainer">
+                <form class="uploadForm" enctype="multipart/form-data" method="POST" action="/upload">
+                    <label class="uploadForm__label" for="uploadInput">Choisir les images à transmettre</label>
+                    <input class="uploadForm__input" name="uploadInput" id="uploadInput" type="file"
+                        accept=".jpg, .jpeg, .png" multiple>
+                    <button id="upLoadBtn">Envoyer</button>
+                    <p id="messageContainer"></p>
+                </form>
+            </div>
+
+            <script type="text/javascript" src="/js/upload.js" defer></script>
+
+        </body>

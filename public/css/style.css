@@ -1,7 +1,92 @@
-body {
+/* PARTIE NAV */
 
+body {
     background-color: black;
 }
+
+.nav__listItem {
+    display: flex;
+    align-items: center;
+    margin: 1rem 3rem;
+    font-size: 2rem;
+    font-weight: bolder;
+    text-decoration: none;
+    color: black;
+    list-style-type: none;
+}
+
+.nav__list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem;
+    width: 80vw;
+    margin: auto;
+    list-style-type: none;
+}
+
+.nav {
+    height: 7rem;
+    position: sticky;
+    z-index: 10;
+    background: white;
+    top: 0;
+    right: 0;
+    left: 0;
+    border-bottom: 0.3rem solid black;
+}
+
+
+/* PARTIE UPLOAD */
+
+.uploadForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.uploadForm__label {
+    color: green;
+    font-weight: bolder;
+    font-size: 4rem;
+    margin-bottom: 2rem;
+}
+
+.uploadForm__input {
+    color: white;
+    /* font-weight: bolder; */
+    font-size: 2rem;
+}
+
+.uploadFormContainer {
+    margin: 2rem auto;
+    width: 50vw;
+}
+
+#upLoadBtn {
+    border-radius: 1rem;
+    margin: 2rem auto 0 auto;
+    background-color: green;
+    color: white;
+    height: 4rem;
+    padding: 1rem 4rem;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+#upLoadBtn:hover {
+    background-color: white;
+    color: green;
+    cursor: pointer;
+}
+
+#messageContainer {
+    color: red;
+    font-size: 2rem;
+}
+
 
 
 @media screen and (max-width:1280px) {}
