@@ -15,7 +15,25 @@ router.post('/upload', upLoadImages(), controller.renderUploadPage);
 
 // Tag Routes
 router.get('/tags', controller.renderTagPage);
-router.post('/tags/personCreation', handler(controller.createPerson));
+
+router.get('/tags/getPersons', controller.getAllPersons);
+router.get('/tags/getAllLocalities', controller.getAllLocalities);
+router.get('/tags/getAllEvents', controller.getAllEvents);
+
+// Creation
+router.post('/tags/person', handler(controller.createPerson));
+router.post('/tags/locality', handler(controller.createLocality));
+router.post('/tags/event', handler(controller.createEvent));
+
+// Delete
+router.delete('/tags/person', handler(controller.deletePerson));
+router.delete('/tags/locality', handler(controller.deleteLocality));
+router.delete('/tags/event', handler(controller.deleteEvent));
+
+// Modify
+router.put('/tags/person', handler(controller.modifyPerson));
+router.put('/tags/locality', handler(controller.modifyLocality));
+router.put('/tags/event', handler(controller.modifyEvent));
 
 // Catch the error created by controller Handler
 router.use(controller.error);
