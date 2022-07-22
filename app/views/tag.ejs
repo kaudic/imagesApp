@@ -1,0 +1,68 @@
+<%- include('./partials/header') %>
+    <%- include('./partials/nav') %>
+
+        <body>
+
+            <div class="tagContainer">
+                <h2 class="project_h2Title">Taguer les photos</h2>
+            </div>
+
+            <div class="project_info">
+                <h2 class="project_h2Title">Création de nouveaux Tags</h2>
+                <div class="project_admin_table">
+                    <div class="project_labels_admin">
+                        <div class="project_info_couple">
+                            <label class="project_label_creation" for="newLabel">Personnes : </label>
+                            <input id="personCreationInput" class="project_input_200" type="text" name="newLabel">
+                            <button id="personCreationBtn" class="button_admin--creer">Créer</button>
+                        </div>
+
+                        <div class="project_info_couple">
+                            <select id="personSelectModification" class="project_label_creation" id="labelsList"
+                                name="labelsList">
+                            </select>
+
+                            <input id="personModificationInput" class="project_input_200" type="text">
+                            <button id="personModificationBtn" class="button_admin--modify">Modifier</button>
+                            <button id="personDeleteBtn" class="button_admin--delete">Supprimer</button>
+                        </div>
+                    </div>
+                    <div class="project_labels_admin">
+                        <div class="project_info_couple">
+                            <label class="project_label_creation" for="newSoftware">Lieux : </label>
+                            <input id="localityCreationInput" class="project_input_200" type="text" name="newSoftware">
+                            <button id="localityCreationBtn" class="button_admin--creer">Créer</button>
+                        </div>
+
+                        <div class="project_info_couple">
+                            <select id="localitySelectModification" class="project_label_creation" name="softwareList">
+
+                            </select>
+                            <input id="localityModificationInput" class="project_input_200" type="text">
+                            <button id="localityModificationBtn" class="button_admin--modify">Modifier</button>
+                            <button id="localityDeleteBtn" class="button_admin--delete">Supprimer</button>
+                        </div>
+                    </div>
+                    <div class="project_labels_admin">
+                        <div class="project_info_couple">
+                            <label class="project_label_creation" for="newSubject">Evènements : </label>
+                            <input id="eventCreationInput" class="project_input_200" type="text" name="newSubject">
+                            <button id="eventCreationBtn" class="button_admin--creer">Créer</button>
+                        </div>
+                        <div class="project_info_couple">
+                            <select id="eventSelectModification" class="project_label_creation" name="subjectsList">
+
+                            </select>
+                            <input id="eventModificationInput" class="project_input_200" type="text">
+                            <button id="eventModificationBtn" class="button_admin--modify">Modifier</button>
+                            <button id="eventDeleteBtn" class="button_admin--delete">Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- </div> -->
+
+            <script type="text/javascript" src="/js/tag.js" defer></script>
+
+        </body>

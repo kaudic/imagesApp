@@ -13,6 +13,13 @@ body {
     text-decoration: none;
     color: black;
     list-style-type: none;
+
+}
+
+.nav__listItem:hover {
+    font-size: 2.2rem;
+    border-bottom: 0.2rem solid green;
+    cursor: pointer;
 }
 
 .nav__list {
@@ -24,6 +31,7 @@ body {
     width: 80vw;
     margin: auto;
     list-style-type: none;
+
 }
 
 .nav {
@@ -36,6 +44,7 @@ body {
     left: 0;
     border-bottom: 0.3rem solid black;
 }
+
 
 
 /* PARTIE UPLOAD */
@@ -87,6 +96,161 @@ body {
     font-size: 2rem;
 }
 
+/* TAG PAGE */
 
+.project_info {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem;
+    position: relative;
+}
 
-@media screen and (max-width:1280px) {}
+.project_h2Title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: green;
+    margin: 0 0 1rem 0;
+}
+
+.project_admin_table {
+    display: flex;
+    flex-direction: row;
+}
+
+.project_labels_admin {
+    background-color: rgb(189, 185, 185);
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin: 0.5rem 1rem 0.5rem 1rem;
+    padding: 1rem;
+}
+
+.project_info_couple {
+    margin: 0.5rem 0.5rem;
+}
+
+.project_label_creation {
+    font-size: 1.5rem;
+    font-weight: normal;
+    width: 10rem;
+}
+
+.project_input_200 {
+    width: 12rem;
+    height: 1.5rem
+}
+
+.button_admin--creer:hover {
+    background: white;
+    color: green;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.button_admin--creer {
+    font-weight: bold;
+    padding: 0.2em;
+    border-radius: 0.5em;
+    margin: 0 0.1em;
+    width: 7rem;
+    text-align: center;
+    vertical-align: center;
+    text-decoration: none;
+    background: green;
+    color: white;
+    border: 0.1rem solid green;
+}
+
+.button_admin--modify:hover {
+    background: white;
+    color: orange;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.button_admin--modify {
+    font-weight: bold;
+    padding: 0.2em;
+    border-radius: 0.5em;
+    margin: 0 0.1em;
+    width: 7rem;
+    text-align: center;
+    vertical-align: center;
+    text-decoration: none;
+    background: orange;
+    color: white;
+    border: 0.1rem solid orange;
+}
+
+.button_admin--delete:hover {
+    background: white;
+    color: red;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.button_admin--delete {
+    font-weight: bold;
+    padding: 0.2em;
+    border-radius: 0.5em;
+    margin: 0 0.1em;
+    width: 7rem;
+    text-align: center;
+    vertical-align: center;
+    text-decoration: none;
+    background: red;
+    color: white;
+    border: 0.1rem solid red;
+}
+
+.tagContainer {
+    margin: 2rem;
+}
+
+@media screen and (max-width:1280px) {
+
+    .nav__list {
+        justify-content: space-between;
+        width: 90vw;
+    }
+
+    .nav__listItem {
+        margin: 0.5rem 1rem;
+        font-size: 1rem;
+    }
+
+    .nav {
+        height: 5rem;
+    }
+
+    .uploadForm__label {
+        font-size: 2rem;
+        text-align: center;
+
+    }
+
+    .uploadForm__input {
+        font-size: 1rem;
+    }
+
+    #upLoadBtn {
+        border-radius: 1rem;
+        margin: 2rem auto 0 auto;
+        background-color: green;
+        color: white;
+        height: 2rem;
+        padding: 0.5rem 2rem;
+        font-size: 1rem;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    /* PAGE TAGS */
+
+    .project_admin_table {
+        flex-direction: column;
+    }
+
+}

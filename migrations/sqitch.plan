@@ -1,0 +1,4 @@
+%syntax-version=1.0.0
+%project=imageApp
+
+initdb 2022-07-22T07:52:32Z Killian AUDIC <killi@LAPTOP-5GJ086M6> # tables creation
