@@ -19,8 +19,8 @@ let counter = -1;
 
         // ! add binary fingerPrints here and in database column with unique constraint
         const sqlQuery = {
-            text: 'INSERT INTO "image" ("file_name","year") VALUES ($1,$2)',
-            values: [img.fileName, parseInt(img.year)],
+            text: 'INSERT INTO "image" ("file_name","year","fingerprints") VALUES ($1,$2)',
+            values: [img.fileName, parseInt(img.year), img.fingerPrints],
         };
 
         queries.push(db.query(sqlQuery));

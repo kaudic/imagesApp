@@ -23,7 +23,8 @@ CREATE TABLE "image" (
     "year" INTEGER,
     "locality" INT REFERENCES "locality" ("id"),
     "event" INT REFERENCES "event" ("id"),
-    "tag" BOOLEAN DEFAULT false
+    "tag" BOOLEAN DEFAULT false,
+    "fingerprints" TEXT UNIQUE
 );
 
 CREATE TABLE "image_person" (

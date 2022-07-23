@@ -10,6 +10,8 @@ const handler = require('./helpers/controllerHandler');
 router.get('/', controller.renderHomePage);
 
 // Upload Routes
+// !add new names to files when uploading except on first download
+// !add auth
 router.get('/upload', controller.renderUploadPage);
 router.post('/upload', upLoadImages(), controller.renderUploadPage);
 
