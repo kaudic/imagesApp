@@ -161,8 +161,8 @@ const getFiles = async (source, year) => {
 
 // Start the script
 // ! change year in the source
-const source = path.normalize(`${__dirname}/../../../../pictures/2017`);
+const source = path.normalize(`${__dirname}/../../../../pictures/2016`);
 // ! change year here
-getFiles(source, '2017');
+getFiles(source, '2016');
 
 
