@@ -27,7 +27,7 @@ module.exports = {
         //     // if in prod, we don't want as it slows down process for example when editing a blog article
         //     debug(...params);
         // }
-        console.log(...params);
+        // console.log(...params);
 
         return this.originalClient.query(...params);
     },
