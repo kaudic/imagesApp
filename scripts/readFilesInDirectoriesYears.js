@@ -63,7 +63,7 @@ let imageSource = [];
 const extensionAccepted = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG'];
 
 // Script 1 (fileName and Year)
-const getFiles = async (source, events) => {
+const getFiles = async (source, year) => {
     // Read the original json
     // imageSource = require('../data/imagesSource.json');
 
@@ -121,7 +121,7 @@ const getFiles = async (source, events) => {
                                 fs.unlinkSync(sourceFile);
                             }
                             else {
-                                imageSource.push({ fileName: img, events: events, fingerPrints: fingerPrints });
+                                imageSource.push({ fileName: img, year: year, fingerPrints: fingerPrints });
                             }
 
                         }
@@ -138,11 +138,11 @@ const getFiles = async (source, events) => {
                 .filter(dirent => dirent.isDirectory())
                 .map(dirent => dirent.name)
             dirNames.forEach((dirName) => {
-                getFiles(`${source}/${dirName}`, events);
+                getFiles(`${source}/${dirName}`, year);
             });
 
             // write in data repo
-            const repoPath = path.normalize(`${__dirname}/../data/events${events}.json`);
+            const repoPath = path.normalize(`${__dirname}/../data/year${year}.json`);
             // console.log('writing in json file');
             fs.writeFileSync(repoPath, JSON.stringify(imageSource));
 
@@ -153,8 +153,8 @@ const getFiles = async (source, events) => {
 
 // Start the script
 // ! change year in the source
-const source = path.normalize(`${__dirname}/../../../../pictures/2018/Mariage`);
+const source = path.normalize(`${__dirname}/../../../../pictures/2021`);
 // ! change year here
-getFiles(source, 'Mariage K & M');
+getFiles(source, '2021');
 
 
