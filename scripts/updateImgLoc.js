@@ -8,15 +8,15 @@ const db = require('../app/config/client');
 const queries = [];
 
 // Read json file
-const imageSource = require('../data/final/years.json');
+const imageSource = require('../data/final/localisationsById.json');
 
 // Loop on the file
 (async () => {
     imageSource.forEach(async (img) => {
 
         const sqlQuery = {
-            text: 'INSERT INTO "image" ("file_name","year","fingerprints") VALUES ($1,$2,$3)',
-            values: [img.fileName, parseInt(img.year), img.fingerPrints],
+            text: 'UPDATE "image" SET locality = $1 WHERE file_name=$2',
+            values: [img.localisation, img.fileName],
         };
 
         try {

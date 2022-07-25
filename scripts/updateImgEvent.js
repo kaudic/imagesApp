@@ -8,15 +8,17 @@ const db = require('../app/config/client');
 const queries = [];
 
 // Read json file
-const imageSource = require('../data/final/years.json');
+const imageSource = require('../data/eventMariageK&M.json');
 
 // Loop on the file
 (async () => {
     imageSource.forEach(async (img) => {
 
+        // !Attention to change the number '2' by the id of the wedding's id event
+
         const sqlQuery = {
-            text: 'INSERT INTO "image" ("file_name","year","fingerprints") VALUES ($1,$2,$3)',
-            values: [img.fileName, parseInt(img.year), img.fingerPrints],
+            text: 'UPDATE "image" SET event = $1 WHERE file_name=$2',
+            values: [1, img.fileName],
         };
 
         try {

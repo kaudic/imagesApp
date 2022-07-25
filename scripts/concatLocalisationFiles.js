@@ -7,7 +7,7 @@ let concatJson = [];
 const image2006 = require('../data/localisationAmsterdam.json');
 const image2007 = require('../data/localisationBruges.json');
 const image2008 = require('../data/localisationChine.json');
-const image2009 = require('../data/localisationCyclades.json');
+const image2009 = require('../data/localisationGrèce.json');
 const image2010 = require('../data/localisationDublin.json');
 const image2011 = require('../data/localisationDubrovnik.json');
 const image2012 = require('../data/localisationKotor.json');
@@ -20,6 +20,7 @@ const image2018 = require('../data/localisationParis.json');
 const image2019 = require('../data/localisationPontAbbé.json');
 const image2020 = require('../data/localisationPorto.json');
 const image2021 = require('../data/localisationVenise.json');
+const image2022 = require('../data/localisationAndalousie.json');
 
 concatJson.push(...image2006);
 concatJson.push(...image2007);
@@ -37,6 +38,7 @@ concatJson.push(...image2018);
 concatJson.push(...image2019);
 concatJson.push(...image2020);
 concatJson.push(...image2021);
+concatJson.push(...image2022);
 
 // write in data repo
 const repoPath = path.normalize(`${__dirname}/../data/final/localisations.json`);

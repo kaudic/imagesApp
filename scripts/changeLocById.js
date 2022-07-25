@@ -42,6 +42,8 @@ localisationById.forEach((img) => {
             break;
         case 'Venise': img.localisation = 16;
             break;
+        case 'Andalousie': img.localisation = 18;
+            break;
     }
 
 });

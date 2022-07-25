@@ -4,22 +4,22 @@ const fs = require('fs');
 // json File to register all the images
 let concatJson = [];
 
-const image2006 = require('../data/images2006.json');
-const image2007 = require('../data/images2007.json');
-const image2008 = require('../data/images2008.json');
-const image2009 = require('../data/images2009.json');
-const image2010 = require('../data/images2010.json');
-const image2011 = require('../data/images2011.json');
-const image2012 = require('../data/images2012.json');
-const image2013 = require('../data/images2013.json');
-const image2014 = require('../data/images2014.json');
-const image2015 = require('../data/images2015.json');
-const image2016 = require('../data/images2016.json');
-const image2017 = require('../data/images2017.json');
-const image2018 = require('../data/images2018.json');
-const image2019 = require('../data/images2019.json');
-const image2020 = require('../data/images2020.json');
-const image2021 = require('../data/images2021.json');
+const image2006 = require('../data/year2006.json');
+const image2007 = require('../data/year2007.json');
+const image2008 = require('../data/year2008.json');
+const image2009 = require('../data/year2009.json');
+const image2010 = require('../data/year2010.json');
+const image2011 = require('../data/year2011.json');
+const image2012 = require('../data/year2012.json');
+const image2013 = require('../data/year2013.json');
+const image2014 = require('../data/year2014.json');
+const image2015 = require('../data/year2015.json');
+const image2016 = require('../data/year2016.json');
+const image2017 = require('../data/year2017.json');
+const image2018 = require('../data/year2018.json');
+const image2019 = require('../data/year2019.json');
+const image2020 = require('../data/year2020.json');
+const image2021 = require('../data/year2021.json');
 
 concatJson.push(...image2006);
 concatJson.push(...image2007);
