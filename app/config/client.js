@@ -2,8 +2,7 @@
 const { Pool } = require('pg');
 
 const config = {
-    // connectionString: process.env.DATABASE_URL
-    connectionString: 'postgresql://spedata:spedata@localhost/imageapp'
+    connectionString: process.env.DATABASE_URL
 };
 
 // si j'exécute l'appli sur Héroku, je complète mon object de config

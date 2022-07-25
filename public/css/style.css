@@ -131,10 +131,27 @@ body {
     margin: 0.5rem 0.5rem;
 }
 
+
 .project_label_creation {
     font-size: 1.5rem;
     font-weight: normal;
     width: 10rem;
+    display: inline-block;
+}
+
+.project_label_select {
+    font-size: 1.5rem;
+    font-weight: normal;
+    width: 10rem;
+    display: inline-block;
+}
+
+.project_label_input {
+    font-size: 1.5rem;
+    font-weight: normal;
+    height: 1.5rem;
+    width: 9.5rem;
+    display: inline-block;
 }
 
 .project_input_200 {
@@ -209,6 +226,116 @@ body {
     margin: 2rem;
 }
 
+.imageLeftAndRightAndTag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imageSmallForTag {
+    max-height: 70vh;
+    margin: 0 1rem;
+}
+
+.imageTagZone {
+    margin-left: 5rem;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(189, 185, 185);
+    border-radius: 1rem;
+    padding: 1rem;
+    background-color: unset;
+    border: 1px solid white;
+    color: white;
+}
+
+.iconFilterPlus {
+    color: green;
+    font-size: 1.5rem;
+    margin-left: 1rem;
+
+}
+
+.iconFilterPlus:hover {
+    zoom: 1.1;
+    cursor: pointer;
+}
+
+.iconArrow {
+    color: green;
+    font-size: 2.5rem;
+
+}
+
+.iconArrow:hover {
+    zoom: 1.1;
+    cursor: pointer;
+}
+
+.personContainer {
+    border: 2px solid black;
+    border-radius: 1rem;
+    min-height: 2rem;
+    background-color: white;
+    margin: 1rem 0;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.line {
+    border: 1px solid black;
+    margin: 1rem 0;
+}
+
+.button_taguer {
+    font-weight: bold;
+    padding: 0.2em;
+    border-radius: 0.5em;
+    margin: 0 0.1em;
+    width: 12rem;
+    height: 2rem;
+    text-align: center;
+    vertical-align: center;
+    text-decoration: none;
+    background: green;
+    color: white;
+    border: 0.1rem solid green;
+}
+
+.button_taguer:hover {
+    background: white;
+    color: green;
+    cursor: pointer;
+}
+
+.button_supprimer {
+    font-weight: bold;
+    padding: 0.2em;
+    border-radius: 0.5em;
+    margin: 0 0.1em;
+    height: 2rem;
+    width: 12rem;
+    text-align: center;
+    vertical-align: center;
+    text-decoration: none;
+    background: red;
+    color: white;
+    border: 0.1rem solid red;
+}
+
+.button_supprimer:hover {
+    background: white;
+    color: red;
+    cursor: pointer;
+}
+
+.imageLeftAndRight {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 @media screen and (max-width:1280px) {
 
     .nav__list {
@@ -252,5 +379,62 @@ body {
     .project_admin_table {
         flex-direction: column;
     }
+
+    .imageLeftAndRightAndTag {
+        flex-direction: column;
+    }
+
+    .imageSmallForTag {
+        max-height: 30vh;
+    }
+
+    .imageTagZone {
+        margin-top: 1rem;
+        width: 80vw;
+        margin-left: unset;
+        background-color: unset;
+        border: 1px solid white;
+    }
+
+    .project_label_creation {
+        width: 6rem;
+        font-size: 1rem;
+        color: white;
+    }
+
+    .project_label_input {
+        width: 8rem;
+        font-size: 1rem;
+    }
+
+    .button_taguer,
+    .button_supprimer {
+        width: 8rem;
+    }
+
+    .project_info_couple {
+        margin: 0.1rem 0
+    }
+
+    .line {
+        margin: 0.5rem 0
+    }
+
+    .personContainer {
+        margin: 0.3rem 0
+    }
+
+    .button_admin--creer,
+    .button_admin--modify,
+    .button_admin--delete {
+        margin-top: 0.3rem;
+        width: 5rem
+    }
+
+    .project_labels_admin {
+        width: 80vw;
+        margin: 0.3rem 0;
+    }
+
 
 }

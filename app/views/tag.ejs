@@ -5,6 +5,44 @@
 
             <div class="tagContainer">
                 <h2 class="project_h2Title">Taguer les photos</h2>
+                <div class="imageLeftAndRightAndTag">
+                    <div class="imageLeftAndRight">
+                        <i class="fa-solid fa-square-caret-left iconArrow"></i>
+                        <img class="imageSmallForTag" src="assets/IMG_1517.JPG">
+                        <i class="fa-solid fa-square-caret-right iconArrow"></i>
+                    </div>
+
+                    <div class="imageTagZone">
+                        <div class="project_info_couple">
+                            <label class="project_label_creation">Fichier</label>
+                            <input class="project_label_input" />
+                        </div>
+                        <div class="project_info_couple">
+                            <label class="project_label_creation">Année</label>
+                            <input class="project_label_input" />
+                        </div>
+                        <div class="project_info_couple">
+                            <label class="project_label_creation">Lieu</label>
+                            <select class="project_label_select"></select>
+                        </div>
+                        <div class="project_info_couple">
+                            <label class="project_label_creation">Evenement</label>
+                            <select class="project_label_select"></select>
+                        </div>
+                        <div class="line"></div>
+                        <div class="project_info_couple">
+                            <label class="project_label_creation">Personnes</label>
+                            <select class="project_label_select"></select>
+                            <i id="" class="fa-solid fa-circle-plus iconFilterPlus"></i>
+                        </div>
+
+                        <div class="personContainer"></div>
+                        <div class="project_info_couple">
+                            <button id="" class="button_taguer">TAGUER</button>
+                            <button id="" class="button_supprimer">SUPPRIMER</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="project_info">
@@ -13,7 +51,7 @@
                     <div class="project_labels_admin">
                         <div class="project_info_couple">
                             <label class="project_label_creation" for="newLabel">Personnes : </label>
-                            <input id="personCreationInput" class="project_input_200" type="text" name="newLabel">
+                            <input id="personCreationInput" class="project_label_input" type="text" name="newLabel">
                             <button id="personCreationBtn" class="button_admin--creer">Créer</button>
                         </div>
 
@@ -22,7 +60,7 @@
                                 name="labelsList">
                             </select>
 
-                            <input id="personModificationInput" class="project_input_200" type="text">
+                            <input id="personModificationInput" class="project_label_input" type="text">
                             <button id="personModificationBtn" class="button_admin--modify">Modifier</button>
                             <button id="personDeleteBtn" class="button_admin--delete">Supprimer</button>
                         </div>
@@ -30,7 +68,8 @@
                     <div class="project_labels_admin">
                         <div class="project_info_couple">
                             <label class="project_label_creation" for="newSoftware">Lieux : </label>
-                            <input id="localityCreationInput" class="project_input_200" type="text" name="newSoftware">
+                            <input id="localityCreationInput" class="project_label_input" type="text"
+                                name="newSoftware">
                             <button id="localityCreationBtn" class="button_admin--creer">Créer</button>
                         </div>
 
@@ -38,7 +77,7 @@
                             <select id="localitySelectModification" class="project_label_creation" name="softwareList">
 
                             </select>
-                            <input id="localityModificationInput" class="project_input_200" type="text">
+                            <input id="localityModificationInput" class="project_label_input" type="text">
                             <button id="localityModificationBtn" class="button_admin--modify">Modifier</button>
                             <button id="localityDeleteBtn" class="button_admin--delete">Supprimer</button>
                         </div>
@@ -46,14 +85,14 @@
                     <div class="project_labels_admin">
                         <div class="project_info_couple">
                             <label class="project_label_creation" for="newSubject">Evènements : </label>
-                            <input id="eventCreationInput" class="project_input_200" type="text" name="newSubject">
+                            <input id="eventCreationInput" class="project_label_input" type="text" name="newSubject">
                             <button id="eventCreationBtn" class="button_admin--creer">Créer</button>
                         </div>
                         <div class="project_info_couple">
                             <select id="eventSelectModification" class="project_label_creation" name="subjectsList">
 
                             </select>
-                            <input id="eventModificationInput" class="project_input_200" type="text">
+                            <input id="eventModificationInput" class="project_label_input" type="text">
                             <button id="eventModificationBtn" class="button_admin--modify">Modifier</button>
                             <button id="eventDeleteBtn" class="button_admin--delete">Supprimer</button>
                         </div>
