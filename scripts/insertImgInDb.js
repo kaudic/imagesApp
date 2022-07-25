@@ -4,6 +4,8 @@
 require('dotenv').config();
 const db = require('../app/config/client');
 
+console.log(process.env.DATABASE_URL);
+
 // variable to accomodate all the queries
 const queries = [];
 
