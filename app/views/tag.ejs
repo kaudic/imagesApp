@@ -7,32 +7,38 @@
                 <h2 class="project_h2Title">Taguer les photos</h2>
                 <div class="imageLeftAndRightAndTag">
                     <div class="imageLeftAndRight">
-                        <i class="fa-solid fa-square-caret-left iconArrow"></i>
-                        <img class="imageSmallForTag" src="assets/IMG_1517.JPG">
-                        <i class="fa-solid fa-square-caret-right iconArrow"></i>
+                        <i id="imgLeft" class="fa-solid fa-square-caret-left iconArrow"></i>
+                        <img id="imageContainer" data-img-id="" class="imageSmallForTag" src="">
+                        <i id="imgRight" class="fa-solid fa-square-caret-right iconArrow"></i>
                     </div>
 
                     <div class="imageTagZone">
                         <div class="project_info_couple">
                             <label class="project_label_creation">Fichier</label>
-                            <input class="project_label_input" />
+                            <input class="project_label_input" value="" id="fileNameInput" />
                         </div>
                         <div class="project_info_couple">
                             <label class="project_label_creation">Année</label>
-                            <input class="project_label_input" />
+                            <input class="project_label_input" value="" id="imageYearInput" />
                         </div>
                         <div class="project_info_couple">
                             <label class="project_label_creation">Lieu</label>
-                            <select class="project_label_select"></select>
+                            <select id="localityTag" class="project_label_select">
+                                <option value="0">----</option>
+                            </select>
                         </div>
                         <div class="project_info_couple">
                             <label class="project_label_creation">Evenement</label>
-                            <select class="project_label_select"></select>
+                            <select id="eventTag" class="project_label_select">
+                                <option value="0">----</option>
+                            </select>
                         </div>
                         <div class="line"></div>
                         <div class="project_info_couple">
                             <label class="project_label_creation">Personnes</label>
-                            <select class="project_label_select"></select>
+                            <select id="personTag" class="project_label_select">
+                                <option value="0">----</option>
+                            </select>
                             <i id="" class="fa-solid fa-circle-plus iconFilterPlus"></i>
                         </div>
 
@@ -58,6 +64,7 @@
                         <div class="project_info_couple">
                             <select id="personSelectModification" class="project_label_creation" id="labelsList"
                                 name="labelsList">
+                                <option value="0">----</option>
                             </select>
 
                             <input id="personModificationInput" class="project_label_input" type="text">
@@ -75,7 +82,7 @@
 
                         <div class="project_info_couple">
                             <select id="localitySelectModification" class="project_label_creation" name="softwareList">
-
+                                <option value="0">----</option>
                             </select>
                             <input id="localityModificationInput" class="project_label_input" type="text">
                             <button id="localityModificationBtn" class="button_admin--modify">Modifier</button>
@@ -90,7 +97,7 @@
                         </div>
                         <div class="project_info_couple">
                             <select id="eventSelectModification" class="project_label_creation" name="subjectsList">
-
+                                <option value="0">----</option>
                             </select>
                             <input id="eventModificationInput" class="project_label_input" type="text">
                             <button id="eventModificationBtn" class="button_admin--modify">Modifier</button>

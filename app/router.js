@@ -22,6 +22,9 @@ router.get('/tags/getPersons', controller.getAllPersons);
 router.get('/tags/getAllLocalities', controller.getAllLocalities);
 router.get('/tags/getAllEvents', controller.getAllEvents);
 
+// Image Routes
+router.get('/images/getAllNotTagguedWithLinkedTables', controller.getAllImagesNotTagguedAndLinkedTables);
+
 // Creation
 router.post('/tags/person', handler(controller.createPerson));
 router.post('/tags/locality', handler(controller.createLocality));

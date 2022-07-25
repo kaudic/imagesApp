@@ -1,6 +1,7 @@
 const personDataMapper = require('./models/person');
 const localityDataMapper = require('./models/locality');
 const eventDataMapper = require('./models/event');
+const imageDataMapper = require('./models/image');
 
 const controller = {
 
@@ -161,7 +162,17 @@ const controller = {
                 data: events
             })
         }
+    },
+    getAllImagesNotTagguedAndLinkedTables: async (req, res) => {
+        const imagesInfo = await imageDataMapper.getAllImgNotTagguedAndLinkedTables();
 
+        if (imagesInfo) {
+            res.json({
+                result: true,
+                message: 'Les infos des images sont dans l\'attribut data',
+                data: imagesInfo
+            })
+        }
     },
     error: (err, req, res, _next) => {
 
@@ -171,7 +182,7 @@ const controller = {
             result: false,
             message: err.message
         });
-    }
+    },
 
 };
 

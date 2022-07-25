@@ -1,8 +1,17 @@
 const tag = {
-    init: () => {
+    init: async () => {
         console.log('tag script initialisation...');
         tag.addEventsToAction();
-        tag.updateSelectFields();
+        tag.updateSelectFields(); // TODO add the new selects!
+        // get all images details and set them up in attributes names properties.images
+        await tag.getAllImagesAndLinkedTablesNotTaggued();
+        // display first image
+        tag.displayImageInfo(0);
+
+    },
+    properties: {
+        imageDisplayedIndex: 0,
+        images: []
     },
     addEventsToAction: () => {
         // Identify Elements
@@ -27,42 +36,110 @@ const tag = {
         const eventModificationBtn = document.getElementById('eventModificationBtn');
         eventModificationBtn.addEventListener('click', tag.modifyEvent);
 
+        // button to go to left Image
+        const leftBtn = document.getElementById('imgLeft');
+        leftBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            tag.displayImageInfo(-1)
+        });
+
+        // button to go to Right Image
+        const rightBtn = document.getElementById('imgRight');
+        rightBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            tag.displayImageInfo(1)
+        });
+
+    },
+    getAllImagesAndLinkedTablesNotTaggued: async () => {
+        console.log('coucou');
+        const imagesAndLinkedTables = await fetch('/images/getAllNotTagguedWithLinkedTables').then((res) => res.json());
+        tag.properties.images = imagesAndLinkedTables.data;
+    },
+    displayImageInfo: (indexChange) => {
+        // identify the img element container
+        const imageContainer = document.getElementById('imageContainer');
+
+        // calculate the newIndex
+        const currentIndex = tag.properties.imageDisplayedIndex;
+        if ((indexChange < 0 && currentIndex > 0) || (indexChange > 0 && currentIndex < tag.properties.images.length - 1)) {
+            tag.properties.imageDisplayedIndex += indexChange;
+        }
+
+        // Display corresponding image on Screen
+        const newIndex = tag.properties.imageDisplayedIndex;
+        imageContainer.src = `assets/${tag.properties.images[newIndex].file_name}`;
+        // imageContainer.dataset.id
+
+        // Display File Name
+        const fileNameInput = document.getElementById('fileNameInput');
+        fileNameInput.value = tag.properties.images[newIndex].file_name;
+
+        // Display File Year
+        const imageYearInput = document.getElementById('imageYearInput');
+        imageYearInput.value = tag.properties.images[newIndex].year;
+
+        // Display Locality
+
+        // Display Event
+
+        // Display Persons
+
     },
     updateSelectFields: async () => {
-        // update person field
+        // update person field (x2)
         const persons = await fetch('tags/getPersons').then((res) => res.json());
         const personSelectModification = document.getElementById('personSelectModification');
-        personSelectModification.options.length = 0; // delete current options before adding all options
+        const personSelectTag = document.getElementById('personTag');
+
+        personSelectModification.options.length = 1; // delete current options before adding all options
         persons.data.forEach((person) => {
             const option = document.createElement("option");
             option.value = person.id;
             option.text = person.name;
+            const optionCloned = option.cloneNode(true);
             personSelectModification.add(option);
+            personSelectTag.add(optionCloned);
         });
+        // ... and select a 0 value by default
+        personSelectModification.value = 0;
+        personSelectTag.value = 0;
 
         // update locality field
         const localities = await fetch('tags/getAllLocalities').then((res) => res.json());
         const localitySelectModification = document.getElementById('localitySelectModification');
-        localitySelectModification.options.length = 0; // delete current options before adding all options
+        const localitySelectTag = document.getElementById('localityTag');
+        localitySelectModification.options.length = 1; // delete current options before adding all options
 
         localities.data.forEach((locality) => {
             const option = document.createElement("option");
             option.value = locality.id;
             option.text = locality.name;
-            localitySelectModification.add(option);
+            const optionCloned = option.cloneNode(true);
+            localitySelectTag.add(option);
+            localitySelectModification.add(optionCloned);
+
         });
+        // ... and select a 0 value by default
+        localitySelectModification.value = 0;
+        localitySelectTag.value = 0;
 
         // update events field
         const events = await fetch('tags/getAllEvents').then((res) => res.json());
         const eventSelectModification = document.getElementById('eventSelectModification');
-        eventSelectModification.options.length = 0; // delete current options before adding all options
+        const eventSelectTag = document.getElementById('eventTag');
+        eventSelectModification.options.length = 1; // delete current options before adding all options
 
         events.data.forEach((event) => {
             const option = document.createElement("option");
             option.value = event.id;
             option.text = event.name;
-            eventSelectModification.add(option);
-        });
+            const optionCloned = option.cloneNode(true);
+            eventSelectTag.add(option);
+            eventSelectModification.add(optionCloned);
+        }); // ... and select a 0 value by default
+        eventSelectModification.value = 0;
+        eventSelectTag.value = 0;
     },
     createPerson: async (e) => {
         e.preventDefault();
