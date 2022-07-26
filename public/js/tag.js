@@ -68,7 +68,7 @@ const tag = {
 
         // Display corresponding image on Screen
         const newIndex = tag.properties.imageDisplayedIndex;
-        imageContainer.src = `assets/${tag.properties.images[newIndex].file_name}`;
+        imageContainer.src = `assets/images/${tag.properties.images[newIndex].file_name}`;
         // imageContainer.dataset.id
 
         // Display File Name
