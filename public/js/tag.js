@@ -47,16 +47,118 @@ const tag = {
         const rightBtn = document.getElementById('imgRight');
         rightBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            tag.displayImageInfo(1)
+            tag.displayImageInfo(1);
+
         });
 
+        // button '+' to tag a person on the image
+        const plusBtn = document.querySelector('.iconFilterPlus');
+        plusBtn.addEventListener('click', tag.tagPersonOnScreen);
+
+        // button to fully tag an image
+        const tagBtn = document.getElementById('tagBtn');
+        tagBtn.addEventListener('click', tag.tagImage);
+
+        // button to delete image on server and on Database
+        const deleteImageBtn = document.getElementById('deleteImageBtn');
+        deleteImageBtn.addEventListener('click', tag.deleteImage);
+
+    },
+    deleteImage: async () => {
+        // get imageId and file name
+        const imageId = document.getElementById('imageContainer').dataset.imgId;
+        const fileName = document.getElementById('fileNameInput').value;
+        console.log(imageId, fileName);
+
+        // fetch on a delete route
+        const deletedImage = await fetch('/images/delete', {
+            method: 'DELETE',
+            body: JSON.stringify({
+                imageId, fileName
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => res.json());
+
+        // delete from the cache variable
+        tag.properties.images.splice(tag.properties.imageDisplayedIndex, 1);
+
+        // display next image
+        tag.displayImageInfo(0);
+
+    },
+    tagImage: async () => {
+        // Get the different information from inputs
+        const imageId = document.getElementById('imageContainer').dataset.imgId;
+        const year = document.getElementById('imageYearInput').value;
+        const localityId = document.getElementById('localityTag').value;
+        const eventId = document.getElementById('eventTag').value;
+        const personsIds = [];
+        const personsTaggued = document.querySelectorAll('.tagguedPerson');
+        personsTaggued.forEach((person) => {
+            personsIds.push(person.dataset.personId);
+        });
+
+        // Fetch with PATCH method
+        const updateImage = await fetch('/images/updateTags', {
+            method: 'PATCH',
+            body: JSON.stringify({
+                imageId, year, localityId, eventId, personsIds
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then((res) => res.json());
+
+        // On good result delete the image from the properties 
+        if (updateImage.result === true) {
+            const imageStatusInput = document.getElementById('imageStatus');
+            tag.properties.images[tag.properties.imageDisplayedIndex].tag = true;
+            imageStatusInput.value = "taguée";
+            imageStatusInput.classList.remove('imageNotTaggued');
+            imageStatusInput.classList.add('imageTaggued');
+            tag.displayImageInfo(1);
+        }
+
+    },
+    tagPersonOnScreen: () => {
+        // create element personSpan in the personContainer
+        const personContainer = document.getElementById('personContainer');
+        const personTagSelectElt = document.getElementById('personTag');
+        const personId = personTagSelectElt.value;
+
+        if (personId === '0') return; // just checking that a person was selected
+
+        const personName = personTagSelectElt.options[personTagSelectElt.selectedIndex].text;
+        const personSpan = document.createElement('span');
+        personSpan.textContent = personName;
+        personSpan.classList.add('tagguedPerson');
+        personSpan.dataset.personId = personId;
+        const crossIcon = document.createElement('span');
+        crossIcon.innerHTML = '<i class="fa-solid fa-circle-xmark crossIcon"></i>';
+        personSpan.appendChild(crossIcon);
+        personContainer.appendChild(personSpan);
+
+        // add a script on the cross to enable remove of the newly taggued person
+        tag.addDeleteTagguedPersonToCrossBtns();
+
+        // remove the person from the select element
+        for (let i = 0; i < personTagSelectElt.length; i++) {
+            if (personTagSelectElt.options[i].value === personId)
+                personTagSelectElt.remove(i);
+        };
+
+    },
+    addDeleteTagguedPersonToCrossBtns: () => {
+        const personsCrossBtns = document.querySelectorAll('.crossIcon');
+        personsCrossBtns.forEach((person) => person.addEventListener('click', tag.deleteTagguedPerson));
     },
     getAllImagesAndLinkedTablesNotTaggued: async () => {
-        console.log('coucou');
         const imagesAndLinkedTables = await fetch('/images/getAllNotTagguedWithLinkedTables').then((res) => res.json());
         tag.properties.images = imagesAndLinkedTables.data;
     },
-    displayImageInfo: (indexChange) => {
+    displayImageInfo: async (indexChange) => {
         // identify the img element container
         const imageContainer = document.getElementById('imageContainer');
 
@@ -65,12 +167,40 @@ const tag = {
         if ((indexChange < 0 && currentIndex > 0) || (indexChange > 0 && currentIndex < tag.properties.images.length - 1)) {
             tag.properties.imageDisplayedIndex += indexChange;
         }
-
         // Display corresponding image on Screen
         const newIndex = tag.properties.imageDisplayedIndex;
         imageContainer.src = `assets/images/${tag.properties.images[newIndex].file_name}`;
-        // imageContainer.dataset.id
+        imageContainer.dataset.imgId = tag.properties.images[newIndex].id;
 
+        // Display Persons
+        const personContainer = document.getElementById('personContainer');
+        personContainer.innerHTML = '';
+        await tag.updateSelectFields();
+        const persons = tag.properties.images[newIndex].person_name;
+        const personTagSelectElt = document.getElementById('personTag');
+
+        // check firstly that first person has an id - if yes then loop
+        if (persons[0].id) {
+            persons.forEach((person) => {
+                const personSpan = document.createElement('span');
+                personSpan.textContent = person.name;
+                personSpan.classList.add('tagguedPerson');
+                personSpan.dataset.personId = person.id;
+                const crossIcon = document.createElement('span');
+                crossIcon.innerHTML = '<i class="fa-solid fa-circle-xmark crossIcon"></i>';
+                personSpan.appendChild(crossIcon);
+                personContainer.appendChild(personSpan);
+
+                // remove the taggued person from the select element
+                for (let i = 0; i < personTagSelectElt.length; i++) {
+                    if (parseInt(personTagSelectElt.options[i].value) === person.id)
+                        personTagSelectElt.remove(i);
+                };
+            });
+        }
+
+        // add a script on the cross for the persons displayed
+        tag.addDeleteTagguedPersonToCrossBtns();
         // Display File Name
         const fileNameInput = document.getElementById('fileNameInput');
         fileNameInput.value = tag.properties.images[newIndex].file_name;
@@ -80,11 +210,52 @@ const tag = {
         imageYearInput.value = tag.properties.images[newIndex].year;
 
         // Display Locality
+        const localityTag = document.getElementById('localityTag');
+        const localityId = tag.properties.images[newIndex].locality_id;
+        if (localityId) {
+            localityTag.value = tag.properties.images[newIndex].locality_id;
+        } else {
+            localityTag.value = 0;
+        }
 
         // Display Event
+        const eventTag = document.getElementById('eventTag');
+        const eventId = tag.properties.images[newIndex].event_id;
+        if (eventId) {
+            eventTag.value = tag.properties.images[newIndex].event_id;
+        } else {
+            eventTag.value = 0;
+        }
 
-        // Display Persons
+        // Display Tag boolean
+        const imageStatusInput = document.getElementById('imageStatus');
+        const booleanTag = tag.properties.images[newIndex].tag;
+        if (booleanTag) {
+            imageStatusInput.value = "taguée";
+            imageStatusInput.classList.remove('imageNotTaggued');
+            imageStatusInput.classList.add('imageTaggued');
+        } else {
+            imageStatusInput.value = "non taguée";
+            imageStatusInput.classList.add('imageNotTaggued');
+            imageStatusInput.classList.remove('imageTaggued');
+        }
+    },
+    deleteTagguedPerson: (e) => {
+        e.preventDefault();
+        // remove element from DOM personContainer
+        const personSpan = e.target.parentNode.parentNode;
+        personContainer.removeChild(personSpan);
 
+        // create element back in the select
+        const personId = personSpan.dataset.personId;
+        const personName = personSpan.textContent;
+        const personSelectTag = document.getElementById('personTag');
+        const option = document.createElement("option");
+        option.value = personId;
+        option.text = personName;
+        personSelectTag.add(option);
+
+        // TODO query DB to remove person from Table image_person !!!!!maybe not
     },
     updateSelectFields: async () => {
         // update person field (x2)
@@ -93,6 +264,7 @@ const tag = {
         const personSelectTag = document.getElementById('personTag');
 
         personSelectModification.options.length = 1; // delete current options before adding all options
+        personSelectTag.options.length = 1; // delete current options before adding all options
         persons.data.forEach((person) => {
             const option = document.createElement("option");
             option.value = person.id;
@@ -110,6 +282,7 @@ const tag = {
         const localitySelectModification = document.getElementById('localitySelectModification');
         const localitySelectTag = document.getElementById('localityTag');
         localitySelectModification.options.length = 1; // delete current options before adding all options
+        localitySelectTag.options.length = 1; // delete current options before adding all options
 
         localities.data.forEach((locality) => {
             const option = document.createElement("option");
@@ -129,6 +302,7 @@ const tag = {
         const eventSelectModification = document.getElementById('eventSelectModification');
         const eventSelectTag = document.getElementById('eventTag');
         eventSelectModification.options.length = 1; // delete current options before adding all options
+        eventSelectTag.options.length = 1; // delete current options before adding all options
 
         events.data.forEach((event) => {
             const option = document.createElement("option");

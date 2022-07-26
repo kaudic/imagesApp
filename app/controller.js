@@ -2,6 +2,8 @@ const personDataMapper = require('./models/person');
 const localityDataMapper = require('./models/locality');
 const eventDataMapper = require('./models/event');
 const imageDataMapper = require('./models/image');
+const fs = require('fs');
+const path = require('path');
 
 const controller = {
 
@@ -51,6 +53,25 @@ const controller = {
                 message: 'La personne a bien été supprimée'
             })
         }
+    },
+    deleteImage: async (req, res) => {
+        const { imageId, fileName } = req.body;
+
+        // delete from BD
+        const deletedImage = await imageDataMapper.deleteImage(imageId);
+        const pathToFileToDelete = path.normalize(`${__dirname}/../public/assets/images/${fileName}`);
+        console.log(pathToFileToDelete);
+
+        // delete from directory
+        fs.unlink(pathToFileToDelete, (err) => {
+            if (err) throw err;
+            console.log(`file ${pathToFileToDelete} well deleted`);
+        });
+
+        res.json({
+            result: true,
+            message: `file ${pathToFileToDelete} well deleted`
+        });
     },
     createEvent: async (req, res) => {
         const { eventName } = req.body;
@@ -173,6 +194,42 @@ const controller = {
                 data: imagesInfo
             })
         }
+    },
+    updateTags: async (req, res) => {
+        let { imageId, year, localityId, eventId, personsIds } = req.body;
+        console.log(imageId, year, localityId, eventId, personsIds);
+
+        // if no option selected on browser then id is equal to 0, but no exist in DB - so we put null instead
+        if (localityId === '0') localityId = null;
+        if (eventId === '0') eventId = null;
+
+        // update one field by one field and delete all person taggued
+        const initialQueries = [];
+        initialQueries.push(
+            imageDataMapper.updateImageYear(imageId, year),
+            imageDataMapper.updateImageLocality(imageId, localityId),
+            imageDataMapper.updateImageEvent(imageId, eventId),
+            imageDataMapper.deleteImageTagguedPersons(imageId),
+            imageDataMapper.updateImageBooleanColumn(imageId, true)
+        );
+        await Promise.all(initialQueries);
+
+        // tag all persons
+        const updateTagguedPersonsQueries = [];
+        personsIds.forEach((personId) => {
+            updateTagguedPersonsQueries.push(imageDataMapper.updateImageTagguedPerson(imageId, personId))
+        });
+        await Promise.all(updateTagguedPersonsQueries);
+
+        // let the tag column boolean to true
+
+
+
+        res.json({
+            result: true,
+            message: 'imageTags well updated'
+        });
+
     },
     error: (err, req, res, _next) => {
 

@@ -24,6 +24,8 @@ router.get('/tags/getAllEvents', controller.getAllEvents);
 
 // Image Routes
 router.get('/images/getAllNotTagguedWithLinkedTables', controller.getAllImagesNotTagguedAndLinkedTables);
+router.patch('/images/updateTags', controller.updateTags);
+router.delete('/images/delete', controller.deleteImage);
 
 // Creation
 router.post('/tags/person', handler(controller.createPerson));

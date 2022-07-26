@@ -15,7 +15,13 @@
                     <div class="imageTagZone">
                         <div class="project_info_couple">
                             <label class="project_label_creation">Fichier</label>
-                            <input class="project_label_input" value="" id="fileNameInput" />
+                            <input class="project_label_input readOnly" value="" id="fileNameInput" type="text"
+                                readonly />
+                        </div>
+                        <div class="project_info_couple">
+                            <label class="project_label_creation">Statut</label>
+                            <input class="project_label_input readOnly" value="" id="imageStatus" type="text"
+                                readonly />
                         </div>
                         <div class="project_info_couple">
                             <label class="project_label_creation">Année</label>
@@ -42,10 +48,10 @@
                             <i id="" class="fa-solid fa-circle-plus iconFilterPlus"></i>
                         </div>
 
-                        <div class="personContainer"></div>
+                        <div id="personContainer" class="personContainer"></div>
                         <div class="project_info_couple">
-                            <button id="" class="button_taguer">TAGUER</button>
-                            <button id="" class="button_supprimer">SUPPRIMER</button>
+                            <button id="tagBtn" class="button_taguer">TAGUER</button>
+                            <button id="deleteImageBtn" class="button_supprimer">SUPPRIMER</button>
                         </div>
                     </div>
                 </div>

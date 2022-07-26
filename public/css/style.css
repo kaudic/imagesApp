@@ -140,14 +140,15 @@ body {
 }
 
 .project_label_select {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: normal;
     width: 10rem;
+    height: 1.7rem;
     display: inline-block;
 }
 
 .project_label_input {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: normal;
     height: 1.5rem;
     width: 9.5rem;
@@ -281,6 +282,7 @@ body {
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
+    width: 28rem;
 }
 
 .line {
@@ -335,6 +337,37 @@ body {
     align-items: center;
     justify-content: center;
 }
+
+.tagguedPerson {
+    padding: 0.5rem;
+    background-color: blue;
+    margin: 0.5rem;
+    font-weight: bold;
+    border-radius: 1rem;
+}
+
+.crossIcon {
+    margin-left: 0.5rem;
+}
+
+.crossIcon:hover {
+    cursor: pointer;
+}
+
+.readOnly {
+    background-color: lightgrey;
+}
+
+.imageNotTaggued {
+    font-weight: bold;
+    color: red;
+}
+
+.imageTaggued {
+    font-weight: bold;
+    color: green;
+}
+
 
 @media screen and (max-width:1280px) {
 
@@ -421,7 +454,8 @@ body {
     }
 
     .personContainer {
-        margin: 0.3rem 0
+        margin: 0.3rem 0;
+        width: unset;
     }
 
     .button_admin--creer,
@@ -436,5 +470,13 @@ body {
         margin: 0.3rem 0;
     }
 
+    .tagguedPerson {
+        padding: 0.3rem;
+        background-color: blue;
+        margin: 0.3rem 0.1rem;
+        font-weight: normal;
+        border-radius: 1rem;
+        font-size: 0.8rem;
+    }
 
 }
