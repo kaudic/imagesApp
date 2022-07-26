@@ -285,7 +285,7 @@ const controller = {
         }
 
         // we want to tag now so let's render the tag page with the newly updated images
-        res.render('tag.ejs');
+        res.redirect('/tags');
 
     },
     error: (err, req, res, _next) => {
