@@ -4,6 +4,7 @@ const eventDataMapper = require('./models/event');
 const imageDataMapper = require('./models/image');
 const fs = require('fs');
 const path = require('path');
+const utils = require('./helpers/utils');
 
 const controller = {
 
@@ -195,6 +196,19 @@ const controller = {
             })
         }
     },
+    getImageInfoWithLinkedTables: async (req, res) => {
+        const { imageId } = req.body;
+
+        const imageInfo = await imageDataMapper.getImageInfoWithLinkedTables(imageId);
+
+        if (imagesInfo) {
+            res.json({
+                result: true,
+                message: 'Les infos de l\'image sont dans l\'attribut data',
+                data: imageInfo
+            })
+        }
+    },
     updateTags: async (req, res) => {
         let { imageId, year, localityId, eventId, personsIds } = req.body;
         console.log(imageId, year, localityId, eventId, personsIds);
@@ -221,14 +235,57 @@ const controller = {
         });
         await Promise.all(updateTagguedPersonsQueries);
 
-        // let the tag column boolean to true
-
-
+        // Get full info to send back to front
+        const updatedImage = await imageDataMapper.getImageInfoWithLinkedTables(imageId);
 
         res.json({
             result: true,
-            message: 'imageTags well updated'
+            message: 'imageTags well updated, full image Info in data attribute',
+            data: updatedImage
         });
+
+    },
+    downloadFileByName(req, res) {
+
+        const fileName = req.body.fileName;
+        const filePath = path.normalize(`${__dirname}/../public/assets/images/${fileName}`);
+        res.writeHead(200, {
+            "Content-Type": "application/octet-stream",
+            "Content-Disposition": `attachment; filename=${fileName}`
+        });
+
+        fs.createReadStream(filePath).pipe(res);
+    },
+    async addImagesToDBAfterUpLoad(req, res, next) {
+        const { checkboxYear, checkboxTag } = req.body;
+        let year = null;
+        if (checkboxYear) {
+            year = new Date().getFullYear();
+        }
+
+        // calculate temp path and images path to give to utils function
+        const tempPath = path.normalize(`${__dirname}/../public/assets/images/temp`);
+        const imagesPath = path.normalize(`${__dirname}/../public/assets/images`);
+
+        // read temp folder and calculate fingerPrints
+        // check if fingerPrints already exist in DB -if yes delete files
+        const imagesToInsert = await utils.filterFilesBeforeInsertInDb(tempPath, imagesPath, year);
+
+        // create Image in DB (with Year or Not) and delete files
+        const insertQueries = [];
+        imagesToInsert.forEach((img) => {
+            insertQueries.push(imageDataMapper.insertImageWithYearAndFingerPrints(img))
+        })
+
+        await Promise.all(insertQueries);
+
+        // if we do not want to tag then render upload page by the next
+        if (!checkboxTag) {
+            next();
+        }
+
+        // we want to tag now so let's render the tag page with the newly updated images
+        res.render('tag.ejs');
 
     },
     error: (err, req, res, _next) => {

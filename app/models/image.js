@@ -11,11 +11,30 @@ const imageDataMapper = {
             LEFT JOIN "event" e ON e.id = i.event
             LEFT JOIN "locality" l ON l.id = i.locality
             GROUP BY i.id, l.id, e.id
-            HAVING i.tag=false;`,
+            HAVING i.tag=false
+            ORDER BY id DESC`,
             values: [],
         };
         const result = await db.query(sqlQuery);
         return result.rows;
+    },
+    async getAllFingerPrints() {
+        const sqlQuery = {
+            text: `
+            SELECT fingerprints FROM image;`,
+            values: [],
+        };
+        const result = await db.query(sqlQuery);
+        return result.rows;
+    },
+    async insertImageWithYearAndFingerPrints(img) {
+        const sqlQuery = {
+            text: `
+            INSERT INTO image ("file_name","year","fingerprints") VALUES ($1,$2,$3);`,
+            values: [img.fileName, img.year, img.fingerPrints],
+        };
+        const result = await db.query(sqlQuery);
+        return result.rows[0];
     },
     async deleteImage(imageId) {
         const sqlQuery = {
@@ -31,6 +50,21 @@ const imageDataMapper = {
             text: `
             UPDATE image SET year=$2 WHERE id=$1 RETURNING*`,
             values: [imageId, year],
+        };
+        const result = await db.query(sqlQuery);
+        return result.rows[0];
+    },
+    async getImageInfoWithLinkedTables(imageId) {
+        const sqlQuery = {
+            text: `
+            SELECT i.id,i.file_name,i.year,i.tag,l.id as locality_id, l.name as locality_name, e.id as event_id, e.name as event_name, json_AGG(jsonb_build_object('id',p.id,'name',p.name)) as person_name FROM image i
+            LEFT JOIN image_person ip ON i.id = ip.image_id
+            LEFT JOIN person p ON ip.person_id = p.id
+            LEFT JOIN "event" e ON e.id = i.event
+            LEFT JOIN "locality" l ON l.id = i.locality
+            GROUP BY i.id, l.id, e.id
+            HAVING i.id=$1;`,
+            values: [imageId],
         };
         const result = await db.query(sqlQuery);
         return result.rows[0];

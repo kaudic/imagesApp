@@ -96,6 +96,23 @@ body {
     font-size: 2rem;
 }
 
+.checkboxLabel {
+    color: white;
+}
+
+.leftAlign {
+    margin-top: 2rem;
+    padding-left: 10rem;
+    text-align: left;
+    width: 50%
+}
+
+.inputCheckBox {
+    font-size: 10rem;
+    cursor: pointer;
+    zoom: 1.5;
+}
+
 /* TAG PAGE */
 
 .project_info {
@@ -295,7 +312,6 @@ body {
     padding: 0.2em;
     border-radius: 0.5em;
     margin: 0 0.1em;
-    width: 12rem;
     height: 2rem;
     text-align: center;
     vertical-align: center;
@@ -311,13 +327,32 @@ body {
     cursor: pointer;
 }
 
+.button_download {
+    font-weight: bold;
+    padding: 0.2em;
+    border-radius: 0.5em;
+    margin: 0 0.1em;
+    height: 2rem;
+    text-align: center;
+    vertical-align: center;
+    text-decoration: none;
+    background: orange;
+    color: black;
+    border: 0.1rem solid orange;
+}
+
+.button_download:hover {
+    background: black;
+    color: orange;
+    cursor: pointer;
+}
+
 .button_supprimer {
     font-weight: bold;
     padding: 0.2em;
     border-radius: 0.5em;
     margin: 0 0.1em;
     height: 2rem;
-    width: 12rem;
     text-align: center;
     vertical-align: center;
     text-decoration: none;
@@ -330,6 +365,12 @@ body {
     background: white;
     color: red;
     cursor: pointer;
+}
+
+.button_taguer,
+.button_supprimer,
+.button_download {
+    width: 9rem;
 }
 
 .imageLeftAndRight {
@@ -407,6 +448,12 @@ body {
         text-align: center;
     }
 
+    .leftAlign {
+        margin-top: 2rem;
+        text-align: left;
+        width: 100vw
+    }
+
     /* PAGE TAGS */
 
     .project_admin_table {
@@ -418,7 +465,7 @@ body {
     }
 
     .imageSmallForTag {
-        max-height: 30vh;
+        max-width: 70vw;
     }
 
     .imageTagZone {
@@ -432,7 +479,6 @@ body {
     .project_label_creation {
         width: 6rem;
         font-size: 1rem;
-        color: white;
     }
 
     .project_label_input {
@@ -441,8 +487,9 @@ body {
     }
 
     .button_taguer,
-    .button_supprimer {
-        width: 8rem;
+    .button_supprimer,
+    .button_download {
+        width: 6rem;
     }
 
     .project_info_couple {

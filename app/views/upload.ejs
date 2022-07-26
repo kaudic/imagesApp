@@ -9,6 +9,14 @@
                     <label class="uploadForm__label" for="uploadInput">Choisir les images à transmettre</label>
                     <input class="uploadForm__input" name="uploadInput" id="uploadInput" type="file"
                         accept=".jpg, .jpeg, .png" multiple>
+                    <div class="leftAlign">
+                        <input class="inputCheckBox" id="checkboxYear" name="checkboxYear" type="checkbox" checked>
+                        <label for="checkboxYear" class="checkboxLabel">Taguer avec l'année en cours par défaut</label>
+                    </div>
+                    <div class="leftAlign">
+                        <input class="inputCheckBox" id="checkboxTag" name="checkboxTag" type="checkbox" checked>
+                        <label for="checkboxTag" class="checkboxLabel">Taguer les photos dans la foulée</label>
+                    </div>
                     <button id="upLoadBtn">Envoyer</button>
                     <p id="messageContainer"></p>
                 </form>

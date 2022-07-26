@@ -63,8 +63,37 @@ const tag = {
         const deleteImageBtn = document.getElementById('deleteImageBtn');
         deleteImageBtn.addEventListener('click', tag.deleteImage);
 
+        // button to download image
+        const downloadBtn = document.getElementById('downloadBtn');
+        downloadBtn.addEventListener('click', tag.downloadImageByName);
+
     },
-    deleteImage: async () => {
+    downloadImageByName: async (e) => {
+        e.preventDefault();
+
+        // get fileName
+        const fileName = document.getElementById('fileNameInput').value;
+
+        const fileBlob = await fetch('/images/downloadByFileName', {
+            method: 'POST',
+            body: JSON.stringify({ fileName }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+
+        }).then(response => response.blob());
+
+        //au retour du back, on lance le téléchargement
+        const url = window.URL.createObjectURL(fileBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        a.remove();
+
+    },
+    deleteImage: async (e) => {
+        e.preventDefault();
         // get imageId and file name
         const imageId = document.getElementById('imageContainer').dataset.imgId;
         const fileName = document.getElementById('fileNameInput').value;
@@ -92,6 +121,14 @@ const tag = {
         // Get the different information from inputs
         const imageId = document.getElementById('imageContainer').dataset.imgId;
         const year = document.getElementById('imageYearInput').value;
+        if (isNaN(Number(year)) || year.length !== 4 || Number(year) > new Date().getFullYear()) {
+            return Swal.fire({
+                title: 'Erreur de saisie',
+                text: `L'année doit être un nombre à 4 chiffres, inférieur ou égal à l'année en cours`,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
         const localityId = document.getElementById('localityTag').value;
         const eventId = document.getElementById('eventTag').value;
         const personsIds = [];
@@ -101,7 +138,7 @@ const tag = {
         });
 
         // Fetch with PATCH method
-        const updateImage = await fetch('/images/updateTags', {
+        const updatedImage = await fetch('/images/updateTags', {
             method: 'PATCH',
             body: JSON.stringify({
                 imageId, year, localityId, eventId, personsIds
@@ -111,16 +148,15 @@ const tag = {
             }
         }).then((res) => res.json());
 
-        // On good result delete the image from the properties 
-        if (updateImage.result === true) {
+        // On good result delete the image from the properties and update cache variable
+        if (updatedImage.result === true) {
             const imageStatusInput = document.getElementById('imageStatus');
-            tag.properties.images[tag.properties.imageDisplayedIndex].tag = true;
+            tag.properties.images[tag.properties.imageDisplayedIndex] = updatedImage.data;
             imageStatusInput.value = "taguée";
             imageStatusInput.classList.remove('imageNotTaggued');
             imageStatusInput.classList.add('imageTaggued');
             tag.displayImageInfo(1);
         }
-
     },
     tagPersonOnScreen: () => {
         // create element personSpan in the personContainer

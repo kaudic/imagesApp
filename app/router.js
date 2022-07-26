@@ -10,14 +10,12 @@ const handler = require('./helpers/controllerHandler');
 router.get('/', controller.renderHomePage);
 
 // Upload Routes
-// !add new names to files when uploading except on first download
-// !add auth
+// !add auth controle duplicates add in DB with Year (or not) and tag or not
 router.get('/upload', controller.renderUploadPage);
-router.post('/upload', upLoadImages(), controller.renderUploadPage);
+router.post('/upload', upLoadImages(), controller.addImagesToDBAfterUpLoad, controller.renderUploadPage);
 
 // Tag Routes
 router.get('/tags', controller.renderTagPage);
-
 router.get('/tags/getPersons', controller.getAllPersons);
 router.get('/tags/getAllLocalities', controller.getAllLocalities);
 router.get('/tags/getAllEvents', controller.getAllEvents);
@@ -26,6 +24,7 @@ router.get('/tags/getAllEvents', controller.getAllEvents);
 router.get('/images/getAllNotTagguedWithLinkedTables', controller.getAllImagesNotTagguedAndLinkedTables);
 router.patch('/images/updateTags', controller.updateTags);
 router.delete('/images/delete', controller.deleteImage);
+router.post('/images/downloadByFileName', controller.downloadFileByName);
 
 // Creation
 router.post('/tags/person', handler(controller.createPerson));

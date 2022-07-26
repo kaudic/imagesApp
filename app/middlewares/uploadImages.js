@@ -4,7 +4,7 @@ const fs = require('fs');
 
 // function to return the path to the images folder in the audicServer
 const returnImagesFolderPath = () => {
-    const pathToImagesFolder = path.normalize(`${__dirname}/../../../../images`);
+    const pathToImagesFolder = path.normalize(`${__dirname}/../../public/assets/images/temp`);
     console.log('images folder path: ' + pathToImagesFolder);
     return pathToImagesFolder;
 }
@@ -18,7 +18,9 @@ const upLoadImages = (files) => {
         destination: returnImagesFolderPath(),
 
         filename: (req, file, callback) => {
-            callback(null, file.originalname);
+            const randomNumber = Math.floor(Math.random() * 1000);
+            const newFileName = file.originalname.split('.')[0] + randomNumber + '.' + file.originalname.split('.')[1];
+            callback(null, newFileName);
         }
 
     });
