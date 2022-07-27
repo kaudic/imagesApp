@@ -98,8 +98,6 @@ const search = {
                 return isImg;
             });
             search.properties.filteredImages = filterImages;
-        } else {
-            search.properties.filteredImages = search.properties.images;
         }
 
         // Draw Images on screen
