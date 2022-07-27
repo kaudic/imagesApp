@@ -26,6 +26,9 @@ router.patch('/images/updateTags', controller.updateTags);
 router.delete('/images/delete', controller.deleteImage);
 router.post('/images/downloadByFileName', controller.downloadFileByName);
 
+// Search Routes
+router.get('/search/getAllImgAndLinkedTables', controller.getAllImgAndLinkedTables);
+
 // Creation
 router.post('/tags/person', handler(controller.createPerson));
 router.post('/tags/locality', handler(controller.createLocality));
@@ -40,6 +43,9 @@ router.delete('/tags/event', handler(controller.deleteEvent));
 router.put('/tags/person', handler(controller.modifyPerson));
 router.put('/tags/locality', handler(controller.modifyLocality));
 router.put('/tags/event', handler(controller.modifyEvent));
+
+// Search Routes
+router.get('/search', controller.renderSearchPage);
 
 // Catch the error created by controller Handler
 router.use(controller.error);

@@ -2,16 +2,18 @@ const tag = {
     init: async () => {
         console.log('tag script initialisation...');
         tag.addEventsToAction();
-        tag.updateSelectFields(); // TODO add the new selects!
+        tag.updateSelectFields();
         // get all images details and set them up in attributes names properties.images
         await tag.getAllImagesAndLinkedTablesNotTaggued();
         // display first image
         tag.displayImageInfo(0);
+        tag.getAndSaveToken();
 
     },
     properties: {
         imageDisplayedIndex: 0,
-        images: []
+        images: [],
+        token: ''
     },
     addEventsToAction: () => {
         // Identify Elements
@@ -67,6 +69,29 @@ const tag = {
         const downloadBtn = document.getElementById('downloadBtn');
         downloadBtn.addEventListener('click', tag.downloadImageByName);
 
+        // button to rotate the image on the right
+        const rotateRightBtn = document.getElementById('rotateRight');
+        rotateRightBtn.addEventListener('click', tag.rotateRight);
+
+    },
+    rotateRight: (e) => {
+        e.preventDefault();
+        const image = document.getElementById('imageContainer');
+        if (tag.properties.rotationDegree) {
+            tag.properties.rotationDegree += 90;
+        } else {
+            tag.properties.rotationDegree = 90;
+        }
+        image.style.transform = `rotate(${tag.properties.rotationDegree}deg)`;
+
+    },
+    getAndSaveToken: () => {
+        // get the token and if any
+        const token = window.localStorage.getItem('audicServerToken');
+        // save the token in the tag properties
+        if (token) {
+            tag.properties.token = token;
+        }
     },
     downloadImageByName: async (e) => {
         e.preventDefault();
@@ -78,7 +103,8 @@ const tag = {
             method: 'POST',
             body: JSON.stringify({ fileName }),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'authorization': tag.properties.token
             }
 
         }).then(response => response.blob());
@@ -106,7 +132,8 @@ const tag = {
                 imageId, fileName
             }),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'authorization': tag.properties.token
             }
         }).then(res => res.json());
 
@@ -145,6 +172,7 @@ const tag = {
             }),
             headers: {
                 'Content-Type': 'application/json',
+                'authorization': tag.properties.token
             }
         }).then((res) => res.json());
 
@@ -197,6 +225,10 @@ const tag = {
     displayImageInfo: async (indexChange) => {
         // identify the img element container
         const imageContainer = document.getElementById('imageContainer');
+
+        // initialize the rotation degree if it changed
+        tag.properties.rotationDegree = 0;
+        imageContainer.style.transform = `rotate(${tag.properties.rotationDegree}deg)`
 
         // calculate the newIndex
         const currentIndex = tag.properties.imageDisplayedIndex;
@@ -364,6 +396,7 @@ const tag = {
             body: JSON.stringify({ personName: personName }),
             headers: {
                 'Content-Type': 'application/json',
+                'authorization': tag.properties.token
             },
         }).then((res) => res.json());
 
@@ -403,6 +436,7 @@ const tag = {
             body: JSON.stringify({ personId: personId }),
             headers: {
                 'Content-Type': 'application/json',
+                'authorization': tag.properties.token
             },
         }).then((res) => res.json());
 
@@ -444,6 +478,7 @@ const tag = {
             body: JSON.stringify({ personId: personId, personName: personName }),
             headers: {
                 'Content-Type': 'application/json',
+                'authorization': tag.properties.token
             },
         }).then((res) => res.json());
 
@@ -482,6 +517,7 @@ const tag = {
             body: JSON.stringify({ localityName: localityName }),
             headers: {
                 'Content-Type': 'application/json',
+                'authorization': tag.properties.token
             },
         }).then((res) => res.json());
 
@@ -519,6 +555,7 @@ const tag = {
             body: JSON.stringify({ localityId: localityId }),
             headers: {
                 'Content-Type': 'application/json',
+                'authorization': tag.properties.token
             },
         }).then((res) => res.json());
 
@@ -560,6 +597,7 @@ const tag = {
             body: JSON.stringify({ localityId: localityId, localityName: localityName }),
             headers: {
                 'Content-Type': 'application/json',
+                'authorization': tag.properties.token
             },
         }).then((res) => res.json());
 
@@ -598,6 +636,7 @@ const tag = {
             body: JSON.stringify({ eventName: eventName }),
             headers: {
                 'Content-Type': 'application/json',
+                'authorization': tag.properties.token
             },
         }).then((res) => res.json());
 
@@ -635,6 +674,7 @@ const tag = {
             body: JSON.stringify({ eventId: eventId }),
             headers: {
                 'Content-Type': 'application/json',
+                'authorization': tag.properties.token
             },
         }).then((res) => res.json());
 
@@ -676,6 +716,7 @@ const tag = {
             body: JSON.stringify({ eventId: eventId, eventName: eventName }),
             headers: {
                 'Content-Type': 'application/json',
+                'authorization': tag.properties.token
             },
         }).then((res) => res.json());
 

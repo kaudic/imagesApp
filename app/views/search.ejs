@@ -1,0 +1,55 @@
+<%- include('./partials/header') %>
+    <%- include('./partials/nav') %>
+
+        <div>
+            <div class="SearchBar">
+                <div class="project_info_couple">
+                    <label class="project_label_creation labelNoWidth">Année</label>
+                    <input class="project_label_input" value="" id="imageYearInput" />
+                </div>
+                <div class="project_info_couple">
+                    <label class="project_label_creation labelNoWidth">Lieu</label>
+                    <select id="localityTag" class="project_label_select">
+                        <option value="0">----</option>
+                    </select>
+                </div>
+                <div class="project_info_couple">
+                    <label class="project_label_creation labelNoWidth">Evenement</label>
+                    <select id="eventTag" class="project_label_select">
+                        <option value="0">----</option>
+                    </select>
+                </div>
+                <div class="line"></div>
+                <div class="project_info_couple">
+                    <label class="project_label_creation labelNoWidth">Personnes</label>
+                    <select id="personTag" class="project_label_select">
+                        <option value="0">----</option>
+                    </select>
+                    <i id="" class="fa-solid fa-circle-plus iconFilterPlus"></i>
+                </div>
+                <div id="personContainer" class="personContainer"></div>
+                <div class="project_info_couple">
+                    <button id="filterBtn" class="button_taguer">AFFICHER</button>
+                    <button id="deleteImageBtn" class="button_supprimer">EFFACER</button>
+                </div>
+            </div>
+            <div class="DownloadBar">
+                <button id="selectAll" class="downloadBtn">Sélectionner Tout</button>
+                <button id="unSelectAll" class="downloadBtn">Désélectionner</button>
+                <button id="downloadAll" class="downloadBtn">Télécharger</button>
+            </div>
+
+        </div>
+
+
+        <div id="imagesContainer" class="imagesContainer">
+        </div>
+
+        <template>
+            <div class="thumbnail">
+                <input type="checkbox" />
+                <img class="resize" src="" loading="lazy">
+            </div>
+        </template>
+
+        <script type="text/javascript" src="/js/search.js" defer></script>

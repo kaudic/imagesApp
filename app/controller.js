@@ -17,6 +17,9 @@ const controller = {
     renderTagPage: (req, res) => {
         res.render('tag.ejs');
     },
+    renderSearchPage: (req, res) => {
+        res.render('search.ejs');
+    },
     createPerson: async (req, res) => {
         const { personName } = req.body;
 
@@ -196,6 +199,17 @@ const controller = {
             })
         }
     },
+    getAllImgAndLinkedTables: async (req, res) => {
+        const imagesInfo = await imageDataMapper.getAllImgAndLinkedTables();
+
+        if (imagesInfo) {
+            res.json({
+                result: true,
+                message: 'Les infos des images sont dans l\'attribut data',
+                data: imagesInfo
+            })
+        }
+    },
     getImageInfoWithLinkedTables: async (req, res) => {
         const { imageId } = req.body;
 
@@ -284,14 +298,12 @@ const controller = {
             next();
         }
 
-        // we want to tag now so let's render the tag page with the newly updated images
-        res.redirect('/tags');
-
+        // we want to tag now so let's end the response and the front will change the page
+        res.end();
     },
     error: (err, req, res, _next) => {
 
         console.log('errorController! :' + err.message);
-
         res.status(400).json({
             result: false,
             message: err.message
