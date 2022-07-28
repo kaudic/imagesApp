@@ -9,7 +9,6 @@ const utils = require('./helpers/utils');
 const controller = {
 
     renderHomePage: (req, res) => {
-        console.log('request well received from Proxy');
         res.render('index.ejs');
     },
     renderUploadPage: (req, res) => {
