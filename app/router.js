@@ -9,6 +9,9 @@ const handler = require('./helpers/controllerHandler');
 // Route for welcoming page - controling token first
 router.get('/', controller.renderHomePage);
 
+//!TEST
+router.get('/imagesApp', controller.renderHomePage);
+
 // Upload Routes
 // !add auth controle duplicates add in DB with Year (or not) and tag or not
 router.get('/upload', controller.renderUploadPage);
