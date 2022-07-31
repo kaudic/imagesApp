@@ -6,11 +6,12 @@ const app = express();
 //
 app.use((req, res, next) => {
     console.log('request reçue dans index: ' + req.url);
+    res.header('Access-Control-Allow-Origin', '*');
     next();
 });
 
 // Dynamic Cors
-const allowlist = ['undefined', 'http://audicserver.ddns.net:3000', 'http://localhost:3000'];
+const allowlist = ['http://audicserver.ddns.net:3000', 'http://localhost:3000'];
 
 var corsOptionsDelegate = function (req, callback) {
 
