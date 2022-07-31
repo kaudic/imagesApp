@@ -9,7 +9,7 @@ const path = require('path');
 
 
 router.use((req, res, next) => {
-    console.log('request reçue: ' + req.url);
+    console.log('request reçue dans mainRouter: ' + req.url);
     next();
 })
 // Route for welcoming page - controling token first

@@ -5,6 +5,10 @@ const router = express.Router();
 // Imports of the main router
 const mainRouter = require('./mainRouter');
 
+router.use((req, res, next) => {
+    console.log('REquest reçu dans index du router: ' + req.url);
+})
+
 // Appel aux routeurs secondaires
 router.use('/imagesApp/imagesApp', mainRouter);
 router.use('/imagesApp', mainRouter);
