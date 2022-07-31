@@ -25,9 +25,11 @@ var corsOptionsDelegate = function (req, callback) {
     callback(null, corsOptions)
 };
 
-app.use(
-    cors(corsOptionsDelegate),
-);
+// app.use(
+//     cors(corsOptionsDelegate),
+// );
+
+app.use(cors());
 
 app.use((req, res, next) => {
     console.log('request reçue dans index: ' + req.url);
