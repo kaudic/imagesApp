@@ -5,7 +5,7 @@ const app = express();
 
 // first middlewares
 
-app.use(cors());
+// app.use(cors());
 app.set('views', `${process.cwd()}/app/views`);
 app.set('view engine', 'ejs');
 app.use(express.json());
