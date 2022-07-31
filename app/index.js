@@ -12,7 +12,7 @@ app.use((req, res, next) => {
 
 // cors option to enable audicServer
 const corsOptions = {
-    origin: 'http://audicserver.ddns.net',
+    origin: 'http://audicserver.ddns.net:3000',
     optionsSuccessStatus: 200
 }
 
