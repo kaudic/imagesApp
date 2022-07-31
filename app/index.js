@@ -3,9 +3,14 @@ const cors = require('cors');
 const router = require('./routes');
 const app = express();
 
-// first middlewares
+// cors option to enable audicServer
+const corsOptions = {
+    origin: 'http://audicserver.ddns.net',
+    optionsSuccessStatus: 200
+}
 
-// app.use(cors());
+// first middlewares
+app.use(cors(corsOptions));
 app.set('views', `${process.cwd()}/app/views`);
 app.set('view engine', 'ejs');
 app.use(express.json());
