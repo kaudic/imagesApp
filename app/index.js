@@ -41,8 +41,6 @@ app.use((req, res, next) => {
 // first middlewares
 app.set('views', `${process.cwd()}/app/views`);
 app.set('view engine', 'ejs');
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
 
 app.use(router);
 
