@@ -25,11 +25,11 @@ var corsOptionsDelegate = function (req, callback) {
     callback(null, corsOptions)
 };
 
-// app.use(
-//     cors(corsOptionsDelegate),
-// );
+app.use(
+    cors(corsOptionsDelegate),
+);
 
-app.use(cors());
+// app.use(cors());
 
 app.use((req, res, next) => {
     console.log('request reçue dans index: ' + req.url);
@@ -41,8 +41,8 @@ app.use((req, res, next) => {
 // first middlewares
 app.set('views', `${process.cwd()}/app/views`);
 app.set('view engine', 'ejs');
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
 
 app.use(router);
 
