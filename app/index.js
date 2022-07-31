@@ -11,7 +11,7 @@ app.use((req, res, next) => {
 });
 
 // Dynamic Cors
-const allowlist = ['http://audicserver.ddns.net:3000', 'http://localhost:3000'];
+const allowlist = ['http://audicserver.ddns.net:3000/imagesApp', 'http://localhost:3000'];
 
 var corsOptionsDelegate = function (req, callback) {
 
