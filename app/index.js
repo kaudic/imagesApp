@@ -20,6 +20,8 @@ var corsOptionsDelegate = function (req, callback) {
         credentials: true,
     };
 
+    console.log('Origin: ' + req.header('Origin'));
+
     if (allowlist.indexOf(req.header('Origin')) !== -1) {
         corsOptions.origin = true;
     } else {
