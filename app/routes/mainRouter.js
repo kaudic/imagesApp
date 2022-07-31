@@ -14,7 +14,7 @@ router.use((req, res, next) => {
 })
 
 router.use(express.json());
-router.use(express.urlencoded({ extended: true }));
+// router.use(express.urlencoded({ extended: true }));
 
 // Route for welcoming page - controling token first
 router.get('/', controller.renderHomePage);
