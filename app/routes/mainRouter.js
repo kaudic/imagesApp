@@ -12,6 +12,10 @@ router.use((req, res, next) => {
     console.log('request reçue dans mainRouter: ' + req.url);
     next();
 })
+
+router.use(express.json());
+router.use(express.urlencoded({ extended: true }));
+
 // Route for welcoming page - controling token first
 router.get('/', controller.renderHomePage);
 
