@@ -10,14 +10,29 @@ app.use((req, res, next) => {
     next();
 });
 
-// cors option to enable audicServer
-const corsOptions = {
-    origin: 'http://audicserver.ddns.net:3000',
-    optionsSuccessStatus: 200
-}
+// Dynamic Cors
+const allowlist = ['http://audicserver.ddns.net:3000', 'http://localhost:3000'];
+
+var corsOptionsDelegate = function (req, callback) {
+
+    const corsOptions = {
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'UPDATE'],
+        credentials: true,
+    };
+
+    if (allowlist.indexOf(req.header('Origin')) !== -1) {
+        corsOptions.origin = true;
+    } else {
+        corsOptions.origin = false;
+    };
+    callback(null, corsOptions)
+};
+
+app.use(
+    cors(corsOptionsDelegate),
+);
 
 // first middlewares
-app.use(cors(corsOptions));
 app.set('views', `${process.cwd()}/app/views`);
 app.set('view engine', 'ejs');
 app.use(express.json());
