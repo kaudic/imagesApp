@@ -11,7 +11,6 @@ const auth = async (req, res, next) => {
     // if token not existing render the login page of the console server
     if (token == null) {
         console.log('pas de token trouvé dans la request: renvoie vers la page login de la console du server audicServer');
-        // return res.redirect(`${process.env.BASE_URL}:3000`);
         return res.redirect(`/`);
     }
 
