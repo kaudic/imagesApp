@@ -6,8 +6,7 @@ const app = express();
 //
 app.use((req, res, next) => {
     console.log('request reçue dans index: ' + req.url);
-    req.header('Origin') === 'http://audicserver.ddns.net:3000';
-    res.header('Access-Control-Allow-Origin', '*');
+    console.log(JSON.stringify(req.headers));
     next();
 });
 
