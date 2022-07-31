@@ -105,7 +105,7 @@ const search = {
 
     },
     getimagesDetails: async () => {
-        const imagesAndLinkedTables = await fetch('/search/getAllImgAndLinkedTables').then((res) => res.json());
+        const imagesAndLinkedTables = await fetch(`${BASE_URL}/search/getAllImgAndLinkedTables`).then((res) => res.json());
         search.properties.images = imagesAndLinkedTables.data;
         search.properties.filteredImages = imagesAndLinkedTables.data;
     },
@@ -128,7 +128,7 @@ const search = {
             const checkBox = thumbnail.querySelector('input');
             checkBox.id = imagesToDisplay[i].file_name;
             image.id = imagesToDisplay[i].id;
-            image.src = `assets/images/${imagesToDisplay[i].file_name}`
+            image.src = `imagesApp/assets/images/${imagesToDisplay[i].file_name}`
             imagesContainer.appendChild(document.importNode(thumbnail, true));
         }
 
@@ -197,7 +197,7 @@ const search = {
     },
     updateSelectFields: async () => {
         // update person field
-        const persons = await fetch('tags/getPersons').then((res) => res.json());
+        const persons = await fetch(`${BASE_URL}/tags/getPersons`).then((res) => res.json());
         const personSelectTag = document.getElementById('personTag');
         personSelectTag.options.length = 1; // delete current options before adding all options
         persons.data.forEach((person) => {
@@ -210,7 +210,7 @@ const search = {
         personSelectTag.value = 0;
 
         // update locality field
-        const localities = await fetch('tags/getAllLocalities').then((res) => res.json());
+        const localities = await fetch(`${BASE_URL}/tags/getAllLocalities`).then((res) => res.json());
         const localitySelectTag = document.getElementById('localityTag');
         localitySelectTag.options.length = 1; // delete current options before adding all options
 
@@ -225,7 +225,7 @@ const search = {
         localitySelectTag.value = 0;
 
         // update events field
-        const events = await fetch('tags/getAllEvents').then((res) => res.json());
+        const events = await fetch(`${BASE_URL}/tags/getAllEvents`).then((res) => res.json());
         const eventSelectTag = document.getElementById('eventTag');
         eventSelectTag.options.length = 1; // delete current options before adding all options
 
@@ -302,7 +302,7 @@ const search = {
         checkedElement.forEach(async (checkbox) => {
             const fileName = checkbox.id;
 
-            const fileBlob = await fetch('/images/downloadByFileName', {
+            const fileBlob = await fetch(`${BASE_URL}/images/downloadByFileName`, {
                 method: 'POST',
                 body: JSON.stringify({ fileName }),
                 headers: {

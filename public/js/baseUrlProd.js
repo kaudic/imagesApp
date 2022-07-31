@@ -1,0 +1,1 @@
+const BASE_URL = 'http://audicserver.ddns.net:3000/imagesApp';

@@ -21,7 +21,7 @@ const upload = {
         e.preventDefault();
         const formDetails = document.querySelector('form');
         const formData = new FormData(formDetails);
-        fetch('/upload', {
+        fetch(`${BASE_URL}/upload`, {
             method: 'POST',
             body: formData,
             headers: {

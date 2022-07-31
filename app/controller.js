@@ -5,6 +5,7 @@ const imageDataMapper = require('./models/image');
 const fs = require('fs');
 const path = require('path');
 const utils = require('./helpers/utils');
+const express = require('express');
 
 const controller = {
 

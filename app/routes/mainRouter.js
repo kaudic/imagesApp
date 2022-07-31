@@ -1,16 +1,27 @@
 // imports modules for Router
 const express = require('express');
 const router = express.Router();
-const auth = require('./middlewares/auth');
-const upLoadImages = require('./middlewares/uploadImages');
-const controller = require('./controller');
-const handler = require('./helpers/controllerHandler');
+const auth = require('../middlewares/auth');
+const upLoadImages = require('../middlewares/uploadImages');
+const controller = require('../controller');
+const handler = require('../helpers/controllerHandler');
+const path = require('path');
 
+
+router.use((req, res, next) => {
+    console.log('request reçue: ' + req.url);
+    next();
+})
 // Route for welcoming page - controling token first
 router.get('/', controller.renderHomePage);
 
-//!TEST
-router.get('/imagesApp', controller.renderHomePage);
+const staticPath = path.normalize(`${__dirname}/../../public/`);
+console.log('staticPath: ' + staticPath);
+
+// It will enable reverse proxy to get the static elements
+router.get(/js/, express.static(staticPath));
+router.get(/css/, express.static(staticPath));
+router.get(/assets/, express.static(staticPath));
 
 // Upload Routes
 // !add auth controle duplicates add in DB with Year (or not) and tag or not

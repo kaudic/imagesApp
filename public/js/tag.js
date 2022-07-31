@@ -99,7 +99,7 @@ const tag = {
         // get fileName
         const fileName = document.getElementById('fileNameInput').value;
 
-        const fileBlob = await fetch('/images/downloadByFileName', {
+        const fileBlob = await fetch(`${BASE_URL}/images/downloadByFileName`, {
             method: 'POST',
             body: JSON.stringify({ fileName }),
             headers: {
@@ -126,7 +126,7 @@ const tag = {
         console.log(imageId, fileName);
 
         // fetch on a delete route
-        const deletedImage = await fetch('/images/delete', {
+        const deletedImage = await fetch(`${BASE_URL}/images/delete`, {
             method: 'DELETE',
             body: JSON.stringify({
                 imageId, fileName
@@ -165,7 +165,7 @@ const tag = {
         });
 
         // Fetch with PATCH method
-        const updatedImage = await fetch('/images/updateTags', {
+        const updatedImage = await fetch(`${BASE_URL}/images/updateTags`, {
             method: 'PATCH',
             body: JSON.stringify({
                 imageId, year, localityId, eventId, personsIds
@@ -219,7 +219,7 @@ const tag = {
         personsCrossBtns.forEach((person) => person.addEventListener('click', tag.deleteTagguedPerson));
     },
     getAllImagesAndLinkedTablesNotTaggued: async () => {
-        const imagesAndLinkedTables = await fetch('/images/getAllNotTagguedWithLinkedTables').then((res) => res.json());
+        const imagesAndLinkedTables = await fetch(`${BASE_URL}/images/getAllNotTagguedWithLinkedTables`).then((res) => res.json());
         tag.properties.images = imagesAndLinkedTables.data;
     },
     displayImageInfo: async (indexChange) => {
@@ -237,7 +237,7 @@ const tag = {
         }
         // Display corresponding image on Screen
         const newIndex = tag.properties.imageDisplayedIndex;
-        imageContainer.src = `assets/images/${tag.properties.images[newIndex].file_name}`;
+        imageContainer.src = `imagesApp/assets/images/${tag.properties.images[newIndex].file_name}`;
         imageContainer.dataset.imgId = tag.properties.images[newIndex].id;
 
         // Display Persons
@@ -327,7 +327,7 @@ const tag = {
     },
     updateSelectFields: async () => {
         // update person field (x2)
-        const persons = await fetch('tags/getPersons').then((res) => res.json());
+        const persons = await fetch(`${BASE_URL}/tags/getPersons`).then((res) => res.json());
         const personSelectModification = document.getElementById('personSelectModification');
         const personSelectTag = document.getElementById('personTag');
 
@@ -346,7 +346,7 @@ const tag = {
         personSelectTag.value = 0;
 
         // update locality field
-        const localities = await fetch('tags/getAllLocalities').then((res) => res.json());
+        const localities = await fetch(`${BASE_URL}/tags/getAllLocalities`).then((res) => res.json());
         const localitySelectModification = document.getElementById('localitySelectModification');
         const localitySelectTag = document.getElementById('localityTag');
         localitySelectModification.options.length = 1; // delete current options before adding all options
@@ -366,7 +366,7 @@ const tag = {
         localitySelectTag.value = 0;
 
         // update events field
-        const events = await fetch('tags/getAllEvents').then((res) => res.json());
+        const events = await fetch(`${BASE_URL}/tags/getAllEvents`).then((res) => res.json());
         const eventSelectModification = document.getElementById('eventSelectModification');
         const eventSelectTag = document.getElementById('eventTag');
         eventSelectModification.options.length = 1; // delete current options before adding all options
@@ -391,7 +391,7 @@ const tag = {
         const personName = personCreationInput.value;
 
         // fetch
-        const creationResult = await fetch('/tags/person', {
+        const creationResult = await fetch(`${BASE_URL}/tags/person`, {
             method: 'POST',
             body: JSON.stringify({ personName: personName }),
             headers: {
@@ -431,7 +431,7 @@ const tag = {
         const personId = personSelectModification.options[personSelectModification.selectedIndex].value;
 
         // fetch
-        const deleteResult = await fetch('/tags/person', {
+        const deleteResult = await fetch(`${BASE_URL}/tags/person`, {
             method: 'DELETE',
             body: JSON.stringify({ personId: personId }),
             headers: {
@@ -473,7 +473,7 @@ const tag = {
         const personName = personModificationInput.value;
 
         // fetch
-        const modifyResult = await fetch('/tags/person', {
+        const modifyResult = await fetch(`${BASE_URL}/tags/person`, {
             method: 'PUT',
             body: JSON.stringify({ personId: personId, personName: personName }),
             headers: {
@@ -512,7 +512,7 @@ const tag = {
         const localityName = localityCreationInput.value;
 
         // fetch
-        const creationResult = await fetch('/tags/locality', {
+        const creationResult = await fetch(`${BASE_URL}/tags/locality`, {
             method: 'POST',
             body: JSON.stringify({ localityName: localityName }),
             headers: {
@@ -550,7 +550,7 @@ const tag = {
         const localityId = localitySelectModification.options[localitySelectModification.selectedIndex].value;
 
         // fetch
-        const deleteResult = await fetch('/tags/locality', {
+        const deleteResult = await fetch(`${BASE_URL}/tags/locality`, {
             method: 'DELETE',
             body: JSON.stringify({ localityId: localityId }),
             headers: {
@@ -592,7 +592,7 @@ const tag = {
         const localityName = localityModificationInput.value;
 
         // fetch
-        const modifyResult = await fetch('/tags/locality', {
+        const modifyResult = await fetch(`${BASE_URL}/tags/locality`, {
             method: 'PUT',
             body: JSON.stringify({ localityId: localityId, localityName: localityName }),
             headers: {
@@ -631,7 +631,7 @@ const tag = {
         const eventName = eventCreationInput.value;
 
         // fetch
-        const creationResult = await fetch('/tags/event', {
+        const creationResult = await fetch(`${BASE_URL}/tags/event`, {
             method: 'POST',
             body: JSON.stringify({ eventName: eventName }),
             headers: {
@@ -669,7 +669,7 @@ const tag = {
         const eventId = eventSelectModification.options[eventSelectModification.selectedIndex].value;
 
         // fetch
-        const deleteResult = await fetch('/tags/event', {
+        const deleteResult = await fetch(`${BASE_URL}/tags/event`, {
             method: 'DELETE',
             body: JSON.stringify({ eventId: eventId }),
             headers: {
@@ -711,7 +711,7 @@ const tag = {
         const eventName = eventModificationInput.value;
 
         // fetch
-        const modifyResult = await fetch('/tags/event', {
+        const modifyResult = await fetch(`${BASE_URL}/tags/event`, {
             method: 'PUT',
             body: JSON.stringify({ eventId: eventId, eventName: eventName }),
             headers: {
