@@ -6,6 +6,7 @@ const app = express();
 //
 app.use((req, res, next) => {
     console.log('request reçue dans index: ' + req.url);
+    console.log('NODE_ENV: ' + process.env.NODE_ENV);
     next();
 });
 
