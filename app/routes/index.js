@@ -6,7 +6,8 @@ const router = express.Router();
 const mainRouter = require('./mainRouter');
 
 router.use((req, res, next) => {
-    console.log('REquest reçu dans index du router: ' + req.url);
+    console.log('Request reçu dans index du router: ' + req.url);
+    next();
 })
 
 // Appel aux routeurs secondaires
