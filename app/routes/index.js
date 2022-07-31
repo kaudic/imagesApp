@@ -10,12 +10,12 @@ router.use((req, res, next) => {
     next();
 })
 
-router.use(express.json());
-router.use(express.urlencoded({ extended: true }));
+// router.use(express.json());
+// router.use(express.urlencoded({ extended: true }));
 
 // Appel aux routeurs secondaires
-router.use('/imagesApp/imagesApp', mainRouter);
-router.use('/imagesApp', mainRouter);
-router.use('/', mainRouter);
+router.use('/imagesApp/imagesApp', express.json(), mainRouter);
+router.use('/imagesApp', express.json(), mainRouter);
+router.use('/', express.json(), mainRouter);
 
 module.exports = router;
