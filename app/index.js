@@ -3,8 +3,6 @@ const cors = require('cors');
 const router = require('./routes');
 const app = express();
 
-//
-
 // Dynamic Cors
 const allowlist = ['http://audicserver.ddns.net:3000', 'http://localhost:4000', 'http://localhost:3000'];
 
@@ -29,14 +27,12 @@ app.use(
     cors(corsOptionsDelegate),
 );
 
-// app.use(cors());
-
 app.use((req, res, next) => {
     console.log('request reçue dans index: ' + req.url);
-    console.log('NODE_ENV: ' + process.env.NODE_ENV);
+    console.log('Content-Type: ' + req.header('Content-Type'));
+
     next();
 });
-
 
 // first middlewares
 app.set('views', `${process.cwd()}/app/views`);
