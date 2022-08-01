@@ -6,16 +6,9 @@ const upLoadImages = require('../middlewares/uploadImages');
 const controller = require('../controller');
 const handler = require('../helpers/controllerHandler');
 const path = require('path');
-const bodyParser = require('body-parser');
 
 
-router.use(bodyParser.json({
-    verify: (req, res, buf, encoding) => {
-        req.rawBody = buf;
-        console.log('verif in process Buffer: ' + buf);
-        console.log('verif in process Encoding: ' + encoding);
-    }
-}));
+router.use(express.json());
 
 // parse various different custom JSON types as JSON
 router.use(bodyParser.json({ type: 'application/*+json' }))
@@ -26,27 +19,10 @@ router.use(bodyParser.raw({ type: 'application/vnd.custom-type' }))
 // parse an HTML body into a string
 router.use(bodyParser.text({ type: 'text/html' }))
 
-// router.use((express.json({
-//     limit: '1000kb',
-//     verify: (req, res, buf, encoding) => {
-//         req.rawBody = buf;
-//         console.log('verif in process Buffer: ' + buf);
-//         console.log('verif in process Encoding: ' + encoding);
-//     }
-// })));
-// router.use(handler(express.urlencoded({ extended: true })));
-
-router.use((req, res, next) => {
-    console.log('request reçue dans mainRouter: ' + req.url);
-    console.log(req);
-    next();
-})
-
 // Route for welcoming page - controling token first
 router.get('/', controller.renderHomePage);
 
 const staticPath = path.normalize(`${__dirname}/../../public/`);
-console.log('staticPath: ' + staticPath);
 
 // It will enable reverse proxy to get the static elements
 router.get(/js/, express.static(staticPath));
