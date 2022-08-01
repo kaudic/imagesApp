@@ -8,13 +8,17 @@ const handler = require('../helpers/controllerHandler');
 const path = require('path');
 
 
+try {
+    router.use(express.json());
+    router.use(express.urlencoded({ extended: true }));
+} catch (e) {
+    console.log(e);
+}
 router.use((req, res, next) => {
     console.log('request reçue dans mainRouter: ' + req.url);
+    console.log(req.body);
     next();
 })
-
-router.use(express.json());
-// router.use(express.urlencoded({ extended: true }));
 
 // Route for welcoming page - controling token first
 router.get('/', controller.renderHomePage);

@@ -225,6 +225,7 @@ const controller = {
         }
     },
     updateTags: async (req, res) => {
+        console.log('well arrived in updateTags controller');
         let { imageId, year, localityId, eventId, personsIds } = req.body;
         console.log(imageId, year, localityId, eventId, personsIds);
 
