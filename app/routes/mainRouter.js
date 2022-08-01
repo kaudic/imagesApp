@@ -9,7 +9,7 @@ const path = require('path');
 
 
 
-router.use((express.json({
+router.use((express.raw({
     limit: '1000kb',
     verify: (req, res, buf, encoding) => {
         console.log('verif in process Buffer: ' + buf);
