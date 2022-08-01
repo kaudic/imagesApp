@@ -12,6 +12,7 @@ const path = require('path');
 router.use((express.json({
     limit: '1000kb',
     verify: (req, res, buf, encoding) => {
+        req.rawBody = buf;
         console.log('verif in process Buffer: ' + buf);
         console.log('verif in process Encoding: ' + encoding);
     }
