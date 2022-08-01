@@ -5,7 +5,6 @@ const imageDataMapper = require('./models/image');
 const fs = require('fs');
 const path = require('path');
 const utils = require('./helpers/utils');
-const express = require('express');
 
 const controller = {
 
@@ -307,6 +306,7 @@ const controller = {
 
         console.log('errorController! :' + err.message);
         console.log('errorController! :' + err.received);
+        console.log(err);
 
         res.status(400).json({
             result: false,
