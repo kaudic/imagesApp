@@ -306,6 +306,8 @@ const controller = {
     error: (err, req, res, _next) => {
 
         console.log('errorController! :' + err.message);
+        console.log('errorController! :' + err.received);
+
         res.status(400).json({
             result: false,
             message: err.message
