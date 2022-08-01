@@ -9,7 +9,7 @@ const path = require('path');
 
 
 
-// router.use(handler(express.json()));
+router.use(handler(express.json()));
 // router.use(handler(express.urlencoded({ extended: true })));
 
 router.use((req, res, next) => {
