@@ -30,6 +30,9 @@ app.use(
 app.use((req, res, next) => {
     console.log('request reçue dans index: ' + req.url);
     console.log('Content-Type: ' + req.header('Content-Type'));
+    if (req.body) {
+        console.log('body présent: year: ' + req.body.year);
+    }
 
     next();
 });
