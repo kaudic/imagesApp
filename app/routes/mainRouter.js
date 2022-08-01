@@ -9,7 +9,13 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 
-router.use(bodyParser.json());
+router.use(bodyParser.json({
+    verify: (req, res, buf, encoding) => {
+        req.rawBody = buf;
+        console.log('verif in process Buffer: ' + buf);
+        console.log('verif in process Encoding: ' + encoding);
+    }
+}));
 
 // router.use((express.json({
 //     limit: '1000kb',
