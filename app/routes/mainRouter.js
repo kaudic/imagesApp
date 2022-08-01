@@ -10,15 +10,6 @@ const path = require('path');
 
 router.use(express.json());
 
-// parse various different custom JSON types as JSON
-router.use(bodyParser.json({ type: 'application/*+json' }))
-
-// parse some custom thing into a Buffer
-router.use(bodyParser.raw({ type: 'application/vnd.custom-type' }))
-
-// parse an HTML body into a string
-router.use(bodyParser.text({ type: 'text/html' }))
-
 // Route for welcoming page - controling token first
 router.get('/', controller.renderHomePage);
 
