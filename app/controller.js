@@ -224,9 +224,7 @@ const controller = {
         }
     },
     updateTags: async (req, res) => {
-        console.log('well arrived in updateTags controller');
         let { imageId, year, localityId, eventId, personsIds } = req.body;
-        console.log(imageId, year, localityId, eventId, personsIds);
 
         // if no option selected on browser then id is equal to 0, but no exist in DB - so we put null instead
         if (localityId === '0') localityId = null;
