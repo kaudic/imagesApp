@@ -9,7 +9,13 @@ const path = require('path');
 
 
 
-router.use(handler(express.json()));
+router.use(handler(express.json({
+    limit: '1000kb',
+    verify: (req, res, buf, encoding) => {
+        console.log('verif in process Buffer: ' + buf);
+        console.log('verif in process Encoding: ' + encoding);
+    }
+})));
 // router.use(handler(express.urlencoded({ extended: true })));
 
 router.use((req, res, next) => {
