@@ -8,12 +8,10 @@ const handler = require('../helpers/controllerHandler');
 const path = require('path');
 
 
-try {
-    router.use(express.json());
-    router.use(express.urlencoded({ extended: true }));
-} catch (e) {
-    console.log(e);
-}
+
+router.use(express.json());
+router.use(express.urlencoded({ extended: true }));
+
 router.use((req, res, next) => {
     console.log('request reçue dans mainRouter: ' + req.url);
     console.log(req.body);
@@ -44,7 +42,7 @@ router.get('/tags/getAllEvents', controller.getAllEvents);
 
 // Image Routes
 router.get('/images/getAllNotTagguedWithLinkedTables', controller.getAllImagesNotTagguedAndLinkedTables);
-router.patch('/images/updateTags', controller.updateTags);
+router.patch('/images/updateTags', handler(controller.updateTags));
 router.delete('/images/delete', controller.deleteImage);
 router.post('/images/downloadByFileName', controller.downloadFileByName);
 
