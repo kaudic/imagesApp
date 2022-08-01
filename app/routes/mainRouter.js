@@ -14,7 +14,7 @@ const path = require('path');
 
 router.use((req, res, next) => {
     console.log('request reçue dans mainRouter: ' + req.url);
-    console.log(req.body);
+    console.log(req);
     next();
 })
 
