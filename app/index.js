@@ -32,6 +32,8 @@ app.use((req, res, next) => {
     console.log('Content-Type: ' + req.header('Content-Type'));
     if (req.body) {
         console.log('body présent: year: ' + req.body.year);
+    } else {
+        (console.log('pas de body'));
     }
 
     next();
