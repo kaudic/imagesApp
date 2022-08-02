@@ -5,7 +5,6 @@ const fs = require('fs');
 // function to return the path to the images folder in the audicServer
 const returnImagesFolderPath = () => {
     const pathToImagesFolder = path.normalize(`${__dirname}/../../public/assets/images/temp`);
-    console.log('images folder path: ' + pathToImagesFolder);
     return pathToImagesFolder;
 }
 
