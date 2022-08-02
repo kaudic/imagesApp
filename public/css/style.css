@@ -45,7 +45,13 @@ body {
     border-bottom: 0.3rem solid black;
 }
 
-
+/* CHARTS */
+.flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+}
 
 /* PARTIE UPLOAD */
 

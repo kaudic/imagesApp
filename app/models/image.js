@@ -138,6 +138,24 @@ const imageDataMapper = {
         const result = await db.query(sqlQuery);
         return result.rows[0];
     },
+    async countTagAndNotTagguedPerYear() {
+        const sqlQuery = {
+            text: `
+                SELECT
+                year,
+                SUM(
+                CASE WHEN tag='true' THEN 1 else 0 END) as taggued,
+                SUM(
+                CASE WHEN tag='false' THEN 1 else 0 END) as not_taggued
+                FROM image
+                GROUP BY "year"
+                ORDER BY year ASC;
+            `,
+            values: [],
+        };
+        const result = await db.query(sqlQuery);
+        return result.rows;
+    }
 
 };
 

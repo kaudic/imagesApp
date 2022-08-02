@@ -300,6 +300,23 @@ const controller = {
         // we want to tag now so let's end the response and the front will change the page
         res.end();
     },
+    async countTagAndNotTagguedPerYear(req, res) {
+        const countsInfo = await imageDataMapper.countTagAndNotTagguedPerYear();
+
+        if (countsInfo) {
+            const shapedData = [['Year', 'Tagguées', { role: 'annotation' }, 'Non Tagguées', { role: 'annotation' }]];
+            countsInfo.forEach((count) => {
+                shapedData.push([count.year.toString(), parseInt(count.taggued), parseInt(count.taggued), parseInt(count.not_taggued), parseInt(count.not_taggued)]);
+            });
+
+            res.json({
+                result: true,
+                message: 'Le comptage des images tagguées et non tagguées par an est dans l\'attribut data',
+                data: shapedData
+            })
+        }
+
+    },
     error: (err, req, res, _next) => {
 
         console.log('errorController! :' + err.message);
