@@ -4,62 +4,70 @@
         <body>
 
             <div class="tagContainer">
-                <h2 class="project_h2Title">Taguer les photos</h2>
-                <div class="imageLeftAndRightAndTag">
-                    <div class="imageAndBtns">
+                <%if (locals.type) { %>
+                    <h2 data-type="singleTagMode" class="project_h2Title">
+                        Taguer les
+                        photos</h2>
+                    <% } else { %>
+                        <h2 data-type="multiTagMode" class="project_h2Title">
+                            Taguer les
+                            photos</h2>
+                        <% } %>
+                            <div class="imageLeftAndRightAndTag">
+                                <div class="imageAndBtns">
 
-                        <i id="rotateRight" class="fa-solid fa-rotate-right iconArrow"></i>
-                        <div class="imageLeftAndRight">
-                            <i id="imgLeft" class="fa-solid fa-square-caret-left iconArrow"></i>
-                            <img id="imageContainer" data-img-id="" class="imageSmallForTag" src="">
-                            <i id="imgRight" class="fa-solid fa-square-caret-right iconArrow"></i>
-                        </div>
-                    </div>
+                                    <i id="rotateRight" class="fa-solid fa-rotate-right iconArrow"></i>
+                                    <div class="imageLeftAndRight">
+                                        <i id="imgLeft" class="fa-solid fa-square-caret-left iconArrow"></i>
+                                        <img id="imageContainer" data-img-id="" class="imageSmallForTag" src="">
+                                        <i id="imgRight" class="fa-solid fa-square-caret-right iconArrow"></i>
+                                    </div>
+                                </div>
 
-                    <div class="imageTagZone">
-                        <div class="project_info_couple">
-                            <label class="project_label_creation">Fichier</label>
-                            <input class="project_label_input readOnly" value="" id="fileNameInput" type="text"
-                                readonly />
-                        </div>
-                        <div class="project_info_couple">
-                            <label class="project_label_creation">Statut</label>
-                            <input class="project_label_input readOnly" value="" id="imageStatus" type="text"
-                                readonly />
-                        </div>
-                        <div class="project_info_couple">
-                            <label class="project_label_creation">Année</label>
-                            <input class="project_label_input" value="" id="imageYearInput" />
-                        </div>
-                        <div class="project_info_couple">
-                            <label class="project_label_creation">Lieu</label>
-                            <select id="localityTag" class="project_label_select">
-                                <option value="0">----</option>
-                            </select>
-                        </div>
-                        <div class="project_info_couple">
-                            <label class="project_label_creation">Evenement</label>
-                            <select id="eventTag" class="project_label_select">
-                                <option value="0">----</option>
-                            </select>
-                        </div>
-                        <div class="line"></div>
-                        <div class="project_info_couple">
-                            <label class="project_label_creation">Personnes</label>
-                            <select id="personTag" class="project_label_select">
-                                <option value="0">----</option>
-                            </select>
-                            <i id="" class="fa-solid fa-circle-plus iconFilterPlus"></i>
-                        </div>
+                                <div class="imageTagZone">
+                                    <div class="project_info_couple">
+                                        <label class="project_label_creation">Fichier</label>
+                                        <input class="project_label_input readOnly" value="" id="fileNameInput"
+                                            type="text" readonly />
+                                    </div>
+                                    <div class="project_info_couple">
+                                        <label class="project_label_creation">Statut</label>
+                                        <input class="project_label_input readOnly" value="" id="imageStatus"
+                                            type="text" readonly />
+                                    </div>
+                                    <div class="project_info_couple">
+                                        <label class="project_label_creation">Année</label>
+                                        <input class="project_label_input" value="" id="imageYearInput" />
+                                    </div>
+                                    <div class="project_info_couple">
+                                        <label class="project_label_creation">Lieu</label>
+                                        <select id="localityTag" class="project_label_select">
+                                            <option value="0">----</option>
+                                        </select>
+                                    </div>
+                                    <div class="project_info_couple">
+                                        <label class="project_label_creation">Evenement</label>
+                                        <select id="eventTag" class="project_label_select">
+                                            <option value="0">----</option>
+                                        </select>
+                                    </div>
+                                    <div class="line"></div>
+                                    <div class="project_info_couple">
+                                        <label class="project_label_creation">Personnes</label>
+                                        <select id="personTag" class="project_label_select multipleSelect" multiple>
+                                            <option value="0">----</option>
+                                        </select>
+                                        <i id="" class="fa-solid fa-circle-plus iconFilterPlus"></i>
+                                    </div>
 
-                        <div id="personContainer" class="personContainer"></div>
-                        <div class="project_info_couple">
-                            <button id="tagBtn" class="button_taguer">TAGUER</button>
-                            <button id="downloadBtn" class="button_download">TELECHARGER</button>
-                            <button id="deleteImageBtn" class="button_supprimer">SUPPRIMER</button>
-                        </div>
-                    </div>
-                </div>
+                                    <div id="personContainer" class="personContainer"></div>
+                                    <div class="project_info_couple">
+                                        <button id="tagBtn" class="button_taguer">TAGUER</button>
+                                        <button id="downloadBtn" class="button_download">TELECHARGER</button>
+                                        <button id="deleteImageBtn" class="button_supprimer">SUPPRIMER</button>
+                                    </div>
+                                </div>
+                            </div>
             </div>
 
             <div class="project_info">

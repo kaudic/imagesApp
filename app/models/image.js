@@ -155,6 +155,21 @@ const imageDataMapper = {
         };
         const result = await db.query(sqlQuery);
         return result.rows;
+    },
+    async countTagAndNotTaggued() {
+        const sqlQuery = {
+            text: `
+                SELECT
+                SUM(
+                CASE WHEN tag='true' THEN 1 else 0 END) as taggued,
+                SUM(
+                CASE WHEN tag='false' THEN 1 else 0 END) as not_taggued
+                FROM image;
+            `,
+            values: [],
+        };
+        const result = await db.query(sqlQuery);
+        return result.rows[0];
     }
 
 };

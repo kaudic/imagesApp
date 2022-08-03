@@ -2,15 +2,15 @@ const app = {
     init: async () => {
         console.log('init script launched');
         app.addListennersToAction();
-        app.drawBarChart();
-
+        app.drawCharts();
 
     },
     addListennersToAction: () => {
 
     },
     drawCharts: () => {
-
+        app.drawBarChart();
+        app.drawPieChart();
     },
     drawBarChart: async () => {
 
@@ -28,10 +28,10 @@ const app = {
         function drawChart() {
 
             // Create the data table.
-            var data = google.visualization.arrayToDataTable(countInfoData.data);
+            const data = google.visualization.arrayToDataTable(countInfoData.data);
 
             // Set chart options
-            var options = {
+            const options = {
                 title: 'Nombre d\'images tagguées et non tagguées par an',
                 width: 1700,
                 height: 700,
@@ -56,10 +56,31 @@ const app = {
             };
 
             // Instantiate and draw our chart, passing in some options.
-            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+            const chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
             chart.draw(data, options);
         }
 
+    },
+    drawPieChart: async () => {
+
+        const countInfoData = await fetch(`${BASE_URL}/images/countTagAndNotTaggued`).then((res) => res.json());
+        console.log(JSON.stringify(countInfoData.data));
+
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            const data = google.visualization.arrayToDataTable(countInfoData.data);
+
+            const options = {
+                title: 'Nombre d\'images tagguées et non tagguées'
+            };
+
+            const chart = new google.visualization.PieChart(document.getElementById('pieChart_div'));
+
+            chart.draw(data, options);
+        }
     }
 
 };

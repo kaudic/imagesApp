@@ -317,10 +317,24 @@ const controller = {
         }
 
     },
+    async countTagAndNotTaggued(req, res) {
+        const countsInfo = await imageDataMapper.countTagAndNotTaggued();
+
+        const shapedData = [['Status', 'Nb images']];
+        if (countsInfo) {
+            shapedData.push(['Tagguées', parseInt(countsInfo.taggued)]);
+            shapedData.push(['Non Tagguées', parseInt(countsInfo.not_taggued)]);
+        }
+
+        res.json({
+            result: true,
+            message: 'Le comptage des images tagguées et non tagguées est dans l\'attribut data',
+            data: shapedData
+        })
+    },
     error: (err, req, res, _next) => {
 
         console.log('errorController! :' + err.message);
-        console.log('errorController! :' + err.received);
         console.log(err);
 
         res.status(400).json({

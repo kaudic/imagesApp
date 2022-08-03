@@ -33,6 +33,7 @@ router.get('/tags/getAllEvents', controller.getAllEvents);
 
 // Image Routes
 router.get('/images/getAllNotTagguedWithLinkedTables', controller.getAllImagesNotTagguedAndLinkedTables);
+router.get('/images/countTagAndNotTaggued', controller.countTagAndNotTaggued);
 router.get('/images/countTagAndNotTagguedPerYear', controller.countTagAndNotTagguedPerYear);
 router.patch('/images/updateTags', handler(controller.updateTags));
 router.delete('/images/delete', controller.deleteImage);

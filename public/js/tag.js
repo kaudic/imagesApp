@@ -3,11 +3,26 @@ const tag = {
         console.log('tag script initialisation...');
         tag.addEventsToAction();
         tag.updateSelectFields();
-        // get all images details and set them up in attributes names properties.images
-        await tag.getAllImagesAndLinkedTablesNotTaggued();
-        // display first image
-        tag.displayImageInfo(0);
-        tag.getAndSaveToken();
+
+        // check Tag mode dataset in title
+        const title = document.querySelector('.project_h2Title');
+
+        if (title.dataset.type === 'multiTagMode') {
+            // get all images details and set them up in attributes names properties.images
+            await tag.getAllImagesAndLinkedTablesNotTaggued();
+            // display first image
+            tag.displayImageInfo(0);
+            tag.getAndSaveToken();
+        };
+        if (title.dataset.type === 'singleTagMode') {
+            // get Image id from title dataset
+            // hide the arrows
+            // display a cross button that will return to previous page
+            // change script of the btn tagguer by a btn that go to previous page
+            // hide the nav ?
+        };
+
+
 
     },
     properties: {
@@ -190,29 +205,48 @@ const tag = {
         // create element personSpan in the personContainer
         const personContainer = document.getElementById('personContainer');
         const personTagSelectElt = document.getElementById('personTag');
-        const personId = personTagSelectElt.value;
+        const selectOptions = personTagSelectElt.options;
 
-        if (personId === '0') return; // just checking that a person was selected
+        // get All the person id selected
+        const personsArray = [];
+        for (let i = 0; i < selectOptions.length; i++) {
+            if (selectOptions[i].selected) {
+                personsArray.push({
+                    id: selectOptions[i].value,
+                    name: selectOptions[i].text
+                });
+            }
+        }
 
-        const personName = personTagSelectElt.options[personTagSelectElt.selectedIndex].text;
-        const personSpan = document.createElement('span');
-        personSpan.textContent = personName;
-        personSpan.classList.add('tagguedPerson');
-        personSpan.dataset.personId = personId;
-        const crossIcon = document.createElement('span');
-        crossIcon.innerHTML = '<i class="fa-solid fa-circle-xmark crossIcon"></i>';
-        personSpan.appendChild(crossIcon);
-        personContainer.appendChild(personSpan);
+        // checking that at least one person was selected
+        if (personsArray.length === '0') return;
+
+        // loop on the personsIdArray and create elements in person container
+        personsArray.forEach((person) => {
+            const personSpan = document.createElement('span');
+            personSpan.textContent = person.name;
+            personSpan.classList.add('tagguedPerson');
+            personSpan.dataset.personId = person.id;
+            const crossIcon = document.createElement('span');
+            crossIcon.innerHTML = '<i class="fa-solid fa-circle-xmark crossIcon"></i>';
+            personSpan.appendChild(crossIcon);
+            personContainer.appendChild(personSpan);
+        })
 
         // add a script on the cross to enable remove of the newly taggued person
         tag.addDeleteTagguedPersonToCrossBtns();
 
         // remove the person from the select element
-        for (let i = 0; i < personTagSelectElt.length; i++) {
-            if (personTagSelectElt.options[i].value === personId)
+        // const personIndexToRemove = [];
+        for (let i = 0; i < selectOptions.length; i++) {
+            const isPerson = personsArray.find((person) => {
+                return person.id == selectOptions[i].value
+            })
+            if (isPerson) {
                 personTagSelectElt.remove(i);
+                i--;
+            }
         };
-
     },
     addDeleteTagguedPersonToCrossBtns: () => {
         const personsCrossBtns = document.querySelectorAll('.crossIcon');

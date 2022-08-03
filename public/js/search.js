@@ -33,6 +33,89 @@ const search = {
         const filterBtn = document.getElementById('filterBtn');
         filterBtn.addEventListener('click', search.filterAndDisplayPictures);
 
+        // Btn to reset the input fields
+        const deleteImageBtn = document.getElementById('deleteImageBtn');
+        deleteImageBtn.addEventListener('click', search.resetSearchInfo);
+
+        // Listenning to the scroll of the window
+        window.addEventListener('scroll', search.drawImagesOnScrollEnd);
+    },
+    drawImagesOnScrollEnd: (e) => {
+        // detect in the if clause if scroll reached end of browser
+        if (window.innerHeight + window.pageYOffset >= 0.8 * (document.documentElement.scrollHeight)) {
+
+            // identify the id of the last image in the screen
+            const imagesContainer = document.getElementById('imagesContainer');
+            const lastImgId = imagesContainer.lastElementChild.querySelector('img').id;
+            const fullArrayOfImages = search.properties.filteredImages;
+
+            // identify the index of the last image in the full array of images returned by the filter bar            const fullArrayOfImages = search.properties.filteredImages;
+            const indexOfLastImg = fullArrayOfImages.findIndex((img) => {
+                return img.id === parseInt(lastImgId);
+            });
+
+            // Draw the next 25 images
+            for (let i = indexOfLastImg + 1; i < indexOfLastImg + 1 + 25; i++) {
+                const thumbnail = document.querySelector('template').content;
+                const image = thumbnail.querySelector('img');
+                const checkBox = thumbnail.querySelector('input');
+                checkBox.id = fullArrayOfImages[i].file_name;
+                image.id = fullArrayOfImages[i].id;
+                image.src = `imagesApp/assets/images/${fullArrayOfImages[i].file_name}`
+                imagesContainer.appendChild(document.importNode(thumbnail, true));
+            }
+            // Add listenners to show up or hide details of the image
+            const images = document.querySelectorAll('.resize');
+            images.forEach((img) => {
+                img.addEventListener('mouseenter', search.displayImgInfo);
+                img.addEventListener('mouseleave', search.hideImgInfo);
+            });
+        }
+    },
+    drawImagesOnScreen: () => {
+        // get image container
+        const imagesContainer = document.getElementById('imagesContainer');
+        imagesContainer.innerHTML = '';
+        const imagesToDisplay = search.properties.filteredImages;
+        console.log(imagesToDisplay);
+
+        let loopMax = imagesToDisplay.length;
+        if (loopMax > 50) {
+            loopMax = 50;
+        }
+
+        // Draw the result after filtering
+        for (let i = 0; i < loopMax; i++) {
+            const thumbnail = document.querySelector('template').content;
+            const image = thumbnail.querySelector('img');
+            const checkBox = thumbnail.querySelector('input');
+            checkBox.id = imagesToDisplay[i].file_name;
+            image.id = imagesToDisplay[i].id;
+            image.src = `imagesApp/assets/images/${imagesToDisplay[i].file_name}`
+            imagesContainer.appendChild(document.importNode(thumbnail, true));
+        }
+
+        // Add listenners to show up or hide details of the image
+        const images = document.querySelectorAll('.resize');
+        images.forEach((img) => {
+            img.addEventListener('mouseenter', search.displayImgInfo);
+            img.addEventListener('mouseleave', search.hideImgInfo);
+        });
+    },
+    resetSearchInfo: (e) => {
+        e.preventDefault();
+        // Get the input fields
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach((input) => input.value = '');
+        // Get the selects fields
+        const selects = document.querySelectorAll('select');
+        selects.forEach((select) => {
+            console.log(select);
+            select.value = 0;
+        });
+        // Reset the person container
+        document.getElementById('personContainer').innerHTML = '';
+
     },
     filterAndDisplayPictures: (e) => {
         e.preventDefault();
@@ -109,36 +192,7 @@ const search = {
         search.properties.images = imagesAndLinkedTables.data;
         search.properties.filteredImages = imagesAndLinkedTables.data;
     },
-    drawImagesOnScreen: () => {
-        // get image container
-        const imagesContainer = document.getElementById('imagesContainer');
-        imagesContainer.innerHTML = '';
-        const imagesToDisplay = search.properties.filteredImages;
-        console.log(imagesToDisplay);
 
-        let loopMax = imagesToDisplay.length;
-        if (loopMax > 500) {
-            loopMax = 500;
-        }
-
-        // Draw the result after filtering
-        for (let i = 0; i < loopMax; i++) {
-            const thumbnail = document.querySelector('template').content;
-            const image = thumbnail.querySelector('img');
-            const checkBox = thumbnail.querySelector('input');
-            checkBox.id = imagesToDisplay[i].file_name;
-            image.id = imagesToDisplay[i].id;
-            image.src = `imagesApp/assets/images/${imagesToDisplay[i].file_name}`
-            imagesContainer.appendChild(document.importNode(thumbnail, true));
-        }
-
-        // Add listenners to show up or hide details of the image
-        const images = document.querySelectorAll('.resize');
-        images.forEach((img) => {
-            img.addEventListener('mouseenter', search.displayImgInfo);
-            img.addEventListener('mouseleave', search.hideImgInfo);
-        });
-    },
     displayImgInfo: (e) => {
 
         const imageId = e.target.id;

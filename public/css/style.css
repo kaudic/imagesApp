@@ -53,6 +53,15 @@ body {
     margin-top: 2rem;
 }
 
+.flexCenterMobile {
+    display: none;
+    width: 80%;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem auto;
+    margin-top: 1rem;
+}
+
 /* PARTIE UPLOAD */
 
 .uploadForm {
@@ -168,6 +177,10 @@ body {
     width: 10rem;
     height: 1.7rem;
     display: inline-block;
+}
+
+.multipleSelect {
+    height: 20rem;
 }
 
 .project_label_input {
@@ -617,6 +630,19 @@ body {
         font-weight: normal;
         border-radius: 1rem;
         font-size: 0.8rem;
+    }
+
+    .multipleSelect {
+        height: 15rem;
+    }
+
+    /* CHARTS */
+    .flexCenter {
+        display: none;
+    }
+
+    .flexCenterMobile {
+        display: flex;
     }
 
 }
