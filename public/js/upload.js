@@ -33,8 +33,6 @@ const upload = {
         const checkedElement = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
         const checkedId = [];
         checkedElement.forEach(element => checkedId.push(element.id));
-        console.log(checkedId);
-        console.log(checkedId.indexOf('checkboxTag'));
         if (checkedId.indexOf('checkboxTag') !== -1) {
             window.location.href = '/tags';
         }

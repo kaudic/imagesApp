@@ -26,6 +26,7 @@ router.get('/upload', controller.renderUploadPage);
 router.post('/upload', upLoadImages(), controller.addImagesToDBAfterUpLoad, controller.renderUploadPage);
 
 // Tag Routes
+router.get('/tags/OneImageInTagView/:imageId', controller.renderOneImageInTagPage);
 router.get('/tags', controller.renderTagPage);
 router.get('/tags/getPersons', controller.getAllPersons);
 router.get('/tags/getAllLocalities', controller.getAllLocalities);
@@ -33,6 +34,7 @@ router.get('/tags/getAllEvents', controller.getAllEvents);
 
 // Image Routes
 router.get('/images/getAllNotTagguedWithLinkedTables', controller.getAllImagesNotTagguedAndLinkedTables);
+router.post('/images/getImageInfoWithLinkedTables', controller.getImageInfoWithLinkedTables);
 router.get('/images/countTagAndNotTaggued', controller.countTagAndNotTaggued);
 router.get('/images/countTagAndNotTagguedPerYear', controller.countTagAndNotTagguedPerYear);
 router.patch('/images/updateTags', handler(controller.updateTags));

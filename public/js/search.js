@@ -69,6 +69,7 @@ const search = {
             images.forEach((img) => {
                 img.addEventListener('mouseenter', search.displayImgInfo);
                 img.addEventListener('mouseleave', search.hideImgInfo);
+                img.addEventListener('click', search.showImageInTagsView);
             });
         }
     },
@@ -77,7 +78,6 @@ const search = {
         const imagesContainer = document.getElementById('imagesContainer');
         imagesContainer.innerHTML = '';
         const imagesToDisplay = search.properties.filteredImages;
-        console.log(imagesToDisplay);
 
         let loopMax = imagesToDisplay.length;
         if (loopMax > 50) {
@@ -100,7 +100,13 @@ const search = {
         images.forEach((img) => {
             img.addEventListener('mouseenter', search.displayImgInfo);
             img.addEventListener('mouseleave', search.hideImgInfo);
+            img.addEventListener('click', search.showImageInTagsView);
         });
+    },
+    showImageInTagsView: async (e) => {
+        e.preventDefault();
+        window.location = `${BASE_URL}/tags/OneImageInTagView/${e.target.id}`;
+
     },
     resetSearchInfo: (e) => {
         e.preventDefault();

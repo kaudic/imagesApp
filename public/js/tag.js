@@ -2,6 +2,8 @@ const tag = {
     init: async () => {
         console.log('tag script initialisation...');
         tag.addEventsToAction();
+
+        // Fill in the options in the select fields with data from Database
         tag.updateSelectFields();
 
         // check Tag mode dataset in title
@@ -13,17 +15,33 @@ const tag = {
             // display first image
             tag.displayImageInfo(0);
             tag.getAndSaveToken();
+
         };
         if (title.dataset.type === 'singleTagMode') {
             // get Image id from title dataset
+            const imageId = title.dataset.id;
+            // Get image Info
+            await tag.getOneImageAndLinkedTables(imageId);
+            // Display Image Info
+            tag.displayImageInfo(0);
+
             // hide the arrows
-            // display a cross button that will return to previous page
-            // change script of the btn tagguer by a btn that go to previous page
-            // hide the nav ?
+            document.getElementById('imgRight').classList.add('hidden');
+            document.getElementById('imgLeft').classList.add('hidden');
+
+            // Delete title text and
+            // display a go back button that will return to previous page
+            title.textContent = '';
+            const tagContainerElt = document.querySelector('.tagContainer');
+            const goBackBtn = document.createElement('button');
+            goBackBtn.textContent = 'Retour';
+            goBackBtn.addEventListener('click', () => history.back());
+            goBackBtn.classList.add('button_taguer');
+            tagContainerElt.prepend(goBackBtn);
+
+
+
         };
-
-
-
     },
     properties: {
         imageDisplayedIndex: 0,
@@ -72,10 +90,6 @@ const tag = {
         const plusBtn = document.querySelector('.iconFilterPlus');
         plusBtn.addEventListener('click', tag.tagPersonOnScreen);
 
-        // button to fully tag an image
-        const tagBtn = document.getElementById('tagBtn');
-        tagBtn.addEventListener('click', tag.tagImage);
-
         // button to delete image on server and on Database
         const deleteImageBtn = document.getElementById('deleteImageBtn');
         deleteImageBtn.addEventListener('click', tag.deleteImage);
@@ -88,6 +102,13 @@ const tag = {
         const rotateRightBtn = document.getElementById('rotateRight');
         rotateRightBtn.addEventListener('click', tag.rotateRight);
 
+        // Btn to tag the image with all the different information
+        const tagBtn = document.getElementById('tagBtn');
+        tagBtn.addEventListener('click', tag.tagImage);
+
+    },
+    goToPreviousPage: () => {
+        history.back();
     },
     rotateRight: (e) => {
         e.preventDefault();
@@ -138,7 +159,6 @@ const tag = {
         // get imageId and file name
         const imageId = document.getElementById('imageContainer').dataset.imgId;
         const fileName = document.getElementById('fileNameInput').value;
-        console.log(imageId, fileName);
 
         // fetch on a delete route
         const deletedImage = await fetch(`${BASE_URL}/images/delete`, {
@@ -156,7 +176,12 @@ const tag = {
         tag.properties.images.splice(tag.properties.imageDisplayedIndex, 1);
 
         // display next image
-        tag.displayImageInfo(0);
+        // if multi tag mode then go to next image
+        if (document.querySelector('.project_h2Title').dataset.type === 'multiTagMode') {
+            tag.displayImageInfo(0);
+        } else {// if not then go to previous page
+            tag.goToPreviousPage();
+        }
 
     },
     tagImage: async () => {
@@ -187,7 +212,6 @@ const tag = {
             }),
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': tag.properties.token
             }
         }).then((res) => res.json());
 
@@ -198,7 +222,12 @@ const tag = {
             imageStatusInput.value = "taguée";
             imageStatusInput.classList.remove('imageNotTaggued');
             imageStatusInput.classList.add('imageTaggued');
-            tag.displayImageInfo(1);
+            // if multi tag mode then go to next image
+            if (document.querySelector('.project_h2Title').dataset.type === 'multiTagMode') {
+                tag.displayImageInfo(1);
+            } else {// if not then go to previous page
+                tag.goToPreviousPage();
+            }
         }
     },
     tagPersonOnScreen: () => {
@@ -256,6 +285,17 @@ const tag = {
         const imagesAndLinkedTables = await fetch(`${BASE_URL}/images/getAllNotTagguedWithLinkedTables`).then((res) => res.json());
         tag.properties.images = imagesAndLinkedTables.data;
     },
+    getOneImageAndLinkedTables: async (imageId) => {
+        const imageInfo = await fetch(`/images/getImageInfoWithLinkedTables`, {
+            method: 'POST',
+            body: JSON.stringify({ imageId }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then((res) => res.json());
+        tag.properties.images = imageInfo.data;
+
+    },
     displayImageInfo: async (indexChange) => {
         // identify the img element container
         const imageContainer = document.getElementById('imageContainer');
@@ -269,9 +309,10 @@ const tag = {
         if ((indexChange < 0 && currentIndex > 0) || (indexChange > 0 && currentIndex < tag.properties.images.length - 1)) {
             tag.properties.imageDisplayedIndex += indexChange;
         }
+
         // Display corresponding image on Screen
         const newIndex = tag.properties.imageDisplayedIndex;
-        imageContainer.src = `imagesApp/assets/images/${tag.properties.images[newIndex].file_name}`;
+        imageContainer.src = `${BASE_URL}/imagesApp/assets/images/${tag.properties.images[newIndex].file_name}`;
         imageContainer.dataset.imgId = tag.properties.images[newIndex].id;
 
         // Display Persons

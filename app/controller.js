@@ -17,6 +17,9 @@ const controller = {
     renderTagPage: (req, res) => {
         res.render('tag.ejs');
     },
+    renderOneImageInTagPage: (req, res) => {
+        res.render('tag.ejs', { type: 'singleTagMode', imageId: req.params.imageId });
+    },
     renderSearchPage: (req, res) => {
         res.render('search.ejs');
     },
@@ -64,7 +67,6 @@ const controller = {
         // delete from BD
         const deletedImage = await imageDataMapper.deleteImage(imageId);
         const pathToFileToDelete = path.normalize(`${__dirname}/../public/assets/images/${fileName}`);
-        console.log(pathToFileToDelete);
 
         // delete from directory
         fs.unlink(pathToFileToDelete, (err) => {
@@ -215,11 +217,11 @@ const controller = {
 
         const imageInfo = await imageDataMapper.getImageInfoWithLinkedTables(imageId);
 
-        if (imagesInfo) {
+        if (imageInfo) {
             res.json({
                 result: true,
                 message: 'Les infos de l\'image sont dans l\'attribut data',
-                data: imageInfo
+                data: [imageInfo]
             })
         }
     },

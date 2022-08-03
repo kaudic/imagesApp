@@ -64,7 +64,6 @@ const app = {
     drawPieChart: async () => {
 
         const countInfoData = await fetch(`${BASE_URL}/images/countTagAndNotTaggued`).then((res) => res.json());
-        console.log(JSON.stringify(countInfoData.data));
 
         google.charts.load('current', { 'packages': ['corechart'] });
         google.charts.setOnLoadCallback(drawChart);

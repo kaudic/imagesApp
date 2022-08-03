@@ -4,8 +4,8 @@
         <body>
 
             <div class="tagContainer">
-                <%if (locals.type) { %>
-                    <h2 data-type="singleTagMode" class="project_h2Title">
+                <%if (locals.type && locals.imageId) { %>
+                    <h2 data-type="singleTagMode" data-id="<%= locals.imageId%>" class="project_h2Title">
                         Taguer les
                         photos</h2>
                     <% } else { %>
@@ -126,10 +126,10 @@
                 </div>
             </div>
 
-            <!-- </div> -->
+
 
             <%- include('./partials/script') %>
 
-                <script type="text/javascript" src="imagesApp/js/tag.js" defer></script>
+                <script type="text/javascript" src="/imagesApp/js/tag.js" defer></script>
 
         </body>
