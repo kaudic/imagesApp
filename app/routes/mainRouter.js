@@ -35,7 +35,7 @@ router.get('/tags/getAllEvents', controller.getAllEvents);
 // Image Routes
 router.get('/images/getAllNotTagguedWithLinkedTables', controller.getAllImagesNotTagguedAndLinkedTables);
 router.post('/images/getImageInfoWithLinkedTables', controller.getImageInfoWithLinkedTables);
-router.get('/images/deleteBeingTagged/:imageId', controller.deleteImageBeingTaggued);
+router.post('/images/deleteBeingTagged', controller.deleteImageBeingTaggued);
 router.get('/images/beingTaggued', controller.getImagesbeingTaggued);
 router.post('/images/insertOneAsBeingTaggued', controller.insertOneAsBeingTaggued);
 router.get('/images/countTagAndNotTaggued', controller.countTagAndNotTaggued);

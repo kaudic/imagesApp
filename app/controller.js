@@ -335,8 +335,8 @@ const controller = {
         })
     },
     async deleteImageBeingTaggued(req, res) {
-        const { imageId } = req.params;
-        await imageDataMapper.deleteImageBeingTaggued(imageId);
+        const { imageId, socket } = req.body;
+        await imageDataMapper.deleteImageBeingTaggued(imageId, socket);
 
         res.json({
             result: true,

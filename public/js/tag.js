@@ -7,7 +7,11 @@ const tag = {
         tag.updateSelectFields();
 
         // Register socket in tag properties
-        const socket = io(`http://audicserver.ddns.net:3000`, { path: '/imagesApp/socket.io/' });
+        let ioServerPath = BASE_URL;
+        if (ioServerPath.includes('audicserver')) {
+            ioServerPath = BASE_URL.replace('/imagesApp', '');
+        }
+        const socket = io(ioServerPath, { path: '/imagesApp/socket.io/' });
         socket.on('welcome', (socketId) => {
             console.log('socketId: ' + socketId);
             tag.properties.socket = socketId
@@ -306,7 +310,26 @@ const tag = {
         if (indexChange !== 0) {
             const imageId = tag.properties.images[tag.properties.imageDisplayedIndex].id;
             console.log('front ask to delete image Id : ' + imageId);
-            await fetch(`${BASE_URL}/images/deleteBeingTagged/${imageId}`);
+            await fetch(`${BASE_URL}/images/deleteBeingTagged`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    imageId,
+                    socket: tag.properties.socket
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+        } else {
+            // Check that this image is not already being taggued, if yes, re-launch function
+            const index = tag.properties.imageDisplayedIndex;
+            const imageId = tag.properties.images[index].id;
+            const imagesBeingTaggued = await fetch(`${BASE_URL}/images/beingTaggued`).then((res => res.json()));
+
+            if (imagesBeingTaggued.data.find((img) => img.image_id == imageId)) {
+                tag.displayImageInfo(1);
+            }
         }
 
         // identify the img element container

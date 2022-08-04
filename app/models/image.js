@@ -84,11 +84,11 @@ const imageDataMapper = {
         const result = await db.query(sqlQuery);
         return result.rows[0];
     },
-    async deleteImageBeingTaggued(imageId) {
+    async deleteImageBeingTaggued(imageId, socket) {
         const sqlQuery = {
             text: `
-            DELETE FROM tag_socket WHERE image_id = $1 RETURNING *;`,
-            values: [imageId],
+            DELETE FROM tag_socket WHERE (image_id = $1 AND socket = $2) RETURNING *;`,
+            values: [imageId, socket],
         };
         const result = await db.query(sqlQuery);
         return result.rows[0];
