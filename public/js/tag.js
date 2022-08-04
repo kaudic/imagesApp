@@ -7,7 +7,7 @@ const tag = {
         tag.updateSelectFields();
 
         // Register socket in tag properties
-        const socket = io(`${BASE_URL}`, { path: '/imagesApp/socket.io/' });
+        const socket = io(`${BASE_URL}`, { path: '/socket.io/' });
         socket.on('welcome', (socketId) => {
             console.log('socketId: ' + socketId);
             tag.properties.socket = socketId
