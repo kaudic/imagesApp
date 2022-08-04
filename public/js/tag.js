@@ -7,7 +7,7 @@ const tag = {
         tag.updateSelectFields();
 
         // Register socket in tag properties
-        const socket = io('http://localhost:3000', { path: '/imagesApp/socket.io/' });
+        const socket = io(`${BASE_URL}`, { path: '/imagesApp/socket.io/' });
         // const socket = io.connect('http://localhost:4000/imagesApp');
         // const socket = io.connect('http://localhost:3000', { resource: '/imagesApp/js/' });
         // const socket = io.connect(`http://localhost:3000/imagesApp`, { transport: [WebSocket], path: "/imagesApp/js/socket.io" });
