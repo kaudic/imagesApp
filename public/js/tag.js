@@ -7,8 +7,14 @@ const tag = {
         tag.updateSelectFields();
 
         // Register socket in tag properties
-        const socket = io();
-        socket.on('welcome', (socketId) => tag.properties.socket = socketId);
+        const socket = io('http://localhost:3000', { path: '/imagesApp/socket.io/' });
+        // const socket = io.connect('http://localhost:4000/imagesApp');
+        // const socket = io.connect('http://localhost:3000', { resource: '/imagesApp/js/' });
+        // const socket = io.connect(`http://localhost:3000/imagesApp`, { transport: [WebSocket], path: "/imagesApp/js/socket.io" });
+        socket.on('welcome', (socketId) => {
+            console.log('socketId: ' + socketId);
+            tag.properties.socket = socketId
+        });
 
         // check Tag mode dataset in title
         const title = document.querySelector('.project_h2Title');
@@ -288,7 +294,7 @@ const tag = {
         tag.properties.images = imagesAndLinkedTables.data;
     },
     getOneImageAndLinkedTables: async (imageId) => {
-        const imageInfo = await fetch(`/images/getImageInfoWithLinkedTables`, {
+        const imageInfo = await fetch(`${BASE_URL}/images/getImageInfoWithLinkedTables`, {
             method: 'POST',
             body: JSON.stringify({ imageId }),
             headers: {
@@ -329,7 +335,7 @@ const tag = {
         }
 
         // if it is not being taggued by someone else, then register image as being taggued 
-        await fetch('/images/insertOneAsBeingTaggued', {
+        await fetch(`${BASE_URL}/images/insertOneAsBeingTaggued`, {
             method: 'POST',
             body: JSON.stringify({
                 socket: tag.properties.socket,
