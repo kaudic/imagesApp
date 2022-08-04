@@ -321,7 +321,7 @@ const tag = {
         // Check that this image is not already being taggued, if yes, re-launch function
         const newIndex = tag.properties.imageDisplayedIndex;
         const newImageId = tag.properties.images[newIndex].id;
-        const imagesBeingTaggued = await fetch('/images/beingTaggued').then((res => res.json()));
+        const imagesBeingTaggued = await fetch(`${BASE_URL}/images/beingTaggued`).then((res => res.json()));
 
         if (imagesBeingTaggued.data.find((img) => img.image_id == newImageId)) {
             indexChange > 0 ? indexChange++ : indexChange--;
