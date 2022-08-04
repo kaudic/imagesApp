@@ -2,3 +2,4 @@
 %project=imageApp
 
 initdb 2022-07-22T07:52:32Z Killian AUDIC <killi@LAPTOP-5GJ086M6> # tables creation
+socketTable 2022-08-03T15:57:01Z Killian AUDIC <killi@LAPTOP-5GJ086M6> # crÃ©ation de la table avec socket et tag en cours

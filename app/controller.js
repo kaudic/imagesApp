@@ -334,6 +334,36 @@ const controller = {
             data: shapedData
         })
     },
+    async deleteImageBeingTaggued(req, res) {
+        const { imageId } = req.params;
+        await imageDataMapper.deleteImageBeingTaggued(imageId);
+
+        res.json({
+            result: true,
+            message: 'La suppression du tag en cours de l\èimage a bien été effectué',
+        });
+    },
+    async insertOneAsBeingTaggued(req, res) {
+        const { imageId, socket, fileName } = req.body;
+
+        await imageDataMapper.insertOneAsBeingTaggued(imageId, socket, fileName);
+
+        res.json({
+            result: true,
+            message: 'L\'image a bien été insérée dans la table comme étant en cours de Tag',
+        });
+    },
+    async getImagesbeingTaggued(req, res) {
+        const imagesBeingTaggued = await imageDataMapper.getImagesbeingTaggued();
+
+        if (imagesBeingTaggued) {
+            res.json({
+                result: true,
+                message: 'La liste des images en cours de Tag est dans l\'attribut data',
+                data: imagesBeingTaggued
+            });
+        }
+    },
     error: (err, req, res, _next) => {
 
         console.log('errorController! :' + err.message);

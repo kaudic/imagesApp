@@ -22,11 +22,7 @@ module.exports = {
     originalClient: pool,
 
     async query(...params) {
-        if (process.env.NODE_ENV !== 'production') {
-            // if not in production we want to console log the SQL request.
-            // if in prod, we don't want as it slows down process for example when editing a blog article
-            debug(...params);
-        }
+
         console.log(...params);
 
         return this.originalClient.query(...params);

@@ -6,6 +6,10 @@ const tag = {
         // Fill in the options in the select fields with data from Database
         tag.updateSelectFields();
 
+        // Register socket in tag properties
+        const socket = io();
+        socket.on('welcome', (socketId) => tag.properties.socket = socketId);
+
         // check Tag mode dataset in title
         const title = document.querySelector('.project_h2Title');
 
@@ -39,14 +43,12 @@ const tag = {
             goBackBtn.classList.add('button_taguer');
             tagContainerElt.prepend(goBackBtn);
 
-
-
         };
     },
     properties: {
         imageDisplayedIndex: 0,
         images: [],
-        token: ''
+        socket: ''
     },
     addEventsToAction: () => {
         // Identify Elements
@@ -297,6 +299,13 @@ const tag = {
 
     },
     displayImageInfo: async (indexChange) => {
+        // Remove from table being taggued current image as we go next
+        if (indexChange !== 0) {
+            const imageId = tag.properties.images[tag.properties.imageDisplayedIndex].id;
+            console.log('front ask to delete image Id : ' + imageId);
+            await fetch(`${BASE_URL}/images/deleteBeingTagged/${imageId}`);
+        }
+
         // identify the img element container
         const imageContainer = document.getElementById('imageContainer');
 
@@ -309,11 +318,32 @@ const tag = {
         if ((indexChange < 0 && currentIndex > 0) || (indexChange > 0 && currentIndex < tag.properties.images.length - 1)) {
             tag.properties.imageDisplayedIndex += indexChange;
         }
+        // Check that this image is not already being taggued, if yes, re-launch function
+        const newIndex = tag.properties.imageDisplayedIndex;
+        const newImageId = tag.properties.images[newIndex].id;
+        const imagesBeingTaggued = await fetch('/images/beingTaggued').then((res => res.json()));
+
+        if (imagesBeingTaggued.data.find((img) => img.image_id == newImageId)) {
+            indexChange > 0 ? indexChange++ : indexChange--;
+            tag.displayImageInfo(indexChange);
+        }
+
+        // if it is not being taggued by someone else, then register image as being taggued 
+        await fetch('/images/insertOneAsBeingTaggued', {
+            method: 'POST',
+            body: JSON.stringify({
+                socket: tag.properties.socket,
+                imageId: newImageId,
+                fileName: tag.properties.images[newIndex].file_name
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
 
         // Display corresponding image on Screen
-        const newIndex = tag.properties.imageDisplayedIndex;
         imageContainer.src = `${BASE_URL}/imagesApp/assets/images/${tag.properties.images[newIndex].file_name}`;
-        imageContainer.dataset.imgId = tag.properties.images[newIndex].id;
+        imageContainer.dataset.imgId = newImageId
 
         // Display Persons
         const personContainer = document.getElementById('personContainer');

@@ -84,11 +84,39 @@ const imageDataMapper = {
         const result = await db.query(sqlQuery);
         return result.rows[0];
     },
+    async deleteImageBeingTaggued(imageId) {
+        const sqlQuery = {
+            text: `
+            DELETE FROM tag_socket WHERE image_id = $1 RETURNING *;`,
+            values: [imageId],
+        };
+        const result = await db.query(sqlQuery);
+        return result.rows[0];
+    },
+    async getImagesbeingTaggued() {
+        const sqlQuery = {
+            text: `
+            SELECT * FROM tag_socket;`,
+            values: [],
+        };
+        const result = await db.query(sqlQuery);
+        return result.rows;
+    },
     async updateImageYear(imageId, year) {
         const sqlQuery = {
             text: `
             UPDATE image SET year=$2 WHERE id=$1 RETURNING*`,
             values: [imageId, year],
+        };
+        const result = await db.query(sqlQuery);
+        return result.rows[0];
+    },
+    async insertOneAsBeingTaggued(imageId, socket, fileName) {
+        const sqlQuery = {
+            text: `
+            INSERT INTO tag_socket ("image_id","socket","file_name") VALUES ($1,$2,$3)
+            `,
+            values: [imageId, socket, fileName],
         };
         const result = await db.query(sqlQuery);
         return result.rows[0];
