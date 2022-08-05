@@ -11,11 +11,11 @@ const upload = {
         const upLoadBtn = document.getElementById('upLoadBtn');
         upLoadBtn.addEventListener('click', upload.sendPictures);
     },
-    sendPictures: (e) => {
+    sendPictures: async (e) => {
         e.preventDefault();
         const formDetails = document.querySelector('form');
         const formData = new FormData(formDetails);
-        fetch(`${BASE_URL}/upload`, {
+        await fetch(`${BASE_URL}/upload`, {
             method: 'POST',
             body: formData,
             headers: {
