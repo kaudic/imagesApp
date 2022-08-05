@@ -356,6 +356,7 @@ const tag = {
             const imagesBeingTaggued = await fetch(`${BASE_URL}/images/beingTaggued`).then((res => res.json()));
 
             if (imagesBeingTaggued.data.find((img) => img.image_id == imageId)) {
+                console.log(récursif);
                 tag.displayImageInfo(1);
             }
         }
