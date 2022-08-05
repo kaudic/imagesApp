@@ -359,8 +359,12 @@ const tag = {
 
         } else {
             // Check that this image is not already being taggued, if yes, re-launch function
-            const index = tag.properties.imageDisplayedIndex;
-            const imageId = tag.properties.images[index].id;
+            let index = tag.properties.imageDisplayedIndex;
+            let imageId = tag.properties.images[index].id;
+            if (recursif === true) {
+                index++;
+                imageId = tag.properties.images[index].id;
+            }
             console.log(`checking if image index ${index} and imageId ${imageId} already in table taggued`)
             const imagesBeingTaggued = await fetch(`${BASE_URL}/images/beingTaggued`).then((res => res.json()));
             console.log('imagesBeingTaggued: ' + JSON.stringify(imagesBeingTaggued));
