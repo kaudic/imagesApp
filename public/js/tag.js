@@ -15,6 +15,12 @@ const tag = {
             tag.initSocket();
         });
 
+        socket.on('error', (message) => {
+            console.log(message);
+            tag.initSocket();
+        });
+
+
         // check Tag mode dataset in title
         const title = document.querySelector('.project_h2Title');
 
@@ -335,7 +341,7 @@ const tag = {
     },
     displayImageInfo: async (indexChange, recursif = false) => {
         // Remove from table being taggued current image as we go next
-        if (indexChange !== 0 && !recursif) {
+        if (indexChange !== 0 && recursif === false) {
             const imageId = tag.properties.images[tag.properties.imageDisplayedIndex].id;
             console.log('front ask to delete image Id : ' + imageId);
             await fetch(`${BASE_URL}/images/deleteBeingTagged`, {
