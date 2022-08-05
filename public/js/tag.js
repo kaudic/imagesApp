@@ -184,6 +184,18 @@ const tag = {
             }
         }).then(res => res.json());
 
+        // Delete in Tag socket table
+        await fetch(`${BASE_URL}/images/deleteBeingTagged`, {
+            method: 'POST',
+            body: JSON.stringify({
+                imageId,
+                socket: tag.properties.socket
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
         // delete from the cache variable
         tag.properties.images.splice(tag.properties.imageDisplayedIndex, 1);
 
