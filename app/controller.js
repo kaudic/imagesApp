@@ -274,7 +274,7 @@ const controller = {
     async addImagesToDBAfterUpLoad(req, res, next) {
         // get the socket to communicate with client
         const socket = req.app.locals.socket;
-        socket.emit('uploadLength', `${JSON.stringify(req.files)}`);
+        socket.emit('uploadLength', req.files.length);
 
         const { checkboxYear, checkboxTag } = req.body;
         let year = null;
