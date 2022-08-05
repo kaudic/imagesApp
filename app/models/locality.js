@@ -28,7 +28,7 @@ const localityDataMapper = {
         return result.rows[0];
     },
     async getAllLocalities() {
-        const sqlQuery = `SELECT * FROM locality`;
+        const sqlQuery = `SELECT * FROM locality ORDER BY name`;
         const results = await db.query(sqlQuery);
         return results.rows;
     }

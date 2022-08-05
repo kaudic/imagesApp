@@ -26,7 +26,7 @@ const eventDataMapper = {
         return result.rows[0];
     },
     async getAllEvents() {
-        const sqlQuery = `SELECT * FROM event`;
+        const sqlQuery = `SELECT * FROM event ORDER BY name`;
         const results = await db.query(sqlQuery);
         return results.rows;
     }

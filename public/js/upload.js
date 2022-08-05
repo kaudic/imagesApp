@@ -34,7 +34,7 @@ const upload = {
         const checkedId = [];
         checkedElement.forEach(element => checkedId.push(element.id));
         if (checkedId.indexOf('checkboxTag') !== -1) {
-            window.location.href = '/tags';
+            window.location.href = `${BASE_URL}/tags`;
         }
 
     }

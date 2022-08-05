@@ -26,7 +26,7 @@ const personDataMapper = {
         return result.rows[0];
     },
     async getAllPersons() {
-        const sqlQuery = `SELECT * FROM person`;
+        const sqlQuery = `SELECT * FROM person ORDER BY name`;
         const results = await db.query(sqlQuery);
         return results.rows;
     }
