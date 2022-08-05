@@ -27,8 +27,6 @@ const upLoadImages = (files) => {
 
     const fileFilter = (req, file, callback) => {
 
-        req.filesCount = 0;
-
         const extension = file.originalname.split('.')[1];
         const extensionAccepted = ['jpg', 'JPG', 'jpeg', 'JPEG', 'png', 'PNG'];
 
@@ -40,9 +38,7 @@ const upLoadImages = (files) => {
         else {
             console.log('Autorisation de Multer pour le fichier: ' + file.originalname);
             req.app.locals.socket.emit('upload', `Autorisation de Multer pour le fichier: ${file.originalname}`)
-            req.filesCount++;
             callback(null, true);
-
         }
     };
 
