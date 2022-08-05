@@ -76,7 +76,7 @@ const utils = {
         });
     },
     // it will calculate hash for images and delete files if hash is already in DB
-    filterFilesBeforeInsertInDb: (tempPath, imagesPath, year = null) => {
+    filterFilesBeforeInsertInDb: (tempPath, imagesPath, year = null, socket) => {
 
         return new Promise(async (resolve, reject) => {
 
@@ -103,6 +103,7 @@ const utils = {
                             // calculate fingerPrints
                             const fingerPrints = await utils.hash(sourceFile);
                             if (fingerPrints === undefined) {
+                                socket.emit('upload', `deleting file because Hash not calculable ${sourceFile}`);
                                 console.log('DELETING FILE BECAUSE PB HASH: ' + sourceFile);
                                 fs.unlinkSync(sourceFile);
                             } else {
@@ -113,6 +114,7 @@ const utils = {
                                 if (isBinary) {
 
                                     // deleting file as it is the same image
+                                    socket.emit('upload', `deleting file because it is a duplicate ${sourceFile}`);
                                     console.log('DELETING FILE DUPLICATES: ' + sourceFile);
                                     fs.unlinkSync(sourceFile);
                                 }
@@ -120,6 +122,7 @@ const utils = {
                                     // move file to images folder
                                     fs.rename(sourceFile, `${imagesPath}/${img}`, (err) => {
                                         if (err) throw err;
+                                        socket.emit('upload', `moving file from temp to final folder`);
                                         console.log('File moved from Temp folder to images folder');
                                     });
                                     imagesToInsert.push({ fileName: img, year: year, fingerPrints: fingerPrints });

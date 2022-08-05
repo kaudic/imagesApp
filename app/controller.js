@@ -272,6 +272,9 @@ const controller = {
         fs.createReadStream(filePath).pipe(res);
     },
     async addImagesToDBAfterUpLoad(req, res, next) {
+        // get the socket to communicate with client
+        const socket = req.app.locals.socket;
+
         const { checkboxYear, checkboxTag } = req.body;
         let year = null;
         if (checkboxYear) {
@@ -284,7 +287,7 @@ const controller = {
 
         // read temp folder and calculate fingerPrints
         // check if fingerPrints already exist in DB -if yes delete files
-        const imagesToInsert = await utils.filterFilesBeforeInsertInDb(tempPath, imagesPath, year);
+        const imagesToInsert = await utils.filterFilesBeforeInsertInDb(tempPath, imagesPath, year, socket);
 
         // create Image in DB (with Year or Not) and delete files
         const insertQueries = [];
