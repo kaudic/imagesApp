@@ -95,6 +95,10 @@ const upload = {
         // Hide loader
         loaderDiv.classList.add('hidden');
 
+        // Rest loader style
+        document.querySelector('.loadingMessage').textContent = '';
+        document.querySelector('.loader').style.width = 0 + 'px';
+
         // if checkbox about tag is chcecked then redirect to tag page
         const checkedElement = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
         const checkedId = [];

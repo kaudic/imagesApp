@@ -153,11 +153,12 @@ body {
 
 .loadingMessage {
     color: white;
-    width: 5vw;
+    width: 25vw;
     margin: 1rem auto;
     text-align: center;
     color: white;
     font-weight: bold;
+    font-size: 8px;
 }
 
 /* TAG PAGE */
