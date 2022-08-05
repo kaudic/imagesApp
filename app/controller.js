@@ -289,6 +289,7 @@ const controller = {
         // create Image in DB (with Year or Not) and delete files
         const insertQueries = [];
         imagesToInsert.forEach((img) => {
+            console.log('Inserting new image in DB: ' + JSON.stringify(img));
             insertQueries.push(imageDataMapper.insertImageWithYearAndFingerPrints(img))
         })
 

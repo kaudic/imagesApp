@@ -3,12 +3,6 @@ const upload = {
         console.log('init script launched');
         upload.addListennersToAction();
 
-        // get the token and if any
-        const token = window.localStorage.getItem('audicServerToken');
-        if (token) {
-            upload.properties.token = token;
-            console.log('token: ' + upload.properties.token);
-        }
     },
     properties: {
         token: ''
