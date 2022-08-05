@@ -333,9 +333,9 @@ const tag = {
         tag.properties.images = imageInfo.data;
 
     },
-    displayImageInfo: async (indexChange) => {
+    displayImageInfo: async (indexChange, recursif = false) => {
         // Remove from table being taggued current image as we go next
-        if (indexChange !== 0) {
+        if (indexChange !== 0 && !recursif) {
             const imageId = tag.properties.images[tag.properties.imageDisplayedIndex].id;
             console.log('front ask to delete image Id : ' + imageId);
             await fetch(`${BASE_URL}/images/deleteBeingTagged`, {
@@ -357,7 +357,7 @@ const tag = {
 
             if (imagesBeingTaggued.data.find((img) => img.image_id == imageId)) {
                 console.log('récursif');
-                tag.displayImageInfo(1);
+                tag.displayImageInfo(1, true);
             }
         }
 
