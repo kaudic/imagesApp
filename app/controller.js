@@ -293,6 +293,7 @@ const controller = {
         const insertQueries = [];
         imagesToInsert.forEach((img) => {
             console.log('Inserting new image in DB: ' + JSON.stringify(img));
+            socket.emit('upload', `Inserting image ${JSON.stringify(img)} in DB`);
             insertQueries.push(imageDataMapper.insertImageWithYearAndFingerPrints(img))
         })
 
