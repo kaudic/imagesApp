@@ -340,6 +340,8 @@ const tag = {
 
     },
     displayImageInfo: async (indexChange, recursif = false) => {
+        console.log('indexChange: ' + indexChange);
+        console.log('recursif: ' + recursif);
         // Remove from table being taggued current image as we go next
         if (indexChange !== 0 && recursif === false) {
             const imageId = tag.properties.images[tag.properties.imageDisplayedIndex].id;
