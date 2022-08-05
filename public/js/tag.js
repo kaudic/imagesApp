@@ -6,19 +6,13 @@ const tag = {
         // Fill in the options in the select fields with data from Database
         tag.updateSelectFields();
 
-        // Register socket in tag properties
-        let ioServerPath = BASE_URL;
-        let socket;
-        ioServerPath = BASE_URL.replace('/imagesApp', '');
+        // Init the socket for the tag page
+        const socket = tag.initSocket();
 
-        if (ioServerPath.includes('audicserver')) {
-            socket = io(ioServerPath, { path: '/imagesApp/socket.io/' });
-        } else {
-            socket = io(ioServerPath);
-        }
-        socket.on('welcome', (socketId) => {
-            console.log('socketId: ' + socketId);
-            tag.properties.socket = socketId
+        // in case of a problem with the socket then we will receive an event from the server
+        socket.on('askForNewSocket', (message) => {
+            console.log(message);
+            tag.initSocket();
         });
 
         // check Tag mode dataset in title
@@ -54,6 +48,25 @@ const tag = {
             tagContainerElt.prepend(goBackBtn);
 
         };
+    },
+    initSocket: () => {
+        // Register socket in tag properties
+        let ioServerPath = BASE_URL;
+        let socket;
+        ioServerPath = BASE_URL.replace('/imagesApp', '');
+
+        if (ioServerPath.includes('audicserver')) {
+            socket = io(ioServerPath, { path: '/imagesApp/socket.io/' });
+        } else {
+            socket = io(ioServerPath);
+        }
+
+        socket.on('welcome', (socketId) => {
+            console.log('socketId: ' + socketId);
+            tag.properties.socket = socketId
+        });
+
+        return socket;
     },
     properties: {
         imageDisplayedIndex: 0,

@@ -11,7 +11,7 @@ const path = require('path');
 router.use(express.json());
 
 // Route for welcoming page - controling token first
-router.get('/', controller.renderHomePage);
+router.get('/', handler(controller.renderHomePage));
 
 const staticPath = path.normalize(`${__dirname}/../../public/`);
 
@@ -22,30 +22,30 @@ router.get(/assets/, express.static(staticPath));
 
 // Upload Routes
 // !add auth controle duplicates add in DB with Year (or not) and tag or not
-router.get('/upload', controller.renderUploadPage);
-router.post('/upload', upLoadImages(), controller.addImagesToDBAfterUpLoad, controller.renderUploadPage);
+router.get('/upload', handler(controller.renderUploadPage));
+router.post('/upload', upLoadImages(), handler(controller.addImagesToDBAfterUpLoad), handler(controller.renderUploadPage));
 
 // Tag Routes
-router.get('/tags/OneImageInTagView/:imageId', controller.renderOneImageInTagPage);
-router.get('/tags', controller.renderTagPage);
-router.get('/tags/getPersons', controller.getAllPersons);
-router.get('/tags/getAllLocalities', controller.getAllLocalities);
-router.get('/tags/getAllEvents', controller.getAllEvents);
+router.get('/tags/OneImageInTagView/:imageId', handler(controller.renderOneImageInTagPage));
+router.get('/tags', handler(controller.renderTagPage));
+router.get('/tags/getPersons', handler(controller.getAllPersons));
+router.get('/tags/getAllLocalities', handler(controller.getAllLocalities));
+router.get('/tags/getAllEvents', handler(controller.getAllEvents));
 
 // Image Routes
-router.get('/images/getAllNotTagguedWithLinkedTables', controller.getAllImagesNotTagguedAndLinkedTables);
-router.post('/images/getImageInfoWithLinkedTables', controller.getImageInfoWithLinkedTables);
-router.post('/images/deleteBeingTagged', controller.deleteImageBeingTaggued);
-router.get('/images/beingTaggued', controller.getImagesbeingTaggued);
-router.post('/images/insertOneAsBeingTaggued', controller.insertOneAsBeingTaggued);
-router.get('/images/countTagAndNotTaggued', controller.countTagAndNotTaggued);
-router.get('/images/countTagAndNotTagguedPerYear', controller.countTagAndNotTagguedPerYear);
+router.get('/images/getAllNotTagguedWithLinkedTables', handler(controller.getAllImagesNotTagguedAndLinkedTables));
+router.post('/images/getImageInfoWithLinkedTables', handler(controller.getImageInfoWithLinkedTables));
+router.post('/images/deleteBeingTagged', handler(controller.deleteImageBeingTaggued));
+router.get('/images/beingTaggued', handler(controller.getImagesbeingTaggued));
+router.post('/images/insertOneAsBeingTaggued', handler(controller.insertOneAsBeingTaggued));
+router.get('/images/countTagAndNotTaggued', handler(controller.countTagAndNotTaggued));
+router.get('/images/countTagAndNotTagguedPerYear', handler(controller.countTagAndNotTagguedPerYear));
 router.patch('/images/updateTags', handler(controller.updateTags));
-router.delete('/images/delete', controller.deleteImage);
-router.post('/images/downloadByFileName', controller.downloadFileByName);
+router.delete('/images/delete', handler(controller.deleteImage));
+router.post('/images/downloadByFileName', handler(controller.downloadFileByName));
 
 // Search Routes
-router.get('/search/getAllImgAndLinkedTables', controller.getAllImgAndLinkedTables);
+router.get('/search/getAllImgAndLinkedTables', handler(controller.getAllImgAndLinkedTables));
 
 // Creation
 router.post('/tags/person', handler(controller.createPerson));
@@ -63,9 +63,9 @@ router.put('/tags/locality', handler(controller.modifyLocality));
 router.put('/tags/event', handler(controller.modifyEvent));
 
 // Search Routes
-router.get('/search', controller.renderSearchPage);
+router.get('/search', handler(controller.renderSearchPage));
 
 // Catch the error created by controller Handler
-router.use(controller.error);
+router.use(handler(controller.error));
 
 module.exports = router;
