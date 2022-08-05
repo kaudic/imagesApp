@@ -43,7 +43,12 @@ const upLoadImages = (files) => {
         }
     };
 
-    return multer({ storage: storage, fileFilter: fileFilter }).array('uploadInput');
-};
+    return (req, res, next) => {
+        multer({ storage: storage, fileFilter: fileFilter }).array('uploadInput');
+        console.log('------------------------------------------------------------------');
+        console.log(req.files.length);
+        next();
+    };
+}
 
 module.exports = upLoadImages;

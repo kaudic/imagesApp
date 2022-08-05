@@ -287,13 +287,13 @@ const controller = {
 
         // read temp folder and calculate fingerPrints
         // check if fingerPrints already exist in DB -if yes delete files
+        // send socket to update the front side with info of what is going on
         const imagesToInsert = await utils.filterFilesBeforeInsertInDb(tempPath, imagesPath, year, socket);
 
         // create Image in DB (with Year or Not) and delete files
         const insertQueries = [];
+        socket.emit('upload', `Inserting image in DB`);
         imagesToInsert.forEach((img) => {
-            console.log('Inserting new image in DB: ' + JSON.stringify(img));
-            socket.emit('upload', `Inserting image ${JSON.stringify(img)} in DB`);
             insertQueries.push(imageDataMapper.insertImageWithYearAndFingerPrints(img))
         })
 
