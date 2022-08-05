@@ -3,9 +3,46 @@ const upload = {
         console.log('init script launched');
         upload.addListennersToAction();
 
+        // Init the socket for the upload page
+        const socket = upload.initSocket();
+
+        // in case of a problem with the socket then we will receive an event from the server
+        socket.on('askForNewSocket', (message) => {
+            console.log(message);
+            upload.initSocket();
+        });
+
+        socket.on('error', (message) => {
+            console.log(message);
+            upload.initSocket();
+        });
+
     },
     properties: {
-        token: ''
+        socket: ''
+    },
+    initSocket: () => {
+        // Register socket in upload properties
+        let ioServerPath = BASE_URL;
+        let socket;
+        ioServerPath = BASE_URL.replace('/imagesApp', '');
+
+        if (ioServerPath.includes('audicserver')) {
+            socket = io(ioServerPath, { path: '/imagesApp/socket.io/' });
+        } else {
+            socket = io(ioServerPath);
+        }
+
+        socket.on('welcome', (socketId) => {
+            console.log('socketId: ' + socketId);
+            upload.properties.socket = socketId
+        });
+
+        socket.on('upload', (message) => {
+            console.log('message du serveur: ' + message);
+        });
+
+        return socket;
     },
     addListennersToAction: () => {
         const upLoadBtn = document.getElementById('upLoadBtn');
@@ -15,6 +52,9 @@ const upload = {
         e.preventDefault();
         const formDetails = document.querySelector('form');
         const formData = new FormData(formDetails);
+
+        // Display a loader - with loading bar and details from socket
+
         await fetch(`${BASE_URL}/upload`, {
             method: 'POST',
             body: formData,
@@ -22,6 +62,10 @@ const upload = {
                 'authorization': upload.properties.token
             }
         });
+
+        // Hide loader
+
+
 
         // if checkbox about tag is chcecked then redirect to tag page
         const checkedElement = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
