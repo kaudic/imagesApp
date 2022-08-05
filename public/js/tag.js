@@ -8,10 +8,14 @@ const tag = {
 
         // Register socket in tag properties
         let ioServerPath = BASE_URL;
+        let socket;
+        ioServerPath = BASE_URL.replace('/imagesApp', '');
+
         if (ioServerPath.includes('audicserver')) {
-            ioServerPath = BASE_URL.replace('/imagesApp', '');
+            socket = io(ioServerPath, { path: '/imagesApp/socket.io/' });
+        } else {
+            socket = io(ioServerPath);
         }
-        const socket = io(ioServerPath, { path: '/imagesApp/socket.io/' });
         socket.on('welcome', (socketId) => {
             console.log('socketId: ' + socketId);
             tag.properties.socket = socketId
@@ -25,7 +29,6 @@ const tag = {
             await tag.getAllImagesAndLinkedTablesNotTaggued();
             // display first image
             tag.displayImageInfo(0);
-            tag.getAndSaveToken();
 
         };
         if (title.dataset.type === 'singleTagMode') {
