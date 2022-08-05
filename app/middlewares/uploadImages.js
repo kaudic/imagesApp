@@ -37,7 +37,6 @@ const upLoadImages = (files) => {
         }
         else {
             console.log('Autorisation de Multer pour le fichier: ' + file.originalname);
-            req.app.locals.socket.emit('upload', `Autorisation de Multer pour le fichier: ${file.originalname}`)
             callback(null, true);
         }
     };

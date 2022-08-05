@@ -19,7 +19,9 @@ const upload = {
 
     },
     properties: {
-        socket: ''
+        socket: '',
+        filesCount: 0, // number of files to treat - for loading bar
+        filesIndex: 0  // index of the file being treated - for loading bar
     },
     initSocket: () => {
         // Register socket in upload properties
@@ -39,11 +41,13 @@ const upload = {
         });
 
         socket.on('upload', (message) => {
-            console.log('message du serveur: ' + message);
+            upload.properties.filesIndex += 1;
+            upload.updateLoadingBar();
+            upload.updateMessage(message);
         });
 
-        socket.on('uploadLength', (message) => {
-            console.log('nombre de fichiers: ' + message);
+        socket.on('uploadLength', (filesCount) => {
+            upload.properties.filesCount = filesCount;
         });
 
         return socket;
@@ -52,12 +56,33 @@ const upload = {
         const upLoadBtn = document.getElementById('upLoadBtn');
         upLoadBtn.addEventListener('click', upload.sendPictures);
     },
+    updateLoadingBar: () => {
+        const percentOfTransfer = Math.round((upload.properties.filesIndex / upload.properties.filesCount) * 100);
+
+        const loaderElement = document.querySelector('.loader');
+        const loadingBarWidth = document.querySelector('.loadingBar').offsetWidth;
+
+        // Check that we don't go over 100%
+        if (percentOfTransfer > 100) {
+            loaderElement.textContent = '100%';
+            loaderElement.style.width = loadingBarWidth;
+        } else {
+            loaderElement.style.width = (loadingBarWidth * (percentOfTransfer / 100)) + 'px';
+            loaderElement.textContent = percentOfTransfer + '%';
+        }
+    },
+    updateMessage: (message) => {
+        const loadingMessageElement = document.querySelector('.loadingMessage');
+        loadingMessageElement.textContent = message;
+    },
     sendPictures: async (e) => {
         e.preventDefault();
         const formDetails = document.querySelector('form');
         const formData = new FormData(formDetails);
 
         // Display a loader - with loading bar and details from socket
+        const loaderDiv = document.getElementById('loaderInfo');
+        loaderDiv.classList.remove('hidden');
 
         await fetch(`${BASE_URL}/upload`, {
             method: 'POST',
@@ -68,8 +93,7 @@ const upload = {
         });
 
         // Hide loader
-
-
+        loaderDiv.classList.add('hidden');
 
         // if checkbox about tag is chcecked then redirect to tag page
         const checkedElement = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
