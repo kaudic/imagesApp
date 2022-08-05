@@ -42,6 +42,10 @@ const upload = {
             console.log('message du serveur: ' + message);
         });
 
+        socket.on('uploadLength', (message) => {
+            console.log('nombre de fichiers: ' + message);
+        });
+
         return socket;
     },
     addListennersToAction: () => {
