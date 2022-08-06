@@ -34,58 +34,59 @@ function syncBackup() {
                 .map(dirent => dirent.name);
             console.log(`There are ${productionServerNames.length} files on the server`);
         }
-    });
 
-    readdir(imagesBackupPath, { withFileTypes: true }, async (err, files) => {
-        if (err) {
-            console.log(err)
-        } else {
-            // Read the files names on the backup folder and put it in an array backupNames
-            backupNames = files
-                .filter(dirent => !dirent.isDirectory())
-                .map(dirent => dirent.name);
-            console.log(`There are ${backupNames.length} files on the backup`);
-        }
-    });
 
-    // Delete files in backup that do not exist in production server
-    let deleteCounter = 0;
-    for (const backupImage of backupNames) {
-        const isFileOnServer = productionServerNames.find((productionImg) => {
-            return backupImage == productionImg
-        });
+        readdir(imagesBackupPath, { withFileTypes: true }, async (err, files) => {
+            if (err) {
+                console.log(err)
+            } else {
+                // Read the files names on the backup folder and put it in an array backupNames
+                backupNames = files
+                    .filter(dirent => !dirent.isDirectory())
+                    .map(dirent => dirent.name);
+                console.log(`There are ${backupNames.length} files on the backup`);
+            }
 
-        if (!isFileOnServer) {
-            deleteCounter++;
-            const backupFilePathToDelete = imagesBackupPath + `/${backupImage}`;
-            console.log('deleting file: ' + backupFilePathToDelete);
-            fs.unlinkSync(backupFilePathToDelete);
-        }
-    }
-    console.log(`La synchronisation a supprimé ${deleteCounter} fichiers du dossier backup`);
+            // Delete files in backup that do not exist in production server
+            let deleteCounter = 0;
+            for (const backupImage of backupNames) {
+                const isFileOnServer = productionServerNames.find((productionImg) => {
+                    return backupImage == productionImg
+                });
 
-    // Copy file from production server in Backup folder if no exist
-    let createCounter = 0;
-    for (const productionImg of productionServerNames) {
-        const isFileOnBackup = backupNames.find((backupImage) => {
-            return backupImage == productionImg
-        });
-
-        if (!isFileOnBackup) {
-            createCounter++;
-            const productionFilePathToCopy = imagesFolderPath + `/${productionImg}`;
-            const backupFilePathToCreate = imagesBackupPath + `/${productionImg}`;
-            console.log('copying file: ' + productionFilePathToCopy);
-            fs.copyFile(productionFilePathToCopy, backupFilePathToCreate, (err) => {
-                if (err) {
-                    console.log("Error while copying file on backup folder:", err);
-                    console.log("Error was on file: " + productionImg);
+                if (!isFileOnServer) {
+                    deleteCounter++;
+                    const backupFilePathToDelete = imagesBackupPath + `/${backupImage}`;
+                    console.log('deleting file: ' + backupFilePathToDelete);
+                    fs.unlinkSync(backupFilePathToDelete);
                 }
-            });
-        }
-    }
-    console.log(`La synchronisation a créé ${createCounter} images dans le dossier backup`);
+            }
+            console.log(`La synchronisation a supprimé ${deleteCounter} fichiers du dossier backup`);
 
+
+            // Copy file from production server in Backup folder if no exist
+            let createCounter = 0;
+            for (const productionImg of productionServerNames) {
+                const isFileOnBackup = backupNames.find((backupImage) => {
+                    return backupImage == productionImg
+                });
+
+                if (!isFileOnBackup) {
+                    createCounter++;
+                    const productionFilePathToCopy = imagesFolderPath + `/${productionImg}`;
+                    const backupFilePathToCreate = imagesBackupPath + `/${productionImg}`;
+                    console.log('copying file: ' + productionFilePathToCopy);
+                    fs.copyFile(productionFilePathToCopy, backupFilePathToCreate, (err) => {
+                        if (err) {
+                            console.log("Error while copying file on backup folder:", err);
+                            console.log("Error was on file: " + productionImg);
+                        }
+                    });
+                }
+            }
+            console.log(`La synchronisation a créé ${createCounter} images dans le dossier backup`);
+        });
+    });
 };
 
 // launch the process
