@@ -23,7 +23,7 @@ router.get(/assets/, express.static(staticPath));
 // Upload Routes
 // !add auth controle duplicates add in DB with Year (or not) and tag or not
 router.get('/upload', handler(controller.renderUploadPage));
-router.post('/upload', upLoadImages(), handler(controller.addImagesToDBAfterUpLoad), handler(controller.renderUploadPage));
+router.post('/upload', upLoadImages(), (controller.addImagesToDBAfterUpLoad), handler(controller.renderUploadPage));
 
 // Tag Routes
 router.get('/tags/OneImageInTagView/:imageId', handler(controller.renderOneImageInTagPage));
@@ -66,6 +66,6 @@ router.put('/tags/event', handler(controller.modifyEvent));
 router.get('/search', handler(controller.renderSearchPage));
 
 // Catch the error created by controller Handler
-router.use(handler(controller.error));
+router.use((controller.error));
 
 module.exports = router;

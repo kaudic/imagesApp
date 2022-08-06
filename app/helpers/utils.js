@@ -120,7 +120,8 @@ const utils = {
                                 }
                                 else {
                                     // push the new fingerPrints in the array of fingerprints from DB
-                                    currentFingerPrints.push(fingerPrints);
+                                    console.log('pushing the new fingerPrints:' + fingerPrints);
+                                    currentFingerPrints.push({ fingerprints: fingerPrints });
 
                                     // move file to images folder
                                     fs.rename(sourceFile, `${imagesPath}/${img}`, (err) => {

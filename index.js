@@ -13,6 +13,11 @@ const io = sio.init(server);
 io.on('connection', (socket) => {
     console.log(`Nouveau client connecté à ImagesApp avec le socket id:  ${socket.id}`);
 
+    // In case we have sockets registerd at this point, we will delete them to restart fresh
+    if (Object.keys(socket.server.eio.clients).length === 1) {
+        console.log('Emptying Table tag_socket before starting');
+        imageDatamapper.deleteAllBeingTaggued();
+    }
     // Register it in locals to get access to socket in the controllers
     app.locals.socket = socket;
 
@@ -20,11 +25,6 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         imageDatamapper.deleteImageBeingTagguedBySocket(socket.id);
-        // Check if there is no more client - if no more client, then empty table tag_socket
-        if (io.sockets.sockets.length === 0) {
-            console.log('no more sockets connected - emptying table');
-            imageDatamapper.deleteAllBeingTaggued();
-        }
     });
 
     socket.on('error', () => {

@@ -5,6 +5,7 @@ const imageDataMapper = require('./models/image');
 const fs = require('fs');
 const path = require('path');
 const utils = require('./helpers/utils');
+const { fork } = require('child_process');
 
 const controller = {
 
@@ -294,7 +295,6 @@ const controller = {
         // create Image in DB (with Year or Not) // Not using promise.all as I want to catch errors
         // one time I got an error with fingerprints and all queries stopped
         socket.emit('upload', `Inserting image in DB`);
-
         for await (const img of imagesToInsert) {
             try {
                 await imageDataMapper.insertImageWithYearAndFingerPrints(img)
@@ -306,6 +306,10 @@ const controller = {
                 }
             }
         }
+        // Launch a child process to check number of physical files and number of rows in DB and correct if necessary
+        const maintenanceScriptRoute = path.normalize(`${__dirname}/../scripts/maintenanceScript.js`);
+        const maintenanceScript = fork(maintenanceScriptRoute);
+        maintenanceScript.send('START');
 
         // if we do not want to tag then render upload page by the next
         if (!checkboxTag) {
@@ -389,7 +393,7 @@ const controller = {
         console.log('errorController! :' + err.message);
         console.log(err);
 
-        res.status(400).json({
+        res.json({
             result: false,
             message: err.message
         });
