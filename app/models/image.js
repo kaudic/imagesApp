@@ -69,6 +69,15 @@ const imageDataMapper = {
         const result = await db.query(sqlQuery);
         return result.rows[0];
     },
+    async deleteImageByFilename(filename) {
+        const sqlQuery = {
+            text: `
+            DELETE FROM image WHERE file_name=$1 RETURNING*`,
+            values: [filename],
+        };
+        const result = await db.query(sqlQuery);
+        return result.rows[0];
+    },
     async updateImageYear(imageId, year) {
         const sqlQuery = {
             text: `

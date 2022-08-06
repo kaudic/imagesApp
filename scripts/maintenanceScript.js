@@ -34,20 +34,36 @@ readdir(directoryPath, { withFileTypes: true }, async (err, files) => {
         let counter = 0;
         if (databaseFilenames.length != physicalImageNames.length) {
             console.log('Results are not equal, launching maintenance program');
-            for (const physicalFile of physicalImageNames) {
-                const isFileInDB = databaseFilenames.find((DBfile) => {
-                    // console.log(`DBFile: ${DBfile.file_name}`, `physicalFile: ${physicalFile}`);
-                    return DBfile.file_name == physicalFile
-                });
 
-                if (!isFileInDB) {
-                    counter++;
-                    const physicalFilePath = directoryPath + `/${physicalFile}`;
-                    fs.unlinkSync(physicalFilePath);
+            if (physicalImageNames.length > databaseFilenames.length) {
+                for (const physicalFile of physicalImageNames) {
+                    const isFileInDB = databaseFilenames.find((DBfile) => {
+                        // console.log(`DBFile: ${DBfile.file_name}`, `physicalFile: ${physicalFile}`);
+                        return DBfile.file_name == physicalFile
+                    });
+
+                    if (!isFileInDB) {
+                        counter++;
+                        const physicalFilePath = directoryPath + `/${physicalFile}`;
+                        fs.unlinkSync(physicalFilePath);
+                    }
                 }
-            }
-        }
-        console.log(`Le programme a supprimé ${counter} fichiers sur le serveur.`)
+                console.log(`Le programme a supprimé ${counter} fichiers sur le serveur.`)
+            } else {
+                for (const DBfile of databaseFilenames) {
+                    const isFilePhysical = physicalImageNames.find((physicalFile) => {
+                        // console.log(`DBFile: ${DBfile.file_name}`, `physicalFile: ${physicalFile}`);
+                        return DBfile.file_name == physicalFile
+                    });
 
+                    if (!isFilePhysical) {
+                        counter++;
+                        imageDataMapper.deleteImageByFilename(DBfile.file_name);
+                    }
+                }
+                console.log(`Le programme a supprimé ${counter} enregistrements de la BDD.`)
+            }
+
+        }
     }
 });
