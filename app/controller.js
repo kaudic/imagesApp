@@ -311,6 +311,13 @@ const controller = {
         const maintenanceScript = fork(maintenanceScriptRoute);
         maintenanceScript.send('START');
 
+        if (process.env.NODE_ENV === 'production') {
+            // Launch another child process to sync images in usb stick called 'backup'
+            const syncBackupScriptRoute = path.normalize(`${__dirname}/../scripts/syncBackup.js`);
+            const syncBackupScript = fork(syncBackupScriptRoute);
+            syncBackupScript.send('START');
+        }
+
         // if we do not want to tag then render upload page by the next
         if (!checkboxTag) {
             next();

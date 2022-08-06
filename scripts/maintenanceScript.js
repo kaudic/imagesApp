@@ -15,7 +15,6 @@ const imageDataMapper = require('../app/models/image');
 function maintenanceScript() {
 
     // calculate temp path and images path to give to utils function
-    // const directoryPath = path.normalize(`${__dirname}/../../public/assets/images`);
     const directoryPath = path.normalize(`${__dirname}/../public/assets/images`);
     console.log('directory: ' + directoryPath);
 
