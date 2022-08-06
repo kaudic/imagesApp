@@ -15,6 +15,8 @@ function syncBackup() {
     console.log('starting synchronize images folder with imagesBackup folder');
     const imagesFolderPath = path.normalize(`${__dirname}/../public/assets/images`);
     const imagesBackupPath = path.normalize(`${__dirname}/../../backup/imagesBackup`);
+
+    console.log('imagesFolderPath: ' + imagesFolderPath);
     console.log('imagesBackupPath: ' + imagesBackupPath);
 
     // Creating 2 empty arrays to load the files names of production server and backup folder
@@ -56,6 +58,7 @@ function syncBackup() {
         if (!isFileOnServer) {
             deleteCounter++;
             const backupFilePathToDelete = imagesBackupPath + `/${backupImage}`;
+            console.log('deleting file: ' + backupFilePathToDelete);
             fs.unlinkSync(backupFilePathToDelete);
         }
     }
@@ -72,6 +75,7 @@ function syncBackup() {
             createCounter++;
             const productionFilePathToCopy = imagesFolderPath + `/${productionImg}`;
             const backupFilePathToCreate = imagesBackupPath + `/${productionImg}`;
+            console.log('copying file: ' + productionFilePathToCopy);
             fs.copyFile(productionFilePathToCopy, backupFilePathToCreate, (err) => {
                 if (err) {
                     console.log("Error while copying file on backup folder:", err);
