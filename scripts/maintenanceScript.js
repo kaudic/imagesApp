@@ -36,7 +36,8 @@ readdir(directoryPath, { withFileTypes: true }, async (err, files) => {
             console.log('Results are not equal, launching maintenance program');
             for (const physicalFile of physicalImageNames) {
                 const isFileInDB = databaseFilenames.find((DBfile) => {
-                    return DBfile == physicalFile
+                    // console.log(`DBFile: ${DBfile.file_name}`, `physicalFile: ${physicalFile}`);
+                    return DBfile.file_name == physicalFile
                 });
 
                 if (!isFileInDB) {
