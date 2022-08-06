@@ -20,7 +20,11 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         imageDatamapper.deleteImageBeingTagguedBySocket(socket.id);
-        delete app.locals.socket;
+        // Check if there is no more client - if no more client, then empty table tag_socket
+        if (io.sockets.sockets.length === 0) {
+            console.log('no more sockets connected - emptying table');
+            imageDatamapper.deleteAllBeingTaggued();
+        }
     });
 
     socket.on('error', () => {

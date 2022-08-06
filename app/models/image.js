@@ -42,6 +42,15 @@ const imageDataMapper = {
         const result = await db.query(sqlQuery);
         return result.rows;
     },
+    async getAllFilenames() {
+        const sqlQuery = {
+            text: `
+            SELECT file_name FROM image;`,
+            values: [],
+        };
+        const result = await db.query(sqlQuery);
+        return result.rows;
+    },
     async insertImageWithYearAndFingerPrints(img) {
         const sqlQuery = {
             text: `
@@ -92,6 +101,15 @@ const imageDataMapper = {
         };
         const result = await db.query(sqlQuery);
         return result.rows[0];
+    },
+    async deleteAllBeingTaggued() {
+        const sqlQuery = {
+            text: `
+            DELETE FROM tag_socket ;`,
+            values: [],
+        };
+        const result = await db.query(sqlQuery);
+        return result.rows;
     },
     async deleteImageBeingTagguedBySocket(socket) {
         const sqlQuery = {

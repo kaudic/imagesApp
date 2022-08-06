@@ -287,18 +287,25 @@ const controller = {
         const imagesPath = path.normalize(`${__dirname}/../public/assets/images`);
 
         // read temp folder and calculate fingerPrints
-        // check if fingerPrints already exist in DB -if yes delete files
+        // check if fingerPrints already exist in DB -if yes delete files - if no move from temp to final source
         // send socket to update the front side with info of what is going on
         const imagesToInsert = await utils.filterFilesBeforeInsertInDb(tempPath, imagesPath, year, socket);
 
-        // create Image in DB (with Year or Not) and delete files
-        const insertQueries = [];
+        // create Image in DB (with Year or Not) // Not using promise.all as I want to catch errors
+        // one time I got an error with fingerprints and all queries stopped
         socket.emit('upload', `Inserting image in DB`);
-        imagesToInsert.forEach((img) => {
-            insertQueries.push(imageDataMapper.insertImageWithYearAndFingerPrints(img))
-        })
 
-        await Promise.all(insertQueries);
+        for await (const img of imagesToInsert) {
+            try {
+                await imageDataMapper.insertImageWithYearAndFingerPrints(img)
+            }
+            catch (err) {
+                if (err) {
+                    console.log('error with image: ' + JSON.stringify(img));
+                    throw err;
+                }
+            }
+        }
 
         // if we do not want to tag then render upload page by the next
         if (!checkboxTag) {
@@ -346,7 +353,14 @@ const controller = {
 
         res.json({
             result: true,
-            message: 'La suppression du tag en cours de l\èimage a bien été effectué',
+            message: 'La suppression du tag en cours de l\'image a bien été effectué',
+        });
+    },
+    async deleteAllBeingTaggued(req, res) {
+        await imageDataMapper.deleteAllBeingTaggued();
+        res.json({
+            result: true,
+            message: 'Le vidage de la table tag_socket a bien été effectué',
         });
     },
     async insertOneAsBeingTaggued(req, res) {
