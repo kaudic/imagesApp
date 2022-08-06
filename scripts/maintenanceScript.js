@@ -42,7 +42,8 @@ readdir(directoryPath, { withFileTypes: true }, async (err, files) => {
 
                 if (!isFileInDB) {
                     counter++;
-                    // fs.unlinkSync(sourceFile);
+                    const physicalFilePath = directoryPath + `/${physicalFile}`;
+                    fs.unlinkSync(physicalFilePath);
                 }
             }
         }
