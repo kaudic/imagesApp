@@ -13,10 +13,11 @@ const imageDataMapper = require('../app/models/image');
 
 
 function maintenanceScript() {
+    console.log('starting maintenance programm to make sure physical images and database info are equals');
 
     // calculate temp path and images path to give to utils function
     const directoryPath = path.normalize(`${__dirname}/../public/assets/images`);
-    console.log('directory: ' + directoryPath);
+    console.log('production Server directory: ' + directoryPath);
 
     readdir(directoryPath, { withFileTypes: true }, async (err, files) => {
         if (err) {
@@ -63,11 +64,12 @@ function maintenanceScript() {
                             imageDataMapper.deleteImageByFilename(DBfile.file_name);
                         }
                     }
-                    console.log(`Le programme a supprimé ${counter} enregistrements de la BDD.`)
+                    console.log(`Le programme a supprimé ${counter} enregistrements de la BDD.`);
                 }
 
             }
         }
+        process.exit();
     });
 
 };
