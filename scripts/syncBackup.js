@@ -79,6 +79,7 @@ function syncBackup() {
                         if (err) {
                             console.log("Error while copying file on backup folder:", err);
                             console.log("Error was on file: " + productionImg);
+                            console.log("User is " + process.env.USER);
                         }
                     });
                 }
