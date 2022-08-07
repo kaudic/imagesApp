@@ -4,6 +4,7 @@
 const path = require('path');
 const fs = require('fs');
 const { readdir } = require('fs');
+const { exec } = require('child_process');
 
 // get the client
 require('dotenv').config();
@@ -69,9 +70,22 @@ function maintenanceScript() {
 
             }
         }
+        if (process.env.NODE_ENV === 'production') {
+            // execute a command shell to dump the clean database in a usb stick on audic server (path: /media/kaudic/65CB-F29E/pg_dumps/imagesApp)
+            const dateOfDay = new Date().toLocaleDateString().split('/').join('');
+            const dumpFileName = 'imagesAppDump_' + dateOfDay + '.sql';
+            const command = `pg_dump -a imageapp > /media/kaudic/65CB-F29E/pg_dumps/imagesApp/${dumpFileName}`
+            console.log('saving a dump file of imagesApp in the usb stick: ' + dumpFileName);
+            exec(command, function (error, stdout, stderr) {
+                if (error) {
+                    console.log('Error while saving a dump of the imagesApp database. ' + error);
+                } else {
+                    console.log('Dump file of imagesApp well saved!');
+                }
+            });
+        }
         process.exit();
     });
-
 };
 
 process.on('message', (message) => {
