@@ -14,7 +14,7 @@ function syncBackup() {
 
     console.log('starting synchronize images folder with imagesBackup folder');
     const imagesFolderPath = path.normalize(`${__dirname}/../public/assets/images`);
-    const imagesBackupPath = path.normalize(`${__dirname}/../../../../..//media/kaudic/65CB-F29E/imagesBackup`);
+    const imagesBackupPath = path.normalize(`${__dirname}/../../../../..//media/usb-drive-backup1/imagesBackup`);
 
     console.log('imagesFolderPath: ' + imagesFolderPath);
     console.log('imagesBackupPath: ' + imagesBackupPath);

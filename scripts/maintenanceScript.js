@@ -42,7 +42,6 @@ function maintenanceScript() {
                 if (physicalImageNames.length > databaseFilenames.length) {
                     for (const physicalFile of physicalImageNames) {
                         const isFileInDB = databaseFilenames.find((DBfile) => {
-                            // console.log(`DBFile: ${DBfile.file_name}`, `physicalFile: ${physicalFile}`);
                             return DBfile.file_name == physicalFile
                         });
 
@@ -56,7 +55,6 @@ function maintenanceScript() {
                 } else {
                     for (const DBfile of databaseFilenames) {
                         const isFilePhysical = physicalImageNames.find((physicalFile) => {
-                            // console.log(`DBFile: ${DBfile.file_name}`, `physicalFile: ${physicalFile}`);
                             return DBfile.file_name == physicalFile
                         });
 
@@ -76,7 +74,7 @@ function maintenanceScript() {
             const dumpFileNameDataOnly = 'imagesAppDumpOnlyData_' + dateOfDay + '.sql';
             const dumpFileNameWithSchema = 'imagesAppDumpWithSchema_' + dateOfDay + '.sql';
 
-            const command1 = `pg_dump -a imageapp > /media/kaudic/65CB-F29E/pg_dumps/imagesApp/${dumpFileNameDataOnly}`
+            const command1 = `pg_dump -a imageapp > /media/usb-drive-backup1/pg_dumps/imagesApp/${dumpFileNameDataOnly}`
             console.log('saving a dump file with only data of imagesApp in the usb stick: ' + dumpFileNameDataOnly);
             exec(command1, function (error, stdout, stderr) {
                 if (error) {
@@ -86,7 +84,7 @@ function maintenanceScript() {
                 }
             });
 
-            const command2 = `pg_dump imageapp > /media/kaudic/65CB-F29E/pg_dumps/imagesApp/${dumpFileNameWithSchema}`
+            const command2 = `pg_dump imageapp > /media/usb-drive-backup1/pg_dumps/imagesApp/${dumpFileNameWithSchema}`
             console.log('saving a dump file with only data of imagesApp in the usb stick: ' + dumpFileNameWithSchema);
             exec(command2, function (error, stdout, stderr) {
                 if (error) {
