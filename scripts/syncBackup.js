@@ -14,7 +14,7 @@ function syncBackup() {
 
     console.log('starting synchronize images folder with imagesBackup folder');
     const imagesFolderPath = path.normalize(`${__dirname}/../public/assets/images`);
-    const imagesBackupPath = path.normalize(`${__dirname}/../../../../..//media/kaudic/65CB-F29E`);
+    const imagesBackupPath = path.normalize(`${__dirname}/../../../../..//media/kaudic/65CB-F29E/imagesBackup`);
 
     console.log('imagesFolderPath: ' + imagesFolderPath);
     console.log('imagesBackupPath: ' + imagesBackupPath);
@@ -62,7 +62,6 @@ function syncBackup() {
                 }
             }
             console.log(`La synchronisation a supprimé ${deleteCounter} fichiers du dossier backup`);
-
 
             // Copy file from production server in Backup folder if no exist
             let createCounter = 0;
