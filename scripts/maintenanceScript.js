@@ -73,14 +73,26 @@ function maintenanceScript() {
         if (process.env.NODE_ENV === 'production') {
             // execute a command shell to dump the clean database in a usb stick on audic server (path: /media/kaudic/65CB-F29E/pg_dumps/imagesApp)
             const dateOfDay = new Date().toLocaleDateString().split('/').join('');
-            const dumpFileName = 'imagesAppDump_' + dateOfDay + '.sql';
-            const command = `pg_dump -a imageapp > /media/kaudic/65CB-F29E/pg_dumps/imagesApp/${dumpFileName}`
-            console.log('saving a dump file of imagesApp in the usb stick: ' + dumpFileName);
-            exec(command, function (error, stdout, stderr) {
+            const dumpFileNameDataOnly = 'imagesAppDumpOnlyData_' + dateOfDay + '.sql';
+            const dumpFileNameWithSchema = 'imagesAppDumpWithSchema_' + dateOfDay + '.sql';
+
+            const command1 = `pg_dump -a imageapp > /media/kaudic/65CB-F29E/pg_dumps/imagesApp/${dumpFileNameDataOnly}`
+            console.log('saving a dump file with only data of imagesApp in the usb stick: ' + dumpFileNameDataOnly);
+            exec(command1, function (error, stdout, stderr) {
                 if (error) {
-                    console.log('Error while saving a dump of the imagesApp database. ' + error);
+                    console.log('Error while saving a dump of the datas of imagesApp database. ' + error);
                 } else {
-                    console.log('Dump file of imagesApp well saved!');
+                    console.log('Dump file of imagesApp datas well saved!');
+                }
+            });
+
+            const command2 = `pg_dump imageapp > /media/kaudic/65CB-F29E/pg_dumps/imagesApp/${dumpFileNameWithSchema}`
+            console.log('saving a dump file with only data of imagesApp in the usb stick: ' + dumpFileNameWithSchema);
+            exec(command2, function (error, stdout, stderr) {
+                if (error) {
+                    console.log('Error while saving a dump of the datas and schema of imagesApp database. ' + error);
+                } else {
+                    console.log('Dump file of imagesApp datas and schema well saved!');
                 }
             });
         }
