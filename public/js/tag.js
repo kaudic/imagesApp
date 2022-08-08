@@ -356,11 +356,11 @@ const tag = {
             imageToDisplay.data = tag.properties.images;
         }
         else if (currentImageIndex === '' && tagMode === 'multiTagMode') {
-            imageToDisplay = await fetch(`/images/getFirstImgNotTagguedAndLinkedTables`).then((res) => res.json());
+            imageToDisplay = await fetch(`${BASE_URL}/images/getFirstImgNotTagguedAndLinkedTables`).then((res) => res.json());
         } else if (indexChange >= 0) {
-            imageToDisplay = await fetch(`/images/getNextImgNotTagguedAndLinkedTables/${currentImageIndex}`).then((res) => res.json());
+            imageToDisplay = await fetch(`${BASE_URL}/images/getNextImgNotTagguedAndLinkedTables/${currentImageIndex}`).then((res) => res.json());
         } else {
-            imageToDisplay = await fetch(`/images/getPreviousImgNotTagguedAndLinkedTables/${currentImageIndex}`).then((res) => res.json());
+            imageToDisplay = await fetch(`${BASE_URL}/images/getPreviousImgNotTagguedAndLinkedTables/${currentImageIndex}`).then((res) => res.json());
         }
 
         console.log('imageToDisplay: ' + JSON.stringify(imageToDisplay.data));
