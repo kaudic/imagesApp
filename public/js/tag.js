@@ -7,7 +7,7 @@ const tag = {
         tag.updateSelectFields();
 
         // Init the socket for the tag page
-        const socket = tag.initSocket();
+        const socket = tag.initSocket(); // once socket initialized then image will be displayed
 
         // in case of a problem with the socket then we will receive an event from the server
         socket.on('askForNewSocket', (message) => {
@@ -20,23 +20,10 @@ const tag = {
             tag.initSocket();
         });
 
-
         // check Tag mode dataset in title
         const title = document.querySelector('.project_h2Title');
 
-        if (title.dataset.type === 'multiTagMode') {
-            // display first image
-            tag.displayImageInfo(0);
-
-        };
         if (title.dataset.type === 'singleTagMode') {
-            // get Image id from title dataset
-            const imageId = title.dataset.id;
-            // Get image Info
-            await tag.getOneImageAndLinkedTables(imageId);
-            // Display Image Info
-            tag.displayImageInfo(0);
-
             // hide the arrows
             document.getElementById('imgRight').classList.add('hidden');
             document.getElementById('imgLeft').classList.add('hidden');
@@ -68,6 +55,8 @@ const tag = {
         socket.on('welcome', (socketId) => {
             console.log('socketId: ' + socketId);
             tag.properties.socket = socketId
+            // Once we get the socket from server side, we display our first image and block it with our socket
+            tag.displayImageInfo(0);
         });
 
         return socket;
@@ -351,8 +340,10 @@ const tag = {
 
         let imageToDisplay = {};
         if (currentImageIndex === '' && tagMode === 'singleTagMode') {
-            console.log('singleTagMode identified');
-            console.log(tag.properties.images);
+            // get Image id from title dataset
+            const imageId = title.dataset.id;
+            // Get image Info
+            await tag.getOneImageAndLinkedTables(imageId);
             imageToDisplay.data = tag.properties.images;
         }
         else if (currentImageIndex === '' && tagMode === 'multiTagMode') {
@@ -362,8 +353,6 @@ const tag = {
         } else {
             imageToDisplay = await fetch(`${BASE_URL}/images/getPreviousImgNotTagguedAndLinkedTables/${currentImageIndex}`).then((res) => res.json());
         }
-
-        console.log('imageToDisplay: ' + JSON.stringify(imageToDisplay.data));
 
         // initialize the rotation degree if it changed
         tag.properties.rotationDegree = 0;
