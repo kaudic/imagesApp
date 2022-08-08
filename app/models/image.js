@@ -18,6 +18,57 @@ const imageDataMapper = {
         const result = await db.query(sqlQuery);
         return result.rows;
     },
+    async getNextImgNotTagguedAndLinkedTables(index) {
+        const sqlQuery = {
+            text: `
+            SELECT i.id,i.file_name,i.year,i.tag,l.id as locality_id, l.name as locality_name, e.id as event_id, e.name as event_name, json_AGG(jsonb_build_object('id',p.id,'name',p.name)) as person_name FROM image i
+            LEFT JOIN image_person ip ON i.id = ip.image_id
+            LEFT JOIN person p ON ip.person_id = p.id
+            LEFT JOIN "event" e ON e.id = i.event
+            LEFT JOIN "locality" l ON l.id = i.locality
+            GROUP BY i.id, l.id, e.id
+            HAVING i.tag=false AND i.id NOT IN (SELECT image_id FROM tag_socket) AND i.id < $1
+            ORDER BY id DESC
+            LIMIT 1`,
+            values: [index],
+        };
+        const result = await db.query(sqlQuery);
+        return result.rows[0];
+    },
+    async getPreviousImgNotTagguedAndLinkedTables(index) {
+        const sqlQuery = {
+            text: `
+            SELECT i.id,i.file_name,i.year,i.tag,l.id as locality_id, l.name as locality_name, e.id as event_id, e.name as event_name, json_AGG(jsonb_build_object('id',p.id,'name',p.name)) as person_name FROM image i
+            LEFT JOIN image_person ip ON i.id = ip.image_id
+            LEFT JOIN person p ON ip.person_id = p.id
+            LEFT JOIN "event" e ON e.id = i.event
+            LEFT JOIN "locality" l ON l.id = i.locality
+            GROUP BY i.id, l.id, e.id
+            HAVING i.tag=false AND i.id NOT IN (SELECT image_id FROM tag_socket) AND i.id > $1
+            ORDER BY id ASC
+            LIMIT 1`,
+            values: [index],
+        };
+        const result = await db.query(sqlQuery);
+        return result.rows[0];
+    },
+    async getFirstImgNotTagguedAndLinkedTables() {
+        const sqlQuery = {
+            text: `
+            SELECT i.id,i.file_name,i.year,i.tag,l.id as locality_id, l.name as locality_name, e.id as event_id, e.name as event_name, json_AGG(jsonb_build_object('id',p.id,'name',p.name)) as person_name FROM image i
+            LEFT JOIN image_person ip ON i.id = ip.image_id
+            LEFT JOIN person p ON ip.person_id = p.id
+            LEFT JOIN "event" e ON e.id = i.event
+            LEFT JOIN "locality" l ON l.id = i.locality
+            GROUP BY i.id, l.id, e.id
+            HAVING i.tag=false AND i.id NOT IN (SELECT image_id FROM tag_socket)
+            ORDER BY id DESC
+            LIMIT 1`,
+            values: [],
+        };
+        const result = await db.query(sqlQuery);
+        return result.rows[0];
+    },
     async getAllImgAndLinkedTables() {
         const sqlQuery = {
             text: `

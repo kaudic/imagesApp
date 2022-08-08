@@ -123,8 +123,10 @@ const search = {
         document.getElementById('personContainer').innerHTML = '';
 
     },
-    filterAndDisplayPictures: (e) => {
+    filterAndDisplayPictures: async (e) => {
         e.preventDefault();
+        await search.getimagesDetails();
+        search.properties.filteredImages = search.properties.images;
         const images = search.properties.images;
 
         // Filter By Year

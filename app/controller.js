@@ -24,6 +24,41 @@ const controller = {
     renderSearchPage: (req, res) => {
         res.render('search.ejs');
     },
+    async getNextImgNotTagguedAndLinkedTables(req, res) {
+        const index = parseInt(req.params.index);
+        const nextImage = await imageDataMapper.getNextImgNotTagguedAndLinkedTables(index);
+
+        if (nextImage) {
+            res.json({
+                result: true,
+                message: 'Les informations de la nouvelle image dans la propriété data',
+                data: nextImage
+            })
+        }
+    },
+    async getFirstImgNotTagguedAndLinkedTables(req, res) {
+        const nextImage = await imageDataMapper.getFirstImgNotTagguedAndLinkedTables();
+
+        if (nextImage) {
+            res.json({
+                result: true,
+                message: 'Les informations de la nouvelle image dans la propriété data',
+                data: nextImage
+            })
+        }
+    },
+    async getPreviousImgNotTagguedAndLinkedTables(req, res) {
+        const index = parseInt(req.params.index);
+        const nextImage = await imageDataMapper.getPreviousImgNotTagguedAndLinkedTables(index);
+
+        if (nextImage) {
+            res.json({
+                result: true,
+                message: 'Les informations de la nouvelle image dans la propriété data',
+                data: nextImage
+            })
+        }
+    },
     createPerson: async (req, res) => {
         const { personName } = req.body;
 

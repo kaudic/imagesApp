@@ -21,7 +21,6 @@ router.get(/css/, express.static(staticPath));
 router.get(/assets/, express.static(staticPath));
 
 // Upload Routes
-// !add auth controle duplicates add in DB with Year (or not) and tag or not
 router.get('/upload', handler(controller.renderUploadPage));
 router.post('/upload', upLoadImages(), (controller.addImagesToDBAfterUpLoad), handler(controller.renderUploadPage));
 
@@ -34,6 +33,9 @@ router.get('/tags/getAllEvents', handler(controller.getAllEvents));
 
 // Image Routes
 router.get('/images/getAllNotTagguedWithLinkedTables', handler(controller.getAllImagesNotTagguedAndLinkedTables));
+router.get('/images/getNextImgNotTagguedAndLinkedTables/:index', handler(controller.getNextImgNotTagguedAndLinkedTables));
+router.get('/images/getPreviousImgNotTagguedAndLinkedTables/:index', handler(controller.getPreviousImgNotTagguedAndLinkedTables));
+router.get('/images/getFirstImgNotTagguedAndLinkedTables', handler(controller.getFirstImgNotTagguedAndLinkedTables));
 router.post('/images/getImageInfoWithLinkedTables', handler(controller.getImageInfoWithLinkedTables));
 router.post('/images/deleteBeingTagged', handler(controller.deleteImageBeingTaggued));
 router.get('/images/beingTaggued', handler(controller.getImagesbeingTaggued));

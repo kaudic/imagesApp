@@ -634,10 +634,12 @@ body {
     .button_supprimer,
     .button_download {
         width: 6rem;
+        font-size: 0.7rem
     }
 
     .project_info_couple {
         margin: 0.1rem 0;
+        flex-wrap: wrap;
 
     }
 
@@ -682,6 +684,23 @@ body {
 
     .flexCenterMobile {
         display: flex;
+    }
+
+    /* SEARCH BAR */
+
+    .SearchBar {
+        display: flex;
+        /* flex-direction: column; */
+        flex-wrap: wrap;
+        /* justify-content: flex-start; */
+        height: unset;
+        /* align-items: flex-start; */
+        justify-content: space-around;
+        align-items: center;
+        margin: 1rem;
+        border: 4px solid green;
+        border-radius: 1rem;
+        color: white;
     }
 
 }

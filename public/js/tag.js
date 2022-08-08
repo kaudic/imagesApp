@@ -25,8 +25,6 @@ const tag = {
         const title = document.querySelector('.project_h2Title');
 
         if (title.dataset.type === 'multiTagMode') {
-            // get all images details and set them up in attributes names properties.images
-            await tag.getAllImagesAndLinkedTablesNotTaggued();
             // display first image
             tag.displayImageInfo(0);
 
@@ -215,9 +213,6 @@ const tag = {
             }
         })
 
-        // delete from the cache variable
-        tag.properties.images.splice(tag.properties.imageDisplayedIndex, 1);
-
         // display next image
         // if multi tag mode then go to next image
         if (document.querySelector('.project_h2Title').dataset.type === 'multiTagMode') {
@@ -258,20 +253,13 @@ const tag = {
             }
         }).then((res) => res.json());
 
-        // On good result delete the image from the properties and update cache variable
-        if (updatedImage.result === true) {
-            const imageStatusInput = document.getElementById('imageStatus');
-            tag.properties.images[tag.properties.imageDisplayedIndex] = updatedImage.data;
-            imageStatusInput.value = "taguée";
-            imageStatusInput.classList.remove('imageNotTaggued');
-            imageStatusInput.classList.add('imageTaggued');
-            // if multi tag mode then go to next image
-            if (document.querySelector('.project_h2Title').dataset.type === 'multiTagMode') {
-                tag.displayImageInfo(1);
-            } else {// if not then go to previous page
-                tag.goToPreviousPage();
-            }
+        // if multi tag mode then go to next image
+        if (document.querySelector('.project_h2Title').dataset.type === 'multiTagMode') {
+            tag.displayImageInfo(1);
+        } else {// if not then go to previous page
+            tag.goToPreviousPage();
         }
+
     },
     tagPersonOnScreen: () => {
         // create element personSpan in the personContainer
@@ -324,10 +312,6 @@ const tag = {
         const personsCrossBtns = document.querySelectorAll('.crossIcon');
         personsCrossBtns.forEach((person) => person.addEventListener('click', tag.deleteTagguedPerson));
     },
-    getAllImagesAndLinkedTablesNotTaggued: async () => {
-        const imagesAndLinkedTables = await fetch(`${BASE_URL}/images/getAllNotTagguedWithLinkedTables`).then((res) => res.json());
-        tag.properties.images = imagesAndLinkedTables.data;
-    },
     getOneImageAndLinkedTables: async (imageId) => {
         const imageInfo = await fetch(`${BASE_URL}/images/getImageInfoWithLinkedTables`, {
             method: 'POST',
@@ -336,73 +320,63 @@ const tag = {
                 'Content-Type': 'application/json'
             }
         }).then((res) => res.json());
-        tag.properties.images = imageInfo.data;
+        tag.properties.images = imageInfo.data[0];
+        console.log(JSON.stringify(tag.properties.images));
 
     },
-    displayImageInfo: async (indexChange, recursif = false) => {
-        console.log('indexChange: ' + indexChange);
-        console.log('recursif: ' + recursif);
-        // Remove from table being taggued current image as we go next
-        if (indexChange !== 0 && recursif === false) {
-            const imageId = tag.properties.images[tag.properties.imageDisplayedIndex].id;
-            console.log('front ask to delete image Id : ' + imageId);
+    displayImageInfo: async (indexChange) => {
+
+        // identify the img element container to get current imageId
+        const imageContainer = document.getElementById('imageContainer');
+        let currentImageIndex = imageContainer.dataset.imgId;
+
+        // if an image was displayed - we will free it from the tag_socket table
+        if (currentImageIndex !== '') {
             await fetch(`${BASE_URL}/images/deleteBeingTagged`, {
                 method: 'POST',
                 body: JSON.stringify({
-                    imageId,
+                    imageId: currentImageIndex,
                     socket: tag.properties.socket
                 }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-
-        } else {
-            // Check that this image is not already being taggued, if yes, re-launch function
-            let index = tag.properties.imageDisplayedIndex;
-            let imageId = tag.properties.images[index].id;
-            if (recursif === true) {
-                index++;
-                imageId = tag.properties.images[index].id;
-            }
-            console.log(`checking if image index ${index} and imageId ${imageId} already in table taggued`)
-            const imagesBeingTaggued = await fetch(`${BASE_URL}/images/beingTaggued`).then((res => res.json()));
-            console.log('imagesBeingTaggued: ' + JSON.stringify(imagesBeingTaggued));
-            if (imagesBeingTaggued.data.find((img) => img.image_id == imageId)) {
-                console.log('récursif car image trouvée');
-                return tag.displayImageInfo(1, true);
-            }
         }
 
-        // identify the img element container
-        const imageContainer = document.getElementById('imageContainer');
+        // we then look if we are going from the search screen (in that case we display the image clicked)
+        // if we come from tag screen we just need to look for next free untaggued image
+        const title = document.querySelector('.project_h2Title');
+        const tagMode = title.dataset.type;
+
+        let imageToDisplay = {};
+        if (currentImageIndex === '' && tagMode === 'singleTagMode') {
+            console.log('singleTagMode identified');
+            console.log(tag.properties.images);
+            imageToDisplay.data = tag.properties.images;
+        }
+        else if (currentImageIndex === '' && tagMode === 'multiTagMode') {
+            imageToDisplay = await fetch(`/images/getFirstImgNotTagguedAndLinkedTables`).then((res) => res.json());
+        } else if (indexChange >= 0) {
+            imageToDisplay = await fetch(`/images/getNextImgNotTagguedAndLinkedTables/${currentImageIndex}`).then((res) => res.json());
+        } else {
+            imageToDisplay = await fetch(`/images/getPreviousImgNotTagguedAndLinkedTables/${currentImageIndex}`).then((res) => res.json());
+        }
+
+        console.log('imageToDisplay: ' + JSON.stringify(imageToDisplay.data));
 
         // initialize the rotation degree if it changed
         tag.properties.rotationDegree = 0;
         imageContainer.style.transform = `rotate(${tag.properties.rotationDegree}deg)`
 
-        // calculate the newIndex
-        const currentIndex = tag.properties.imageDisplayedIndex;
-        if ((indexChange < 0 && currentIndex > 0) || (indexChange > 0 && currentIndex < tag.properties.images.length - 1)) {
-            tag.properties.imageDisplayedIndex += indexChange;
-        }
-        // Check that this image is not already being taggued, if yes, re-launch function
-        const newIndex = tag.properties.imageDisplayedIndex;
-        const newImageId = tag.properties.images[newIndex].id;
-        const imagesBeingTaggued = await fetch(`${BASE_URL}/images/beingTaggued`).then((res => res.json()));
 
-        if (imagesBeingTaggued.data.find((img) => img.image_id == newImageId)) {
-            indexChange > 0 ? indexChange++ : indexChange--;
-            tag.displayImageInfo(indexChange);
-        }
-
-        // if it is not being taggued by someone else, then register image as being taggued 
+        // Register image as being taggued to avoid that someone else be on it
         await fetch(`${BASE_URL}/images/insertOneAsBeingTaggued`, {
             method: 'POST',
             body: JSON.stringify({
                 socket: tag.properties.socket,
-                imageId: newImageId,
-                fileName: tag.properties.images[newIndex].file_name
+                imageId: imageToDisplay.data.id,
+                fileName: imageToDisplay.data.file_name
             }),
             headers: {
                 'Content-Type': 'application/json'
@@ -410,14 +384,14 @@ const tag = {
         })
 
         // Display corresponding image on Screen
-        imageContainer.src = `${BASE_URL}/imagesApp/assets/images/${tag.properties.images[newIndex].file_name}`;
-        imageContainer.dataset.imgId = newImageId
+        imageContainer.src = `${BASE_URL}/imagesApp/assets/images/${imageToDisplay.data.file_name}`;
+        imageContainer.dataset.imgId = imageToDisplay.data.id
 
         // Display Persons
         const personContainer = document.getElementById('personContainer');
         personContainer.innerHTML = '';
         await tag.updateSelectFields();
-        const persons = tag.properties.images[newIndex].person_name;
+        const persons = imageToDisplay.data.person_name;
         const personTagSelectElt = document.getElementById('personTag');
 
         // check firstly that first person has an id - if yes then loop
@@ -444,33 +418,33 @@ const tag = {
         tag.addDeleteTagguedPersonToCrossBtns();
         // Display File Name
         const fileNameInput = document.getElementById('fileNameInput');
-        fileNameInput.value = tag.properties.images[newIndex].file_name;
+        fileNameInput.value = imageToDisplay.data.file_name;
 
         // Display File Year
         const imageYearInput = document.getElementById('imageYearInput');
-        imageYearInput.value = tag.properties.images[newIndex].year;
+        imageYearInput.value = imageToDisplay.data.year;
 
         // Display Locality
         const localityTag = document.getElementById('localityTag');
-        const localityId = tag.properties.images[newIndex].locality_id;
+        const localityId = imageToDisplay.data.locality_id;
         if (localityId) {
-            localityTag.value = tag.properties.images[newIndex].locality_id;
+            localityTag.value = imageToDisplay.data.locality_id;
         } else {
             localityTag.value = 0;
         }
 
         // Display Event
         const eventTag = document.getElementById('eventTag');
-        const eventId = tag.properties.images[newIndex].event_id;
+        const eventId = imageToDisplay.data.event_id;
         if (eventId) {
-            eventTag.value = tag.properties.images[newIndex].event_id;
+            eventTag.value = imageToDisplay.data.event_id;
         } else {
             eventTag.value = 0;
         }
 
         // Display Tag boolean
         const imageStatusInput = document.getElementById('imageStatus');
-        const booleanTag = tag.properties.images[newIndex].tag;
+        const booleanTag = imageToDisplay.data.tag;
         if (booleanTag) {
             imageStatusInput.value = "taguée";
             imageStatusInput.classList.remove('imageNotTaggued');
