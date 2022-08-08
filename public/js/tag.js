@@ -319,20 +319,6 @@ const tag = {
         const imageContainer = document.getElementById('imageContainer');
         let currentImageIndex = imageContainer.dataset.imgId;
 
-        // if an image was displayed - we will free it from the tag_socket table
-        if (currentImageIndex !== '') {
-            await fetch(`${BASE_URL}/images/deleteBeingTagged`, {
-                method: 'POST',
-                body: JSON.stringify({
-                    imageId: currentImageIndex,
-                    socket: tag.properties.socket
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-        }
-
         // we then look if we are going from the search screen (in that case we display the image clicked)
         // if we come from tag screen we just need to look for next free untaggued image
         const title = document.querySelector('.project_h2Title');
@@ -357,6 +343,20 @@ const tag = {
         // initialize the rotation degree if it changed
         tag.properties.rotationDegree = 0;
         imageContainer.style.transform = `rotate(${tag.properties.rotationDegree}deg)`
+
+        // if an image was displayed - we will free it from the tag_socket table
+        if (currentImageIndex !== '' && imageToDisplay.data !== '') {
+            await fetch(`${BASE_URL}/images/deleteBeingTagged`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    imageId: currentImageIndex,
+                    socket: tag.properties.socket
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+        }
 
 
         // Register image as being taggued to avoid that someone else be on it
