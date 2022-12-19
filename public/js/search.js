@@ -374,6 +374,8 @@ const search = {
 
             }).then(response => response.blob());
 
+            console.log(fileBlob);
+
             //au retour du back, on lance le téléchargement
             const url = window.URL.createObjectURL(fileBlob);
             const a = document.createElement('a');
