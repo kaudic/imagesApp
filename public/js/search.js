@@ -380,7 +380,7 @@ const search = {
             const url = window.URL.createObjectURL(fileBlob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = fileName.split('.')[0];
+            a.download = fileName.split('.')[0] + '.jpeg';
             a.click();
             a.remove();
         })
