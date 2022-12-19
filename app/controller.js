@@ -306,7 +306,11 @@ const controller = {
         // });
 
         // fs.createWriteStream(filePath).pipe(res);
-        fs.createReadStream(filePath).pipe(res);
+        const readableStream = fs.createReadStream(filePath);
+
+        readableStream.on('error', (error) => console.log(error.message));
+        readableStream.on('data', (chunk) => console.log(chunk));
+        readableStream.pipe(res);
 
     },
     async addImagesToDBAfterUpLoad(req, res, next) {
