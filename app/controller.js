@@ -300,12 +300,14 @@ const controller = {
 
         const fileName = req.body.fileName;
         const filePath = path.normalize(`${__dirname}/../public/assets/images/${fileName}`);
-        res.writeHead(200, {
-            "Content-Type": "application/octet-stream",
-            "Content-Disposition": `attachment; filename=${fileName}`
-        });
+        // res.writeHead(200, {
+        //     "Content-Type": "application/octet-stream",
+        //     "Content-Disposition": `attachment; filename=${fileName}`
+        // });
 
+        // fs.createWriteStream(filePath).pipe(res);
         fs.createReadStream(filePath).pipe(res);
+
     },
     async addImagesToDBAfterUpLoad(req, res, next) {
         // get the socket to communicate with client
