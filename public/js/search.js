@@ -372,15 +372,31 @@ const search = {
                     // 'authorization': tag.properties.token
                 }
 
-            }).then(response => response.blob());
+            }).then(response => response.blob({ type: '"image/jpeg"' }));
 
-            console.log(fileBlob);
+            const blobToBase64 = blob => {
+                const reader = new FileReader();
+                reader.readAsDataURL(blob);
+                return new Promise(resolve => {
+                    reader.onloadend = () => {
+                        resolve(reader.result);
+                    };
+                });
+            };
+
+            blobToBase64(fileBlob).then(res => {
+                // do what you wanna do
+                console.log(res); // res is base64 now
+            });
+
+            // fileBlob.type = "image/jpeg";
+            // console.log(fileBlob);
 
             //au retour du back, on lance le téléchargement
             const url = window.URL.createObjectURL(fileBlob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = fileName.split('.')[0] + '.jpeg';
+            a.download = fileName.split('.')[0];
             a.click();
             a.remove();
         })
