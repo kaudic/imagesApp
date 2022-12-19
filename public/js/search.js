@@ -374,29 +374,31 @@ const search = {
 
             }).then(response => response.blob({ type: '"image/jpeg"' }));
 
-            const blobToBase64 = blob => {
-                const reader = new FileReader();
-                reader.readAsDataURL(blob);
-                return new Promise(resolve => {
-                    reader.onloadend = () => {
-                        resolve(reader.result);
-                    };
-                });
-            };
+            // Function to transform blob in a base64 string: string can be tester on https://products.aspose.app/imaging/conversion/base64-to-jpeg
+            // ------------------------------------------------
+            // const blobToBase64 = blob => {
+            //     const reader = new FileReader();
+            //     reader.readAsDataURL(blob);
+            //     return new Promise(resolve => {
+            //         reader.onloadend = () => {
+            //             resolve(reader.result);
+            //         };
+            //     });
+            // };
 
-            blobToBase64(fileBlob).then(res => {
-                // do what you wanna do
-                console.log(res); // res is base64 now
-            });
+            // Using the above website to test my blob in base64: I found out that the proxy was the problem
+            // --------------------------------------------------
+            // blobToBase64(fileBlob).then(res => {
+            //     // do what you wanna do
+            //     console.log(res); // res is base64 now
+            // });
 
-            // fileBlob.type = "image/jpeg";
-            // console.log(fileBlob);
 
             //au retour du back, on lance le téléchargement
             const url = window.URL.createObjectURL(fileBlob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = fileName.split('.')[0];
+            a.download = fileName;
             a.click();
             a.remove();
         })
